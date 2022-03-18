@@ -1,107 +1,105 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/components/default_button.dart';
+import 'package:final_pro/cubits/LoginCubit/cubit.dart';
+import 'package:final_pro/cubits/LoginCubit/states.dart';
 import 'package:final_pro/models/login_model.dart';
 import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../cache_helper.dart';
 import '../../../constants.dart';
+import '../../../enums.dart';
 import '../../../helper.dart';
 import '../../../size_config.dart';
 import '../../../components/Form_error.dart';
 import '../../../components/customSurfixButton.dart';
 import '../../dash_bord/dash_bord.dart';
 
-class SignForm extends StatefulWidget {
-  @override
-  _SignFormState createState() => _SignFormState();
-}
-
-class _SignFormState extends State<SignForm> {
+class SignForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  LoginRequestModel loginRequestModel = LoginRequestModel();
-  bool? remember = false;
-  final List<String?> errors = [];
 
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
-
-  @override
-  void initState() {
-    loginRequestModel.role = 'patient';
-    super.initState();
-  }
+  final loginRequestModel = LoginRequestModel();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Row(
-            children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              Text("Remember me"),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
-            ],
-          ),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-              text: "Continue",
-              press: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  APIService apiService = APIService();
-                  apiService.login(loginRequestModel).then((value) {
-                    if (value.token != "") {
-                      Navigator.pushReplacementNamed(
-                          context, DashBord.routeName);
-                      print('Successful');
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: value.msg!,
-                      );
-                    }
-                  });
-                }
+    return BlocProvider(
+      create: (context) => ShopLoginCubit(),
+      child: BlocConsumer<ShopLoginCubit, ShopLoginStates>(
+        listener: (context, state) {
+          if (state is ShopLoginSuccessState) {
+            if (state.loginModel.token != "") {
+              print(state.loginModel.msg);
+              print(state.loginModel.token);
 
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-              }),
-        ],
+              CacheHelper.saveData(
+                key: 'token',
+                value: state.loginModel.token,
+              ).then((value) {
+                token = state.loginModel.token;
+                Navigator.pushReplacementNamed(context, DashBord.routeName);
+              });
+            } else {
+              print(state.loginModel.msg);
+
+              showToast(
+                text: state.loginModel.msg,
+                state: ToastStates.ERROR,
+              );
+            }
+          } else if (state is ShopLoginErrorState) {
+            print(state.error);
+          }
+        },
+        builder: (context, state) {
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                buildEmailFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                buildPasswordFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                Row(
+                  children: [
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(
+                          context, ForgotPasswordScreen.routeName),
+                      child: Text(
+                        "Forgot Password",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                ConditionalBuilder(
+                  condition: state is! ShopLoginLoadingState,
+                  builder: (context) => DefaultButton(
+                      text: "Continue",
+                      press: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          ShopLoginCubit.get(context)
+                              .userLogin(loginRequestModel);
+                        }
+
+                        // if all are valid then go to success screen
+                        KeyboardUtil.hideKeyboard(context);
+                      }),
+                  fallback: (context) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -110,21 +108,12 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => loginRequestModel.password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        return null;
-      },
+      onChanged: (value) {},
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
+          return kPassNullError;
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
+          return kShortPassError;
         }
         return null;
       },
@@ -142,22 +131,16 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => loginRequestModel.email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
+      onSaved: (newValue) {
+        loginRequestModel.email = newValue;
+        loginRequestModel.role = 'patient';
       },
+      onChanged: (value) {},
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
+          return kEmailNullError;
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return kInvalidEmailError;
         }
         return null;
       },
@@ -172,12 +155,12 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  bool validateAndSave() {
-    final form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
+  // bool validateAndSave() {
+  //   final form = _formKey.currentState;
+  //   if (form!.validate()) {
+  //     form.save();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }

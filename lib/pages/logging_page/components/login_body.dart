@@ -1,4 +1,5 @@
 import 'package:final_pro/components/social_card.dart';
+import 'package:final_pro/enums.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -27,29 +28,29 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Sign in with your email and password  \nor continue with social media",
+                  "Sign in with your email and password",
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocialCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocialCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocialCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     SocialCard(
+                //       icon: "assets/icons/google-icon.svg",
+                //       press: () {},
+                //     ),
+                //     SocialCard(
+                //       icon: "assets/icons/facebook-2.svg",
+                //       press: () {},
+                //     ),
+                //     SocialCard(
+                //       icon: "assets/icons/twitter.svg",
+                //       press: () {},
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
               ],

@@ -1,3 +1,5 @@
+import 'package:final_pro/pages/choose_who.dart';
+import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
@@ -14,4 +16,6 @@ final Map<String, WidgetBuilder> routes = {
   LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
   DashBord.routeName: (context) => DashBord(),
+  ChooseWho.routeName: (context) => ChooseWho(),
+  CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
 };

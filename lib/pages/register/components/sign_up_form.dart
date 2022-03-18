@@ -1,95 +1,89 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:final_pro/api_service/api_service.dart';
+import 'package:final_pro/cubits/SignUpCubit/states.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../components/Form_error.dart';
 import '../../../components/customSurfixButton.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
+import '../../../cubits/SignUpCubit/cubit.dart';
+import '../../../helper.dart';
 import '../../../size_config.dart';
 import '../../complete_profile/complete_profile_screen.dart';
 import '../../logging_page/loging.dart';
 
-class SignUpForm extends StatefulWidget {
-  @override
-  _SignUpFormState createState() => _SignUpFormState();
-}
-
-class _SignUpFormState extends State<SignUpForm> {
+class SignUpForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   SignUpRequestModel signUpRequestModel = SignUpRequestModel();
   String? password;
   String? conform_password;
-  bool remember = false;
-  final List<String?> errors = [];
 
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
-
-  @override
-  void initState() {
-    signUpRequestModel.birthDate = "1999-05-02";
-    signUpRequestModel.gender = 'male';
-    signUpRequestModel.role = 'patient';
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   signUpRequestModel.birthDate = "1999-05-02";
+  //   signUpRequestModel.gender = 'male';
+  //   signUpRequestModel.role = 'patient';
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildUserNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildConformPassFormField(),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
-          DefaultButton(
-            text: "Continue",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                print('gg');
-                _formKey.currentState!.save();
-                APIService apiService = APIService();
-                apiService.signUp(signUpRequestModel).then((value) {
-                  if (value.msg == 'success') {
-                    Fluttertoast.showToast(
-                        msg: value.msg!,
-                        toastLength: Toast.LENGTH_LONG,
-                        textColor: Colors.green,
-                        fontSize: 16);
-                    Navigator.pushNamed(context, LoggingPage.routeName);
-                  } else
-                    Fluttertoast.showToast(
-                        msg: value.msg!,
-                        toastLength: Toast.LENGTH_LONG,
-                        textColor: Colors.red,
-                        fontSize: 16);
-                });
-
-                // if all are valid then go to success screen
-                //      Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
-            },
+    return BlocProvider(
+      create: (context) => ShopSignUpCubit(),
+      child: BlocConsumer<ShopSignUpCubit, ShopSignUpStates>(
+        listener: (context, state) {
+          if (state is ShopSignUpSuccessState) {
+            if (state.signUpResponseModel.msg == 'success') {
+              showToast(
+                  text: 'you are registered Successfully',
+                  state: ToastStates.SUCCESS);
+              Navigator.pushNamed(context, LoggingPage.routeName);
+            } else {
+              showToast(
+                  text: state.signUpResponseModel.msg,
+                  state: ToastStates.WARNING);
+            }
+          } else if (state is ShopSignUpErrorState) {
+            showToast(text: state.error, state: ToastStates.ERROR);
+          }
+        },
+        builder: (context, state) => Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              buildUserNameFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildEmailFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildPasswordFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildConformPassFormField(),
+              SizedBox(height: getProportionateScreenHeight(40)),
+              ConditionalBuilder(
+                condition: state is! ShopSignUpLoadingState,
+                builder: (context) => DefaultButton(
+                  text: "Continue",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      print('gg');
+                      _formKey.currentState!.save();
+                      ShopSignUpCubit.get(context)
+                          .userRegister(signUpRequestModel);
+                    }
+                    KeyboardUtil.hideKeyboard(context);
+                  },
+                ),
+                fallback: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -97,22 +91,17 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildConformPassFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
+      onSaved: (newValue) {
+        conform_password = newValue;
+      },
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: kMatchPassError);
-        }
         conform_password = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
+          return kPassNullError;
         } else if ((password != value)) {
-          addError(error: kMatchPassError);
-          return "";
+          return kMatchPassError;
         }
         return null;
       },
@@ -130,22 +119,20 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => signUpRequestModel.password = newValue,
+      onSaved: (newValue) {
+        signUpRequestModel.password = newValue;
+        signUpRequestModel.gender = 'male';
+        signUpRequestModel.birthDate = '1999-05-02';
+        signUpRequestModel.role = 'patient';
+      },
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
         password = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
+          return kPassNullError;
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
+          return kShortPassError;
         }
         return null;
       },
@@ -164,21 +151,12 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => signUpRequestModel.email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) {},
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
+          return kEmailNullError;
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return kInvalidEmailError;
         }
         return null;
       },
@@ -197,18 +175,10 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       keyboardType: TextInputType.text,
       onSaved: (newValue) => signUpRequestModel.username = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) {},
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
+          return kEmailNullError;
         }
         return null;
       },

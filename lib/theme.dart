@@ -13,6 +13,17 @@ ThemeData theme() {
   );
 }
 
+ThemeData darkTheme() {
+  return ThemeData(
+    scaffoldBackgroundColor: Colors.black,
+    fontFamily: "Muli",
+    appBarTheme: appBarTheme(),
+    textTheme: textTheme(),
+    inputDecorationTheme: inputDecorationTheme(),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  );
+}
+
 InputDecorationTheme inputDecorationTheme() {
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(28),

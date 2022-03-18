@@ -31,6 +31,10 @@ dependencies:
   flutter_svg: ^1.0.3
   http:
   fluttertoast:
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  conditional_builder:
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const kPrimaryColor = Color(0xFF10de62);
 const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -47,4 +48,40 @@ OutlineInputBorder outlineInputBorder() {
     borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
     borderSide: BorderSide(color: kTextColor),
   );
+}
+
+String? token = '';
+void showToast({
+  @required String? text,
+  @required ToastStates? state,
+}) =>
+    Fluttertoast.showToast(
+      msg: text!,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: chooseToastColor(state!),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+// enum
+enum ToastStates { SUCCESS, ERROR, WARNING }
+
+Color chooseToastColor(ToastStates state) {
+  Color color;
+
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+      break;
+    case ToastStates.WARNING:
+      color = Colors.amber;
+      break;
+  }
+
+  return color;
 }

@@ -6,10 +6,12 @@ class DashBordItem extends StatelessWidget {
   final String? image;
   final String? title;
   final Function? onPress;
+  final Color? color;
   const DashBordItem({
     @required this.image,
     @required this.title,
     this.onPress,
+    this.color = kPrimaryColor,
   });
 
   @override
@@ -18,15 +20,19 @@ class DashBordItem extends StatelessWidget {
       onTap: onPress as void Function(),
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(25),
         ),
         elevation: 4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              image!,
-              height: 98,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: Image.asset(
+                image!,
+                fit: BoxFit.fill,
+                height: 98,
+              ),
             ),
             SizedBox(
               height: 5,
@@ -35,10 +41,11 @@ class DashBordItem extends StatelessWidget {
               title!,
               style: TextStyle(
                 fontWeight: FontWeight.w900,
-                color: kPrimaryColor,
+                color: color,
                 fontSize: 18,
               ),
-            )
+            ),
+            SizedBox(height: 10),
           ],
         ),
       ),
