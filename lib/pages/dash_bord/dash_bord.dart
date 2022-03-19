@@ -1,3 +1,4 @@
+import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/dashBord_item.dart';
@@ -92,7 +93,10 @@ class _DashBordState extends State<DashBord> {
                             image: 'assets/images/team.png',
                             title: 'Teams'),
                         DashBordItem(
-                            onPress: () {},
+                            onPress: () {
+                            Navigator.pushNamed(
+                          context, Measurements.routeName);
+                            },
                             image: 'assets/images/pulse.png',
                             title: 'Measurements'),
                         DashBordItem(
