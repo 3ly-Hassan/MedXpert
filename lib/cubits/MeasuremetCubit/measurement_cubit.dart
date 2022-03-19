@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/measurement.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'measurement_state.dart';
@@ -10,6 +11,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<Measurement> measurements = [];
   MeasurementCubit() : super(MeasurementInitial());
 
+  static MeasurementCubit get(context) => BlocProvider.of(context);
+
    Future<List<Measurement>> _measurement_from_db()async {
      var measurements=  await api.get_measurements();
      return measurements.map((m) => Measurement.fromJson(m)).toList();
@@ -17,8 +20,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   List<Measurement> get_measurements() {
     _measurement_from_db().then((measurements) {
-    print(measurements);
-   emit(MeasurementLoaded(measurements));
+   emit(MeasurementLoaded());
     this.measurements = measurements;
     } );
     

@@ -29,8 +29,8 @@ class _MeasurementsState extends State<Measurements> {
       body: BlocBuilder<MeasurementCubit, MeasurementState>(
           builder: (context, state) {
         if (state is MeasurementLoaded) {
-          all_measurements = (state).measurements;
-          return Text(all_measurements[0].patientId);
+          all_measurements =MeasurementCubit.get(context).measurements;
+          return Text(all_measurements[0].condition);
         } else {
           return Text("not recieved");
         }
