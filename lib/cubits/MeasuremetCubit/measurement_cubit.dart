@@ -19,12 +19,12 @@ class MeasurementCubit extends Cubit<MeasurementState> {
    }
 
   List<Measurement> get_measurements() {
+    emit(MeasurementLoading());
     _measurement_from_db().then((measurements) {
    emit(MeasurementLoaded());
     this.measurements = measurements;
     } );
     
-  
     return measurements;
   }
 }

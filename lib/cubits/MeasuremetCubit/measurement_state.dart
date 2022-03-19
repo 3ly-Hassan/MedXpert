@@ -5,6 +5,10 @@ abstract class MeasurementState {}
 
 class MeasurementInitial extends MeasurementState {}
 
+class MeasurementLoading extends MeasurementState {}
+
+class MeasurementError extends MeasurementState {}
+
 class MeasurementLoaded extends MeasurementState {
   // final List<Measurement> measurements;
   // MeasurementLoaded(this.measurements);
