@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-class ShopLoginCubit extends Cubit<ShopLoginStates> {
-  ShopLoginCubit() : super(ShopLoginInitialState());
+class MedLoginCubit extends Cubit<MedLoginStates> {
+  MedLoginCubit() : super(MedLoginInitialState());
 
-  static ShopLoginCubit get(context) => BlocProvider.of(context);
+  static MedLoginCubit get(context) => BlocProvider.of(context);
 
   late LoginResponseModel loginModel;
   String url = "http://10.0.2.2:8000/api/auth/login";
   void userLogin(LoginRequestModel requestModel) {
-    emit(ShopLoginLoadingState());
+    emit(MedLoginLoadingState());
     http.post(Uri.parse(url), body: requestModel.toJson()).then((value) {
       print(value.body);
       loginModel = LoginResponseModel.fromJson(json.decode(value.body));
-      emit(ShopLoginSuccessState(loginModel));
+      emit(MedLoginSuccessState(loginModel));
     }).catchError((error) {
       print(error.toString());
-      emit(ShopLoginErrorState(error.toString()));
+      emit(MedLoginErrorState(error.toString()));
     });
   }
 
@@ -34,6 +34,6 @@ class ShopLoginCubit extends Cubit<ShopLoginStates> {
     suffix =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
-    emit(ShopChangePasswordVisibilityState());
+    emit(MedChangePasswordVisibilityState());
   }
 }

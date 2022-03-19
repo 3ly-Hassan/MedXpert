@@ -1,21 +1,21 @@
 import 'package:final_pro/models/login_model.dart';
 
-abstract class ShopLoginStates {}
+abstract class MedLoginStates {}
 
-class ShopLoginInitialState extends ShopLoginStates {}
+class MedLoginInitialState extends MedLoginStates {}
 
-class ShopLoginLoadingState extends ShopLoginStates {}
+class MedLoginLoadingState extends MedLoginStates {}
 
-class ShopLoginSuccessState extends ShopLoginStates {
+class MedLoginSuccessState extends MedLoginStates {
   final LoginResponseModel loginModel;
 
-  ShopLoginSuccessState(this.loginModel);
+  MedLoginSuccessState(this.loginModel);
 }
 
-class ShopLoginErrorState extends ShopLoginStates {
+class MedLoginErrorState extends MedLoginStates {
   final String error;
 
-  ShopLoginErrorState(this.error);
+  MedLoginErrorState(this.error);
 }
 
-class ShopChangePasswordVisibilityState extends ShopLoginStates {}
+class MedChangePasswordVisibilityState extends MedLoginStates {}

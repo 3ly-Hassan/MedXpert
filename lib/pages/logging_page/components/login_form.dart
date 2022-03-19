@@ -28,10 +28,10 @@ class SignForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShopLoginCubit(),
-      child: BlocConsumer<ShopLoginCubit, ShopLoginStates>(
+      create: (context) => MedLoginCubit(),
+      child: BlocConsumer<MedLoginCubit, MedLoginStates>(
         listener: (context, state) {
-          if (state is ShopLoginSuccessState) {
+          if (state is MedLoginSuccessState) {
             if (state.loginModel.token != "") {
               print(state.loginModel.msg);
               print(state.loginModel.token);
@@ -51,7 +51,7 @@ class SignForm extends StatelessWidget {
                 state: ToastStates.ERROR,
               );
             }
-          } else if (state is ShopLoginErrorState) {
+          } else if (state is MedLoginErrorState) {
             print(state.error);
           }
         },
@@ -79,13 +79,13 @@ class SignForm extends StatelessWidget {
                 ),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 ConditionalBuilder(
-                  condition: state is! ShopLoginLoadingState,
+                  condition: state is! MedLoginLoadingState,
                   builder: (context) => DefaultButton(
                       text: "Continue",
                       press: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          ShopLoginCubit.get(context)
+                          MedLoginCubit.get(context)
                               .userLogin(loginRequestModel);
                         }
 

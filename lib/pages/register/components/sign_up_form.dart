@@ -33,10 +33,10 @@ class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShopSignUpCubit(),
-      child: BlocConsumer<ShopSignUpCubit, ShopSignUpStates>(
+      create: (context) => MedSignUpCubit(),
+      child: BlocConsumer<MedSignUpCubit, MedSignUpStates>(
         listener: (context, state) {
-          if (state is ShopSignUpSuccessState) {
+          if (state is MedSignUpSuccessState) {
             if (state.signUpResponseModel.msg == 'success') {
               showToast(
                   text: 'you are registered Successfully',
@@ -47,7 +47,7 @@ class SignUpForm extends StatelessWidget {
                   text: state.signUpResponseModel.msg,
                   state: ToastStates.WARNING);
             }
-          } else if (state is ShopSignUpErrorState) {
+          } else if (state is MedSignUpErrorState) {
             showToast(text: state.error, state: ToastStates.ERROR);
           }
         },
@@ -64,14 +64,14 @@ class SignUpForm extends StatelessWidget {
               buildConformPassFormField(),
               SizedBox(height: getProportionateScreenHeight(40)),
               ConditionalBuilder(
-                condition: state is! ShopSignUpLoadingState,
+                condition: state is! MedSignUpLoadingState,
                 builder: (context) => DefaultButton(
                   text: "Continue",
                   press: () {
                     if (_formKey.currentState!.validate()) {
                       print('gg');
                       _formKey.currentState!.save();
-                      ShopSignUpCubit.get(context)
+                      MedSignUpCubit.get(context)
                           .userRegister(signUpRequestModel);
                     }
                     KeyboardUtil.hideKeyboard(context);

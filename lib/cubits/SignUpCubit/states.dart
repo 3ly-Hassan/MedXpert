@@ -1,21 +1,21 @@
 import 'package:final_pro/models/signup_model.dart';
 
-abstract class ShopSignUpStates {}
+abstract class MedSignUpStates {}
 
-class ShopSignUpInitialState extends ShopSignUpStates {}
+class MedSignUpInitialState extends MedSignUpStates {}
 
-class ShopSignUpLoadingState extends ShopSignUpStates {}
+class MedSignUpLoadingState extends MedSignUpStates {}
 
-class ShopSignUpSuccessState extends ShopSignUpStates {
+class MedSignUpSuccessState extends MedSignUpStates {
   final SignUpResponseModel signUpResponseModel;
 
-  ShopSignUpSuccessState(this.signUpResponseModel);
+  MedSignUpSuccessState(this.signUpResponseModel);
 }
 
-class ShopSignUpErrorState extends ShopSignUpStates {
+class MedSignUpErrorState extends MedSignUpStates {
   final String error;
 
-  ShopSignUpErrorState(this.error);
+  MedSignUpErrorState(this.error);
 }
 
-class ShopChangePasswordVisibilityState extends ShopSignUpStates {}
+class MedChangePasswordVisibilityState extends MedSignUpStates {}
