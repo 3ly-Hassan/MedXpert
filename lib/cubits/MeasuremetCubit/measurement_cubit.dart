@@ -15,7 +15,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
      return measurements.map((m) => Measurement.fromJson(m)).toList();
    }
 
-  Future<List<Measurement>> get_measurements()async {
+  List<Measurement> get_measurements() {
     _measurement_from_db().then((measurements) {
     print(measurements);
    emit(MeasurementLoaded(measurements));
