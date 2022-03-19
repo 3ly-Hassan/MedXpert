@@ -10,19 +10,19 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<Measurement> measurements = [];
   MeasurementCubit() : super(MeasurementInitial());
 
-   Future<List<Measurement>> _measurement_from_db()async {
-     var measurements=  await api.get_measurements();
-     return measurements.map((m) => Measurement.fromJson(m)).toList();
-   }
+  Future<List<Measurement>> _measurement_from_db() async {
+    var measurements = await api.get_measurements();
+    return measurements.map((m) => Measurement.fromJson(m)).toList();
+  }
 
   List<Measurement> get_measurements() {
+    emit(MeasurementLoading());
     _measurement_from_db().then((measurements) {
-    print(measurements);
-   emit(MeasurementLoaded(measurements));
-    this.measurements = measurements;
-    } );
-    
-  
+      print(measurements);
+      emit(MeasurementLoaded(measurements));
+      this.measurements = measurements;
+    });
+
     return measurements;
   }
 }
