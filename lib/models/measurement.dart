@@ -18,4 +18,5 @@ class Measurement {
     pressure = json["pressure"];
     weight = json["weight"];
   }
+
 }
