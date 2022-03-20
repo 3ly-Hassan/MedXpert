@@ -7,6 +7,7 @@ import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
+import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +21,7 @@ final Map<String, WidgetBuilder> routes = {
   SignUpScreen.routeName: (context) => SignUpScreen(),
   DashBord.routeName: (context) => DashBord(),
   ChooseWho.routeName: (context) => ChooseWho(),
+  Teams.routeName: (context) => Teams(),
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
   Measurements.routeName: (context) => BlocProvider(
         create: (context) => MeasurementCubit(),

@@ -1,4 +1,5 @@
 import 'package:final_pro/pages/measurements/measurements.dart';
+import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/dashBord_item.dart';
@@ -89,13 +90,15 @@ class _DashBordState extends State<DashBord> {
                           title: 'Medication',
                         ),
                         DashBordItem(
-                            onPress: () {},
+                            onPress: () {
+                              Navigator.pushNamed(context, Teams.routeName);
+                            },
                             image: 'assets/images/team.png',
                             title: 'Teams'),
                         DashBordItem(
                             onPress: () {
-                            Navigator.pushNamed(
-                          context, Measurements.routeName);
+                              Navigator.pushNamed(
+                                  context, Measurements.routeName);
                             },
                             image: 'assets/images/pulse.png',
                             title: 'Measurements'),
