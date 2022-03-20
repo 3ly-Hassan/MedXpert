@@ -17,20 +17,64 @@ class MeasurmentsList extends StatefulWidget {
 class _MeasurmentsListState extends State<MeasurmentsList> {
   late final List<Measurement> measurement;
   _MeasurmentsListState(this.measurement);
-  @override
+
+
+  Widget elemet(int index, String name,  dynamic value) {
+    return  ListTile(
+                leading: ExcludeSemantics(
+                  child: CircleAvatar(child: Text('$index'), backgroundColor: Colors.green,),
+                ),
+                title: Text("$name", style: TextStyle(color: Colors.white, fontSize: 22),),
+                subtitle: Text('$value',style: TextStyle(color: Colors.white),),
+                
+                );
+  }
+
+
+  Widget oneMeasurement(Measurement measurement, int index) {
+    return Card(
+  color: Colors.grey[900],
+  shape: RoundedRectangleBorder(
+    side: BorderSide(color: Colors.white70, width: 1),
+    borderRadius: BorderRadius.circular(10),
+  ),
+  margin: EdgeInsets.all(20.0),
+  
+  child: Container(
+    child: Column(
+        children: <Widget>[
+            Text("Measurement $index", style: TextStyle(fontSize: 40, color: Colors.greenAccent) ,),
+            elemet(0, "condition", measurement.condition),
+            
+            elemet(1, "pulse", measurement.pulse),
+
+            elemet(2, "pressure", measurement.pressure),
+
+            elemet(3, "respration", measurement.respration),
+
+            elemet(4, "temperature", measurement.temp),
+
+            elemet(5, "weight", measurement.weight)
+
+
+          
+        ],
+    ),
+  ),
+);
+  }
+
   Widget build(BuildContext context) {
     // print(measurement);
-    return ListView(
-      restorationId: 'list_demo_list_view',
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      children: [
-        for (int index = 0; index < measurement.length; index++)
-          ListTile(
-              leading: ExcludeSemantics(
-                child: CircleAvatar(child: Text('$index')),
-              ),
-              title: Text('${measurement[index].id}'))
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          for (int i = 0; i < measurement.length;  i++)
+          oneMeasurement(measurement[i], i)
+
+          
+        ],
+      ),
     );
   }
 }
