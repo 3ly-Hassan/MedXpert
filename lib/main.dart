@@ -3,13 +3,16 @@ import 'package:final_pro/bloc_observer.dart';
 import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
+import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cache_helper.dart';
 import 'constants.dart';
+import 'cubits/ProfileCubit/cubit.dart';
 
 void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
@@ -53,16 +56,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application updated.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: theme(),
-      darkTheme: darkTheme(),
-      themeMode: ThemeMode.light,
-      // home: SplashScreen(),
-      // We use routeName so that we don't need to remember the name
-      initialRoute: startWidget,
-      routes: routes,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ProfileCubit()..getPatientFRomDb())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: theme(),
+        darkTheme: darkTheme(),
+        themeMode: ThemeMode.light,
+        // home: SplashScreen(),
+        // We use routeName so that we don't need to remember the name
+        initialRoute: ProfileScreen.routeName,
+        routes: routes,
+      ),
     );
   }
 }

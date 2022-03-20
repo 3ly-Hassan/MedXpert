@@ -35,6 +35,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   conditional_builder:
   shared_preferences: ^2.0.13
+  line_awesome_flutter:
+  flutter_screenutil:
 
 dev_dependencies:
   flutter_test:
