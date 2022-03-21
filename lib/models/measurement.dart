@@ -8,6 +8,7 @@ class Measurement {
   late int pressure;
   late double weight;
   late String createdAt;
+  late List<String> problems;
 
   Measurement.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
@@ -19,5 +20,6 @@ class Measurement {
     pressure = json["pressure"];
     weight = json["weight"];
     createdAt = json["createdAt"];
+    problems = json["problems"];
   }
 }
