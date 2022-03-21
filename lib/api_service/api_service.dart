@@ -1,5 +1,6 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/signup_model.dart';
+import 'package:final_pro/models/invitation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -70,6 +71,49 @@ class APIService {
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future<Invitation?> createInvitation() async {
+    String url = "$api/patient/createInvitation";
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        Invitation invitation =
+            Invitation.fromJson(json.decode(response.body)["data"]);
+        print('create invitation done');
+        return invitation;
+      } else {
+        print('error create invitation');
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<InvitationResponseModel> useInvitationPatient(String code) async {
+    String url = "$api/patient/useInvitation?code=$code";
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+      InvitationResponseModel msg =
+          InvitationResponseModel.fromJson(json.decode(response.body)["msg"]);
+      return msg;
+    } catch (e) {
+      return InvitationResponseModel(msg: "server error");
+    }
+  }
+
+  Future<InvitationResponseModel> useInvitationDoctor(String code) async {
+    String url = "$api/doctor/useInvitation?code=$code";
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+      InvitationResponseModel msg =
+          InvitationResponseModel.fromJson(json.decode(response.body)["msg"]);
+      return msg;
+    } catch (e) {
+      return InvitationResponseModel(msg: "server error");
     }
   }
 }
