@@ -1,4 +1,5 @@
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/invitation.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,8 @@ class APIService {
     'Authorization': 'Bearer $token',
   };
 
+
+  //authentication
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
     String url = "$api/auth/login";
 
@@ -37,6 +40,28 @@ class APIService {
     );
   }
 
+
+
+  // measurements
+  Future<Measurement?> createMeasurement ()async {
+     String url = "$api/vitalSign/createvitalSign";
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        Measurement measurement = Measurement.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return measurement;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
   Future<List<dynamic>> get_measurements() async {
     String url = "$api/vitalSign/getvitalSign";
     print("getting data");
@@ -53,6 +78,44 @@ class APIService {
       return [];
     }
   }
+
+  Future<Measurement?> updateMeasurement(String id) async{
+    String url = "$api/vitalSign/updatevitalSign?id=$id";
+    print("getting data");
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        Measurement measurement = Measurement.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return measurement;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  void deleteMeasurement(String id) async{
+      String url = "$api/vitalSign/deletevitalSign?id=$id";
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      }
+
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
+
+  // profile
 
   Future<Patient?> getProfile() async {
     String url = "$api/patient/getPatient";
@@ -73,6 +136,10 @@ class APIService {
       return null;
     }
   }
+
+
+
+  //teams
 
   Future<Invitation?> createInvitation() async {
     String url = "$api/patient/createInvitation";
@@ -116,4 +183,8 @@ class APIService {
       return InvitationResponseModel(msg: "server error");
     }
   }
+
+
+
+
 }
