@@ -25,7 +25,7 @@ final Map<String, WidgetBuilder> routes = {
   ProfileScreen.routeName: (context) => ProfileScreen(),
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
   Measurements.routeName: (context) => BlocProvider(
-        create: (context) => MeasurementCubit(),
+        create: (context) => MeasurementCubit()..get_measurements(),
         child: Measurements(),
       ),
 };

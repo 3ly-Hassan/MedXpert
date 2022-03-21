@@ -10,6 +10,7 @@ part 'measurement_state.dart';
 class MeasurementCubit extends Cubit<MeasurementState> {
   APIService api = new APIService();
   List<Measurement> measurements = [];
+  List<int> expanded = [];
 
   MeasurementCubit() : super(MeasurementInitial());
 
@@ -17,16 +18,22 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   Future<List<Measurement>> _measurement_from_db() async {
     var measurements = await api.get_measurements();
+
     return measurements.map((m) => Measurement.fromJson(m)).toList();
   }
 
   List<Measurement> get_measurements() {
     emit(MeasurementLoading());
     _measurement_from_db().then((measurements) {
-      emit(MeasurementLoaded());
       this.measurements = measurements;
+      emit(MeasurementLoaded(measurements));
     });
 
     return measurements;
+  }
+
+  invertExpand(i) {
+    expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
+    emit(MeasurementExpanded());
   }
 }

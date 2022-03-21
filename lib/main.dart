@@ -3,6 +3,7 @@ import 'package:final_pro/bloc_observer.dart';
 import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
+import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/routes.dart';
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         // home: SplashScreen(),
         // We use routeName so that we don't need to remember the name
-        initialRoute: ProfileScreen.routeName,
+        initialRoute: startWidget,
         routes: routes,
       ),
     );

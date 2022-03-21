@@ -41,6 +41,7 @@ class APIService {
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> measurement = json.decode(response.body)["data"];
         return measurement;

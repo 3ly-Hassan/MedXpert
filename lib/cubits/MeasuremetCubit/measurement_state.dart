@@ -10,7 +10,9 @@ class MeasurementLoading extends MeasurementState {}
 class MeasurementError extends MeasurementState {}
 
 class MeasurementLoaded extends MeasurementState {
-  // final List<Measurement> measurements;
-  // MeasurementLoaded(this.measurements);
+  final List<Measurement> measurements;
 
+  MeasurementLoaded(this.measurements);
 }
+
+class MeasurementExpanded extends MeasurementState {}
