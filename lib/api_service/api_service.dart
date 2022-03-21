@@ -47,7 +47,7 @@ class APIService {
      String url = "$api/vitalSign/createvitalSign";
     try {
       final response = await http.post(Uri.parse(url), headers: headers);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Measurement measurement = Measurement.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return measurement;
