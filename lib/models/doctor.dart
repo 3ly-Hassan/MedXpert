@@ -1,4 +1,5 @@
 class Doctor {
+  String? id;
   String? email;
   String? username;
   String? password;
@@ -11,6 +12,7 @@ class Doctor {
   List<dynamic>? followings;
 
   Doctor({
+    this.id,
     this.email,
     this.username,
     this.password,
@@ -24,6 +26,7 @@ class Doctor {
   });
 
   Doctor.fromJson(Map<String,dynamic> json){
+    id = json["_id"];
     email = json['emai'];
     username = json['usernam'];
     password = json['passwor'];

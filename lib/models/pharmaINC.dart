@@ -1,4 +1,5 @@
 class PharmaINC {
+  String? id;
   String? email;
   String? username;
   String? password;
@@ -7,6 +8,7 @@ class PharmaINC {
   String? updatedAt;
 
   PharmaINC({
+    this.id,
     this.email,
     this.username,
     this.password,
@@ -16,6 +18,7 @@ class PharmaINC {
   });
 
   PharmaINC.fromJson(Map<String, dynamic> json){
+    id = json["_id"];
     email =json['email'];
     username =json['username'];
     password =json['password'];
