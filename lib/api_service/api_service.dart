@@ -61,7 +61,7 @@ class APIService {
   }
 
   Future<List<dynamic>> get_measurements() async {
-    String url = "$api/vitalSign/getvitalSign";
+    String url = "$api/vitalSign/getvitalSignPatient";
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
