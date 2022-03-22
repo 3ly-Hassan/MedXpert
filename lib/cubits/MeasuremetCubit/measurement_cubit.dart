@@ -38,21 +38,41 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return measurements;
   }
 
-  List<Measurement> createMeasurement(Measurement measurement) {
-    _createMeasurement(measurement);
-    return get_measurements();
+  void createMeasurement(Measurement measurement) {
+    emit(CreatedLoading());
+    _createMeasurement(measurement).then((_) {
+          if(measurements.length == 5){
+          measurements.removeLast();
+          }
+
+          measurements.insert(0, measurement);
+
+          emit(CreatedLoaded());
+          
+
+    }).catchError(
+      (e) { 
+        print(e.toString());
+        }
+    );
   }
 
-  _createMeasurement(Measurement measurement) async {
+  Future<void> _createMeasurement(Measurement measurement) async {
     Measurement? _ = await api.createMeasurement(measurement);
   }
 
-  List<Measurement> deleteMeasurement(String id) {
-    _deleteMeasurement(id);
-    return get_measurements();
+  void deleteMeasurement(String id) {
+    emit(DeletedLoading());
+    _deleteMeasurement(id).then((_) {
+      measurements.removeWhere((obj) => obj.id == id);
+      emit(DeletedLoaded());
+    }).catchError((e) {
+      print(e.toString());
+    });
+    
   }
 
-  _deleteMeasurement(String id) async {
+  Future<void>  _deleteMeasurement(String id) async {
     await api.deleteMeasurement(id);
   }
 

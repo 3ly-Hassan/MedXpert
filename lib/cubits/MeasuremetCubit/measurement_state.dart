@@ -18,3 +18,13 @@ class MeasurementLoaded extends MeasurementState {
 class MeasurementExpanded extends MeasurementState {}
 
 class MeasurementEmpty extends MeasurementState {}
+
+class CreatedLoading extends MeasurementState {}
+
+class CreatedLoaded extends MeasurementState {}
+
+
+class DeletedLoading extends MeasurementState {}
+
+class DeletedLoaded extends MeasurementState {}
+
