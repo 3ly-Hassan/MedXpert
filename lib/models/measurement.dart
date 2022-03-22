@@ -1,12 +1,14 @@
+import 'dart:ffi';
+
 class Measurement {
   late String? id;
   late String? patientId;
   late String? condition;
-  late double? temp;
+  late num? temp;
   late int? pulse;
   late int? respration;
   late int? pressure;
-  late double? weight;
+  late num? weight;
   late String createdAt;
   late List<dynamic>? problems;
 
@@ -25,7 +27,6 @@ class Measurement {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
-      '_id': id?.trim(),
       'patient_id': patientId?.trim(),
       'condition': condition?.trim(),
       'temp': temp,
