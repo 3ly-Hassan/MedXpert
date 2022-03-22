@@ -11,7 +11,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   APIService api = new APIService();
   List<Measurement> measurements = [];
   List<int> expanded = [];
-
+  bool empty = false;
   MeasurementCubit() : super(MeasurementInitial());
 
   static MeasurementCubit get(context) => BlocProvider.of(context);
@@ -25,10 +25,16 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<Measurement> get_measurements() {
     emit(MeasurementLoading());
     _measurement_from_db().then((measurements) {
+      if (measurements.length == 0) {
+        empty = true;
+        emit(MeasurementEmpty());
+        return measurements;
+      }
+      empty = false;
       this.measurements = measurements;
       emit(MeasurementLoaded(measurements));
     });
-
+    print(measurements);
     return measurements;
   }
 

@@ -1,4 +1,5 @@
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/pages/add_measurement/addMeasurements.dart';
 import 'package:final_pro/pages/choose_who.dart';
 import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
@@ -24,6 +25,7 @@ final Map<String, WidgetBuilder> routes = {
   ChooseWho.routeName: (context) => ChooseWho(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
+  AddMeasurements.routeName: (context) => AddMeasurements(),
   Measurements.routeName: (context) => BlocProvider(
         create: (context) => MeasurementCubit()..get_measurements(),
         child: Measurements(),

@@ -16,3 +16,5 @@ class MeasurementLoaded extends MeasurementState {
 }
 
 class MeasurementExpanded extends MeasurementState {}
+
+class MeasurementEmpty extends MeasurementState {}

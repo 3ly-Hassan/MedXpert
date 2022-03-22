@@ -4,6 +4,7 @@ import 'package:final_pro/models/measurement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants.dart';
+import 'components/EmptyMeasurements.dart';
 import 'components/body.dart';
 
 class Measurements extends StatefulWidget {
@@ -24,17 +25,20 @@ class _MeasurementsState extends State<Measurements> {
       ),
       body: BlocConsumer<MeasurementCubit, MeasurementState>(
         listener: (context, state) {},
-        builder: (context, state) => ConditionalBuilder(
-          condition: MeasurementCubit.get(context).measurements.length > 0,
-          builder: (builder) => Body(
-            len: MeasurementCubit.get(context).measurements.length,
-            measurements: MeasurementCubit.get(context).measurements,
-            expanded: MeasurementCubit.get(context).expanded,
-          ),
-          fallback: (context) => Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
+        builder: (context, state) => MeasurementCubit.get(context).empty
+            ? EmptyMeasurements()
+            : ConditionalBuilder(
+                condition:
+                    MeasurementCubit.get(context).measurements.length > 0,
+                builder: (builder) => Body(
+                  len: MeasurementCubit.get(context).measurements.length,
+                  measurements: MeasurementCubit.get(context).measurements,
+                  expanded: MeasurementCubit.get(context).expanded,
+                ),
+                fallback: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
       ),
     );
   }
