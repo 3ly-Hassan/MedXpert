@@ -7,7 +7,7 @@ class Measurement {
   late int? respration;
   late int? pressure;
   late double? weight;
-  late String? createdAt;
+  late String createdAt;
   late List<dynamic>? problems;
 
   Measurement.fromJson(Map<String, dynamic> json) {
