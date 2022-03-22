@@ -17,7 +17,6 @@ class APIService {
     'Authorization': 'Bearer $token',
   };
 
-
   //authentication
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
     String url = "$api/auth/login";
@@ -40,15 +39,15 @@ class APIService {
     );
   }
 
-
-
   // measurements
-  Future<Measurement?> createMeasurement ()async {
-     String url = "$api/vitalSign/createvitalSign";
+  Future<Measurement?> createMeasurement(Measurement reqMeasurement) async {
+    String url = "$api/vitalSign/createvitalSign";
     try {
-      final response = await http.post(Uri.parse(url), headers: headers);
+      final response = await http.post(Uri.parse(url),
+          headers: headers, body: reqMeasurement.toJson());
       if (response.statusCode == 201) {
-        Measurement measurement = Measurement.fromJson(json.decode(response.body)["data"]);
+        Measurement measurement =
+            Measurement.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return measurement;
       } else {
@@ -60,7 +59,6 @@ class APIService {
       return null;
     }
   }
-
 
   Future<List<dynamic>> get_measurements() async {
     String url = "$api/vitalSign/getvitalSign";
@@ -79,13 +77,14 @@ class APIService {
     }
   }
 
-  Future<Measurement?> updateMeasurement(String id) async{
+  Future<Measurement?> updateMeasurement(String id) async {
     String url = "$api/vitalSign/updatevitalSign?id=$id";
     print("getting data");
     try {
       final response = await http.patch(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
-        Measurement measurement = Measurement.fromJson(json.decode(response.body)["data"]);
+        Measurement measurement =
+            Measurement.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return measurement;
       } else {
@@ -98,22 +97,19 @@ class APIService {
     }
   }
 
-  void deleteMeasurement(String id) async{
-      String url = "$api/vitalSign/deletevitalSign?id=$id";
+  Future<void> deleteMeasurement(String id) async {
+    String url = "$api/vitalSign/deletevitalSign?id=$id";
     try {
       final response = await http.delete(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
       }
-
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
-
 
   // profile
 
@@ -136,8 +132,6 @@ class APIService {
       return null;
     }
   }
-
-
 
   //teams
 
@@ -183,8 +177,4 @@ class APIService {
       return InvitationResponseModel(msg: "server error");
     }
   }
-
-
-
-
 }

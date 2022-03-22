@@ -38,6 +38,24 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return measurements;
   }
 
+  List<Measurement> createMeasurement(Measurement measurement) {
+    _createMeasurement(measurement);
+    return get_measurements();
+  }
+
+  _createMeasurement(Measurement measurement) async {
+    Measurement? _ = await api.createMeasurement(measurement);
+  }
+
+  List<Measurement> deleteMeasurement(String id) {
+    _deleteMeasurement(id);
+    return get_measurements();
+  }
+
+  _deleteMeasurement(String id) async {
+    await api.deleteMeasurement(id);
+  }
+
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
     emit(MeasurementExpanded());
