@@ -3,7 +3,9 @@ import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../constants.dart';
+import '../add_measurement/addMeasurements.dart';
 import 'components/EmptyMeasurements.dart';
 import 'components/body.dart';
 
@@ -39,6 +41,13 @@ class _MeasurementsState extends State<Measurements> {
                   child: CircularProgressIndicator(),
                 ),
               ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddMeasurements.routeName);
+        },
+        backgroundColor: kPrimaryColor,
+        child: Icon(LineAwesomeIcons.plus),
       ),
     );
   }

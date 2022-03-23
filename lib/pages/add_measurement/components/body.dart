@@ -111,7 +111,7 @@ class Body extends StatelessWidget {
                     Navigator.pop(context);
                     _key.currentState!.save();
                     var m = Measurement(
-                      condition: null,
+                      condition: _conditionController.text,
                       temp: _tempController.text != ''
                           ? num.parse(_tempController.text)
                           : null,
@@ -138,7 +138,7 @@ class Body extends StatelessWidget {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent,
+                  primary: kPrimaryColor,
                   fixedSize: const Size(160, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)),
