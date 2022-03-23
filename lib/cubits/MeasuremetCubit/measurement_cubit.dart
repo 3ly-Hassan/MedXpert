@@ -10,6 +10,7 @@ part 'measurement_state.dart';
 class MeasurementCubit extends Cubit<MeasurementState> {
   APIService api = new APIService();
   List<Measurement> measurements = [];
+  Patient patient = Patient();
   List<int> expanded = [];
   bool empty = false;
   MeasurementCubit() : super(MeasurementInitial());
@@ -74,6 +75,22 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   Future<void> _deleteMeasurement(String id) async {
     await api.deleteMeasurement(id);
+  }
+
+  void getPatientProfile() async {
+    emit(GetPatientProfileLoading());
+    _getPatientProfile().then((value) {
+      if (value == null) {
+        return;
+      }
+      patient = value;
+      emit(GetPatientProfileLoaded());
+    });
+  }
+
+  Future<Patient?> _getPatientProfile() async {
+    Patient? p = await api.getProfile();
+    return p;
   }
 
   invertExpand(i) {

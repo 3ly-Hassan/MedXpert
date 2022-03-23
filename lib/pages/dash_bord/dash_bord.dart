@@ -1,5 +1,6 @@
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
+import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,7 @@ class _DashBordState extends State<DashBord> {
                         CircleAvatar(
                           radius: 32,
                           backgroundImage:
-                              AssetImage('assets/images/Profile Image.png'),
+                              AssetImage('assets/images/profile.png'),
                         ),
                         SizedBox(width: 16),
                         Column(
@@ -50,14 +51,16 @@ class _DashBordState extends State<DashBord> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Ali Hassan',
+                              MeasurementCubit.get(context).patient.username ??
+                                  "Loading...",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontSize: 20),
                             ),
                             Text(
-                              '01097606919',
+                              MeasurementCubit.get(context).patient.email ??
+                                  "Loading...",
                               style: TextStyle(
                                   fontFamily: 'Muli',
                                   color: Colors.white,
@@ -105,7 +108,10 @@ class _DashBordState extends State<DashBord> {
                             image: 'assets/images/pulse.png',
                             title: 'Measurements'),
                         DashBordItem(
-                            onPress: () {},
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, ProfileScreen.routeName);
+                            },
                             image: 'assets/images/profile.png',
                             title: 'Profile'),
                         DashBordItem(

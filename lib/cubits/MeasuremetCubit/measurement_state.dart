@@ -28,3 +28,7 @@ class CreatedFailed extends MeasurementState {}
 class DeletedLoading extends MeasurementState {}
 
 class DeletedLoaded extends MeasurementState {}
+
+class GetPatientProfileLoading extends MeasurementState {}
+
+class GetPatientProfileLoaded extends MeasurementState {}
