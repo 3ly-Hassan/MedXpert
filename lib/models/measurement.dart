@@ -10,9 +10,11 @@ class Measurement {
   String? pressure;
   num? weight;
   String? createdAt;
+  String? fakeDate;
   List<dynamic>? problems;
   Measurement(
-      {this.condition,
+      {this.fakeDate,
+      this.condition,
       this.temp,
       this.pulse,
       this.respration,

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../models/measurement.dart';
 import '../../../cubits/MeasuremetCubit/measurement_cubit.dart';
@@ -26,27 +27,67 @@ class Body extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          ListTile(
-            title: Text(
-              getText(i),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
-            ),
-            subtitle: Text(
-              'the Date',
-              // measurement.createdAt!.substring(0, 10),
-              style: TextStyle(color: Colors.amber),
-            ),
-            tileColor: getColor(i),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.expand_more,
-                color: Colors.amber,
-                size: 35,
+          Dismissible(
+            background: Container(
+              color: Colors.red,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              alignment: AlignmentDirectional.centerEnd,
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
               ),
-              onPressed: () {
-                MeasurementCubit.get(context).invertExpand(i);
-              },
+            ),
+            key: UniqueKey(),
+            direction: DismissDirection.endToStart,
+            confirmDismiss: (direction) {
+              return showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Take Care'),
+                      content: const Text('Are you sure you want to wipe it?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                            MeasurementCubit.get(context)
+                                .deleteMeasurement(measurement.id!);
+                          },
+                          child: const Text('Yes'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: const Text('no'),
+                        )
+                      ],
+                    );
+                  });
+            },
+            child: ListTile(
+              title: Text(
+                getText(i),
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
+              ),
+              subtitle: Text(
+                measurement.createdAt == null
+                    ? measurement.fakeDate!
+                    : measurement.createdAt!.substring(0, 10),
+                style: TextStyle(color: Colors.amber),
+              ),
+              tileColor: Colors.green,
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.expand_more,
+                  color: Colors.amber,
+                  size: 35,
+                ),
+                onPressed: () {
+                  MeasurementCubit.get(context).invertExpand(i);
+                },
+              ),
             ),
           ),
           expanded.contains(i) ? expandedContainer(measurement) : Container(),
@@ -59,10 +100,10 @@ class Body extends StatelessWidget {
     var color;
     switch (i) {
       case 0:
-        color = Colors.green.shade700;
+        color = Colors.green;
         break;
       case 1:
-        color = Colors.green.shade500;
+        color = Colors.amber.shade500;
         break;
       case 2:
         color = Colors.green.shade300;
@@ -94,19 +135,42 @@ class Body extends StatelessWidget {
   }
 
   Widget expandedContainer(Measurement m) {
-    return Container(
-      width: double.infinity,
-      color: Colors.grey.shade200,
-      child: Column(
-        children: [
-          buildTextContainer('The Condition', m.condition),
-          buildTextContainer('The Blood Pressure', m.pressure),
-          buildTextContainer('The Pulse Rate', m.pulse),
-          buildTextContainer('The Respiration', m.respration),
-          buildTextContainer('The Temperature', m.temp),
-          buildTextContainer('The Weight', m.weight),
-        ],
-      ),
+    return Column(
+      children: [
+        SizedBox(height: 5),
+        ClipRRect(
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: double.infinity,
+            child: ClipRRect(
+              child: Column(
+                children: [
+                  buildTextContainer('The Condition', m.condition),
+                  m.pressure != null
+                      ? buildTextContainer('The Blood Pressure', m.pressure)
+                      : Container(),
+                  m.pulse != null
+                      ? buildTextContainer('The Pulse Rate', m.pulse)
+                      : Container(),
+                  m.respration != null
+                      ? buildTextContainer('The Respiration', m.respration)
+                      : Container(),
+                  m.temp != null
+                      ? buildTextContainer('The Temperature', m.temp)
+                      : Container(),
+                  m.weight != null
+                      ? buildTextContainer('The Weight', m.weight)
+                      : Container(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

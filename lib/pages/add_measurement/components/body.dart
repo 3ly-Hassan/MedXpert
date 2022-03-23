@@ -111,6 +111,7 @@ class Body extends StatelessWidget {
                     Navigator.pop(context);
                     _key.currentState!.save();
                     var m = Measurement(
+                      fakeDate: DateTime.now().toString().substring(0, 10),
                       condition: _conditionController.text,
                       temp: _tempController.text != ''
                           ? num.parse(_tempController.text)

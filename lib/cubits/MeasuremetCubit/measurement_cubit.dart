@@ -40,24 +40,18 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   void createMeasurement(Measurement measurement) {
     emit(CreatedLoading());
-    var m;
-    empty = false;
-    if (measurements.length == 5) {
-      m = measurements.last;
-      measurements.removeLast();
-    }
-
-    measurements.insert(0, measurement);
-    emit(CreatedLoaded());
     _createMeasurement(measurement).then((v) {
       if (v == null) {
-        empty = true;
-        measurements.removeAt(0);
-        print(measurements.length);
-        if (m != null) measurements.add(m);
-        print(measurements.length);
+        return;
       }
-      emit(CreatedFailed());
+      empty = false;
+      if (measurements.length == 5) {
+        print('ss');
+        measurements.removeLast();
+      }
+      print('ss');
+      measurements.insert(0, v);
+      emit(CreatedLoaded());
     }).catchError((e) {
       print(e.toString());
     });
@@ -71,7 +65,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   void deleteMeasurement(String id) {
     emit(DeletedLoading());
     _deleteMeasurement(id).then((_) {
-      measurements.removeWhere((obj) => obj.patientId == id);
+      measurements.removeWhere((obj) => obj.id == id);
       emit(DeletedLoaded());
     }).catchError((e) {
       print(e.toString());
