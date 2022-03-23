@@ -5,6 +5,7 @@ import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
+import 'package:final_pro/pages/register/sign_up.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';

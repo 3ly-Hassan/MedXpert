@@ -27,6 +27,17 @@ class MedSignUpCubit extends Cubit<MedSignUpStates> {
 
   IconData suffix = Icons.visibility_outlined;
   bool isPassword = true;
+  String genderVal = '0';
+  genderRadio(value) {
+    genderVal = value;
+    emit(ChooseGender());
+  }
+
+  String typeVal = '0';
+  typeRadio(value) {
+    typeVal = value;
+    emit(ChooseType());
+  }
 
   void changePasswordVisibility() {
     isPassword = !isPassword;

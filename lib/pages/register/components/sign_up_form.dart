@@ -1,19 +1,16 @@
 import 'package:conditional_builder/conditional_builder.dart';
-import 'package:final_pro/api_service/api_service.dart';
+import 'package:intl/intl.dart';
+import 'package:final_pro/components/some_shared_components.dart';
 import 'package:final_pro/cubits/SignUpCubit/states.dart';
 import 'package:final_pro/models/signup_model.dart';
-import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../components/Form_error.dart';
 import '../../../components/customSurfixButton.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../cubits/SignUpCubit/cubit.dart';
 import '../../../helper.dart';
 import '../../../size_config.dart';
-import '../../complete_profile/complete_profile_screen.dart';
 import '../../logging_page/loging.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -21,6 +18,7 @@ class SignUpForm extends StatelessWidget {
   SignUpRequestModel signUpRequestModel = SignUpRequestModel();
   String? password;
   String? conform_password;
+  var _dateController = TextEditingController();
 
   // @override
   // void initState() {
@@ -29,7 +27,6 @@ class SignUpForm extends StatelessWidget {
   //   signUpRequestModel.role = 'patient';
   //   super.initState();
   // }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -56,13 +53,116 @@ class SignUpForm extends StatelessWidget {
           child: Column(
             children: [
               buildUserNameFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: (30)),
               buildEmailFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: (30)),
               buildPasswordFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: (30)),
               buildConformPassFormField(),
-              SizedBox(height: getProportionateScreenHeight(40)),
+              SizedBox(height: (40)),
+              defaultFormField(
+                  onSaved: (value) {
+                    signUpRequestModel.birthDate = _dateController.text;
+                  },
+                  onTap: () {
+                    showDatePicker(
+                      context: context,
+                      firstDate: DateTime.parse('1950-01-01'),
+                      initialDate: DateTime.now(),
+                      lastDate: DateTime.now(),
+                    ).then((value) {
+                      _dateController.text =
+                          DateFormat('yyyy-MM-dd').format(value!);
+                    });
+                  },
+                  focusNode: AlwaysDisabledFocusNode(),
+                  controller: _dateController,
+                  type: TextInputType.datetime,
+                  validate: (value) {
+                    return null;
+                  },
+                  label: 'Birth Date',
+                  prefix: Icons.date_range),
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      minVerticalPadding: 0,
+                      minLeadingWidth: 10,
+                      contentPadding: EdgeInsetsDirectional.zero,
+                      title: Text('male'),
+                      leading: Radio<String>(
+                        value: 'male',
+                        groupValue: MedSignUpCubit.get(context).genderVal,
+                        onChanged: (value) {
+                          MedSignUpCubit.get(context).genderRadio(value);
+                          signUpRequestModel.gender = value;
+                        },
+                        activeColor: Colors.green,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      contentPadding: EdgeInsetsDirectional.zero,
+                      title: Text('female'),
+                      leading: Radio(
+                          value: 'female',
+                          groupValue: MedSignUpCubit.get(context).genderVal,
+                          onChanged: (value) {
+                            MedSignUpCubit.get(context).genderRadio(value);
+                            signUpRequestModel.gender = value.toString();
+                            print(signUpRequestModel.gender);
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                height: 5,
+                color: Colors.green,
+              ),
+              Column(
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsetsDirectional.zero,
+                    title: Text('Patient'),
+                    leading: Radio<String>(
+                      value: 'patient',
+                      groupValue: MedSignUpCubit.get(context).typeVal,
+                      onChanged: (value) {
+                        MedSignUpCubit.get(context).typeRadio(value);
+                        signUpRequestModel.role = value;
+                      },
+                      activeColor: Colors.green,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Doctor'),
+                    contentPadding: EdgeInsetsDirectional.zero,
+                    leading: Radio(
+                        value: 'doctor',
+                        groupValue: MedSignUpCubit.get(context).typeVal,
+                        onChanged: (value) {
+                          MedSignUpCubit.get(context).typeRadio(value);
+                          signUpRequestModel.role = value.toString();
+                          print(signUpRequestModel.gender);
+                        }),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsetsDirectional.zero,
+                    title: Text('Company'),
+                    leading: Radio(
+                        value: 'company',
+                        groupValue: MedSignUpCubit.get(context).typeVal,
+                        onChanged: (value) {
+                          MedSignUpCubit.get(context).typeRadio(value);
+                          signUpRequestModel.role = value.toString();
+                          print(signUpRequestModel.gender);
+                        }),
+                  ),
+                ],
+              ),
               ConditionalBuilder(
                 condition: state is! MedSignUpLoadingState,
                 builder: (context) => DefaultButton(
@@ -70,6 +170,8 @@ class SignUpForm extends StatelessWidget {
                   press: () {
                     if (_formKey.currentState!.validate()) {
                       print('gg');
+                      print(signUpRequestModel.role);
+                      print(signUpRequestModel.gender);
                       _formKey.currentState!.save();
                       MedSignUpCubit.get(context)
                           .userRegister(signUpRequestModel);
@@ -121,9 +223,7 @@ class SignUpForm extends StatelessWidget {
       obscureText: true,
       onSaved: (newValue) {
         signUpRequestModel.password = newValue;
-        signUpRequestModel.gender = 'male';
-        signUpRequestModel.birthDate = '1999-05-02';
-        signUpRequestModel.role = 'patient';
+        // signUpRequestModel.role = 'patient';
       },
       onChanged: (value) {
         password = value;

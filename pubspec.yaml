@@ -36,7 +36,7 @@ dependencies:
   conditional_builder:
   shared_preferences: ^2.0.13
   line_awesome_flutter:
-  flutter_screenutil:
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

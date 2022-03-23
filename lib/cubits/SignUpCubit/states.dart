@@ -19,3 +19,7 @@ class MedSignUpErrorState extends MedSignUpStates {
 }
 
 class MedChangePasswordVisibilityState extends MedSignUpStates {}
+
+class ChooseGender extends MedSignUpStates {}
+
+class ChooseType extends MedSignUpStates {}
