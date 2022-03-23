@@ -64,7 +64,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   void deleteMeasurement(String id) {
     emit(DeletedLoading());
     _deleteMeasurement(id).then((_) {
-      measurements.removeWhere((obj) => obj.id == id);
+      measurements.removeWhere((obj) => obj.patientId == id);
       emit(DeletedLoaded());
     }).catchError((e) {
       print(e.toString());
