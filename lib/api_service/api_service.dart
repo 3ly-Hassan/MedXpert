@@ -51,14 +51,11 @@ class APIService {
         print(json.decode(response.body)["msg"]);
         return measurement;
       } else {
-        print('A7a2');
         print(json.decode(response.body)["msg"]);
         return null;
       }
     } catch (e) {
-      print('A7a');
       print(e.toString());
-      print('A7a');
 
       return null;
     }

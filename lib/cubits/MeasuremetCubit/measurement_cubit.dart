@@ -40,22 +40,32 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   void createMeasurement(Measurement measurement) {
     emit(CreatedLoading());
+    var m;
+    empty = false;
     if (measurements.length == 5) {
+      m = measurements.last;
       measurements.removeLast();
     }
 
     measurements.insert(0, measurement);
-
-    _createMeasurement(measurement).then((_) {
-      emit(CreatedLoaded());
+    emit(CreatedLoaded());
+    _createMeasurement(measurement).then((v) {
+      if (v == null) {
+        empty = true;
+        measurements.removeAt(0);
+        print(measurements.length);
+        if (m != null) measurements.add(m);
+        print(measurements.length);
+      }
+      emit(CreatedFailed());
     }).catchError((e) {
-      print('A7a3');
       print(e.toString());
     });
   }
 
-  Future<void> _createMeasurement(Measurement measurement) async {
-    Measurement? _ = await api.createMeasurement(measurement);
+  Future<Measurement?> _createMeasurement(Measurement measurement) async {
+    Measurement? v = await api.createMeasurement(measurement);
+    return v;
   }
 
   void deleteMeasurement(String id) {

@@ -23,8 +23,8 @@ class CreatedLoading extends MeasurementState {}
 
 class CreatedLoaded extends MeasurementState {}
 
+class CreatedFailed extends MeasurementState {}
 
 class DeletedLoading extends MeasurementState {}
 
 class DeletedLoaded extends MeasurementState {}
-

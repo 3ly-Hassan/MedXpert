@@ -86,7 +86,7 @@ class Body extends StatelessWidget {
                 onSaved: (value) {},
                 prefix: LineAwesomeIcons.airbnb,
                 label: 'Respiration',
-                type: TextInputType.text,
+                type: TextInputType.number,
                 controller: _respirationController,
               ),
               SizedBox(height: 20),
@@ -108,9 +108,10 @@ class Body extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (_key.currentState!.validate()) {
+                    Navigator.pop(context);
                     _key.currentState!.save();
                     var m = Measurement(
-                      condition: _conditionController.text,
+                      condition: null,
                       temp: _tempController.text != ''
                           ? num.parse(_tempController.text)
                           : null,
@@ -134,7 +135,6 @@ class Body extends StatelessWidget {
                     print('the respiration is ${m.respration}');
                     print('the weight is ${m.weight}');
                     MeasurementCubit.get(context).createMeasurement(m);
-                    Navigator.pop(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
