@@ -134,6 +134,7 @@ class Body extends StatelessWidget {
                     print('the respiration is ${m.respration}');
                     print('the weight is ${m.weight}');
                     MeasurementCubit.get(context).createMeasurement(m);
+                    Navigator.pop(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
