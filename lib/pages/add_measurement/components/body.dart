@@ -1,7 +1,10 @@
+import 'package:final_pro/constants.dart';
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../../components/some_shared_components.dart';
+import '../../../models/measurement.dart';
 
 class Body extends StatelessWidget {
   Body({Key? key}) : super(key: key);
@@ -23,8 +26,11 @@ class Body extends StatelessWidget {
           child: Column(
             children: [
               defaultFormField(
+                onSaved: (value) {},
+                onChange: (value) {},
                 validate: (value) {
-                  return '';
+                  if (value!.isEmpty) return 'you must write the condition';
+                  return null;
                 },
                 prefix: LineAwesomeIcons.ambulance,
                 label: 'Condition',
@@ -34,9 +40,14 @@ class Body extends StatelessWidget {
               SizedBox(height: 20),
               defaultFormField(
                 validate: (value) {
-                  return '';
+                  if (value != '' && int.tryParse(value!) is! int) {
+                    return 'write a right value of your PR';
+                  }
+                  return null;
                 },
-                prefix: LineAwesomeIcons.ambulance,
+                onChange: (value) {},
+                onSaved: (value) {},
+                prefix: LineAwesomeIcons.heartbeat,
                 label: 'Pulse Rate',
                 type: TextInputType.number,
                 controller: _pulseController,
@@ -44,9 +55,12 @@ class Body extends StatelessWidget {
               SizedBox(height: 20),
               defaultFormField(
                 validate: (value) {
-                  return '';
+                  if (value != '' && int.tryParse(value!) is! num)
+                    return 'write a right value of your Temp';
+                  return null;
                 },
-                prefix: LineAwesomeIcons.ambulance,
+                onSaved: (value) {},
+                prefix: LineAwesomeIcons.low_temperature,
                 label: 'Temperature',
                 type: TextInputType.numberWithOptions(decimal: true),
                 controller: _tempController,
@@ -54,9 +68,10 @@ class Body extends StatelessWidget {
               SizedBox(height: 20),
               defaultFormField(
                 validate: (value) {
-                  return '';
+                  return null;
                 },
-                prefix: LineAwesomeIcons.ambulance,
+                onSaved: (value) {},
+                prefix: Icons.monitor_heart,
                 label: 'Pressure',
                 type: TextInputType.number,
                 controller: _pressureController,
@@ -64,9 +79,12 @@ class Body extends StatelessWidget {
               SizedBox(height: 20),
               defaultFormField(
                 validate: (value) {
-                  return '';
+                  if (value != '' && int.tryParse(value!) is! int)
+                    return 'write a right value of your respiration';
+                  return null;
                 },
-                prefix: LineAwesomeIcons.ambulance,
+                onSaved: (value) {},
+                prefix: LineAwesomeIcons.airbnb,
                 label: 'Respiration',
                 type: TextInputType.text,
                 controller: _respirationController,
@@ -74,18 +92,50 @@ class Body extends StatelessWidget {
               SizedBox(height: 20),
               defaultFormField(
                 validate: (value) {
-                  return '';
+                  if (value != '' && int.tryParse(value!) is! num)
+                    return 'write a right value of your weight';
+                  return null;
                 },
-                prefix: LineAwesomeIcons.ambulance,
+                onSaved: (value) {},
+                prefix: LineAwesomeIcons.weight,
                 label: 'Weight',
-                type: TextInputType.text,
+                type: TextInputType.numberWithOptions(decimal: true),
                 controller: _weightController,
               ),
               SizedBox(
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (_key.currentState!.validate()) {
+                    _key.currentState!.save();
+                    var m = Measurement(
+                      condition: _conditionController.text,
+                      temp: _tempController.text != ''
+                          ? num.parse(_tempController.text)
+                          : null,
+                      pressure: _pressureController.text != ''
+                          ? _pressureController.text
+                          : null,
+                      pulse: _pulseController.text != ''
+                          ? int.parse(_pulseController.text)
+                          : null,
+                      respration: _respirationController.text != ''
+                          ? int.parse(_respirationController.text)
+                          : null,
+                      weight: _weightController.text != ''
+                          ? num.parse(_weightController.text)
+                          : null,
+                    );
+                    print('the condition is ${m.condition}');
+                    print('the temp is ${m.temp}');
+                    print('the pulse is ${m.pulse}');
+                    print('the pressure is ${m.pressure}');
+                    print('the respiration is ${m.respration}');
+                    print('the weight is ${m.weight}');
+                    MeasurementCubit.get(context).createMeasurement(m);
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.greenAccent,
                   fixedSize: const Size(160, 50),

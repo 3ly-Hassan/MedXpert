@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
             ),
             subtitle: Text(
-              measurement.createdAt.substring(0, 10),
+              measurement.createdAt!.substring(0, 10),
               style: TextStyle(color: Colors.amber),
             ),
             tileColor: getColor(i),

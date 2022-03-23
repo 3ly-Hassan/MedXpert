@@ -36,15 +36,17 @@ Widget defaultFormField({
   Function(String)? onChange,
   Function()? onTap,
   bool isPassword = false,
-  @required String Function(String?)? validate,
+  @required String? Function(String?)? validate,
   @required String? label,
   @required IconData? prefix,
   IconData? suffix,
   Function()? suffixPressed,
   bool isClickable = true,
   FocusNode? focusNode,
+  Function(String?)? onSaved,
 }) =>
     TextFormField(
+      onSaved: onSaved,
       focusNode: focusNode,
       controller: controller,
       keyboardType: type,

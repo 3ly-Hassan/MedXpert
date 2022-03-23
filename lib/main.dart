@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cache_helper.dart';
 import 'constants.dart';
+import 'cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'cubits/ProfileCubit/cubit.dart';
 
 void main() async {
@@ -30,8 +31,10 @@ void main() async {
   if (onBoarding != null) {
     if (token != null)
       widget = DashBord.routeName;
-    else
+    else {
       widget = LoggingPage.routeName;
+      splash = false;
+    }
   } else {
     widget = SplashScreen.routeName;
   }
@@ -59,7 +62,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ProfileCubit()..getPatientFRomDb())
+        BlocProvider(create: (context) => ProfileCubit()..getPatientFRomDb()),
+        BlocProvider(create: (context) => MeasurementCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

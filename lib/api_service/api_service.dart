@@ -16,6 +16,10 @@ class APIService {
     'Accept': 'application/json',
     'Authorization': 'Bearer $token',
   };
+  final Map<String, String> postHeaders = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer $token',
+  };
 
   //authentication
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
@@ -44,18 +48,22 @@ class APIService {
     String url = "$api/vitalSign/createvitalSign";
     try {
       final response = await http.post(Uri.parse(url),
-          headers: headers, body: reqMeasurement.toJson());
+          headers: postHeaders, body: jsonEncode(reqMeasurement.toJson()));
       if (response.statusCode == 201) {
         Measurement measurement =
             Measurement.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return measurement;
       } else {
+        print('A7a2');
         print(json.decode(response.body)["msg"]);
         return null;
       }
     } catch (e) {
+      print('A7a');
       print(e.toString());
+      print('A7a');
+
       return null;
     }
   }

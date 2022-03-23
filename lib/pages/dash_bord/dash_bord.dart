@@ -1,3 +1,4 @@
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,7 @@ class _DashBordState extends State<DashBord> {
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Measurements.routeName);
+                              MeasurementCubit.get(context).get_measurements();
                             },
                             image: 'assets/images/pulse.png',
                             title: 'Measurements'),

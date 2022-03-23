@@ -51,6 +51,7 @@ OutlineInputBorder outlineInputBorder() {
 }
 
 String? token = '';
+var splash = true;
 void showToast({
   @required String? text,
   @required ToastStates? state,

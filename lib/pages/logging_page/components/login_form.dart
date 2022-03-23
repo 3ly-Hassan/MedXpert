@@ -61,9 +61,9 @@ class SignForm extends StatelessWidget {
             child: Column(
               children: [
                 buildEmailFormField(),
-                SizedBox(height: getProportionateScreenHeight(30)),
+                SizedBox(height: 30),
                 buildPasswordFormField(),
-                SizedBox(height: getProportionateScreenHeight(30)),
+                SizedBox(height: 30),
                 Row(
                   children: [
                     Spacer(),
@@ -77,7 +77,7 @@ class SignForm extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(height: getProportionateScreenHeight(20)),
+                SizedBox(height: 20),
                 ConditionalBuilder(
                   condition: state is! MedLoginLoadingState,
                   builder: (context) => DefaultButton(
