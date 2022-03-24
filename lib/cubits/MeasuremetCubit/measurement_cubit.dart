@@ -13,6 +13,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   Patient patient = Patient();
   List<int> expanded = [];
   bool empty = false;
+  bool readOnly = true;
   MeasurementCubit() : super(MeasurementInitial());
 
   static MeasurementCubit get(context) => BlocProvider.of(context);
@@ -77,11 +78,11 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteMeasurement(id);
   }
 
-  void getPatientProfile() async {
+  void getPatientProfile() {
     emit(GetPatientProfileLoading());
     _getPatientProfile().then((value) {
       if (value == null) {
-        return;
+        return null;
       }
       patient = value;
       emit(GetPatientProfileLoaded());
@@ -96,5 +97,10 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
     emit(MeasurementExpanded());
+  }
+
+  toggleReadOnly() {
+    readOnly = !readOnly;
+    emit(ToggleReadOnly());
   }
 }

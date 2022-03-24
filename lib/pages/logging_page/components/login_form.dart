@@ -3,6 +3,7 @@ import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/cubits/LoginCubit/cubit.dart';
 import 'package:final_pro/cubits/LoginCubit/states.dart';
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/models/login_model.dart';
 import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
@@ -41,6 +42,7 @@ class SignForm extends StatelessWidget {
                 value: state.loginModel.token,
               ).then((value) {
                 token = state.loginModel.token;
+                MeasurementCubit.get(context).getPatientProfile();
                 Navigator.pushReplacementNamed(context, DashBord.routeName);
               });
             } else {
@@ -52,6 +54,10 @@ class SignForm extends StatelessWidget {
               );
             }
           } else if (state is MedLoginErrorState) {
+            showToast(
+              text: 'something has been occurred',
+              state: ToastStates.ERROR,
+            );
             print(state.error);
           }
         },

@@ -7,22 +7,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+import '../../api_service/api_service.dart';
+
 class MedLoginCubit extends Cubit<MedLoginStates> {
   MedLoginCubit() : super(MedLoginInitialState());
-
+  APIService api = new APIService();
   static MedLoginCubit get(context) => BlocProvider.of(context);
 
-  late LoginResponseModel loginModel;
+  LoginResponseModel loginModel = LoginResponseModel();
   String url = "http://10.0.2.2:8000/api/auth/login";
+  // void userLogin(LoginRequestModel requestModel) {
+  //   emit(MedLoginLoadingState());
+  //   http.post(Uri.parse(url), body: requestModel.toJson()).then((value) {
+  //     print(value.body);
+  //     loginModel = LoginResponseModel.fromJson(json.decode(value.body));
+  //     emit(MedLoginSuccessState(loginModel));
+  //   }).catchError((error) {
+  //     print(error.toString());
+  //     emit(MedLoginErrorState(error.toString()));
+  //   });
+  // }
+  Future<LoginResponseModel?> _login(LoginRequestModel requestModel) async {
+    LoginResponseModel? responseModel = await api.userLogin(requestModel);
+    return responseModel;
+  }
+
   void userLogin(LoginRequestModel requestModel) {
     emit(MedLoginLoadingState());
-    http.post(Uri.parse(url), body: requestModel.toJson()).then((value) {
-      print(value.body);
-      loginModel = LoginResponseModel.fromJson(json.decode(value.body));
+    _login(requestModel).then((value) {
+      if (value == null) {
+        return;
+      }
+      loginModel = value;
       emit(MedLoginSuccessState(loginModel));
-    }).catchError((error) {
-      print(error.toString());
-      emit(MedLoginErrorState(error.toString()));
+    }).catchError((e) {
+      emit(MedLoginErrorState(e));
     });
   }
 

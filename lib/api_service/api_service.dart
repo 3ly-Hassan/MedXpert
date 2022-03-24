@@ -18,26 +18,35 @@ class APIService {
   };
 
   //authentication
-  Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
+  Future<LoginResponseModel?> userLogin(LoginRequestModel requestModel) async {
     String url = "$api/auth/login";
-
-    final response =
-        await http.post(Uri.parse(url), body: requestModel.toJson());
-    return LoginResponseModel.fromJson(
-      json.decode(response.body),
-    );
+    try {
+      final response =
+          await http.post(Uri.parse(url), body: requestModel.toJson());
+      if (response.statusCode == 200) {
+        LoginResponseModel responseModel =
+            LoginResponseModel.fromJson(json.decode(response.body)['data']);
+        return responseModel;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
-  Future<SignUpResponseModel> signUp(SignUpRequestModel requestModel) async {
-    String url = "$api/auth/register";
-
-    final response =
-        await http.post(Uri.parse(url), body: requestModel.toJson());
-
-    return SignUpResponseModel.fromJson(
-      json.decode(response.body),
-    );
-  }
+  // Future<SignUpResponseModel> signUp(SignUpRequestModel requestModel) async {
+  //   String url = "$api/auth/register";
+  //
+  //   final response =
+  //       await http.post(Uri.parse(url), body: requestModel.toJson());
+  //
+  //   return SignUpResponseModel.fromJson(
+  //     json.decode(response.body),
+  //   );
+  // }
 
   // measurements
   Future<Measurement?> createMeasurement(Measurement reqMeasurement) async {

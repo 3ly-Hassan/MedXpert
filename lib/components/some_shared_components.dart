@@ -36,6 +36,7 @@ Widget defaultFormField({
   Function(String)? onChange,
   Function()? onTap,
   bool isPassword = false,
+  bool readOnly = false,
   @required String? Function(String?)? validate,
   @required String? label,
   @required IconData? prefix,
@@ -46,6 +47,7 @@ Widget defaultFormField({
   Function(String?)? onSaved,
 }) =>
     TextFormField(
+      readOnly: readOnly,
       onSaved: onSaved,
       focusNode: focusNode,
       controller: controller,
