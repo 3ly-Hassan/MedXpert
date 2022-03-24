@@ -185,7 +185,22 @@ class APIService {
     }
   }
 
-
+  Future<void> deletePatient() async{
+     String url = "$api/patient/deletePatient";
+       try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
 
   //teams

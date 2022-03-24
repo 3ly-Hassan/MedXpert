@@ -132,14 +132,28 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       if (value == null) {
         return null;
       }
-      patient = value;
+       this.patient = value;
       emit(updatePatientProfileLoaded());
     });
   }
 
+
+
   Future<Patient?> _updatePatient(Patient patient) async {
     Patient? p = await api.updatePatient(patient);
     return p;
+  }
+
+
+  void deletePatient() {
+     emit(deletePatientProfileLoading());
+     _deletePatient().then((value) {
+      emit(deletePatientProfileLoaded());
+    });
+  }
+
+    Future<void> _deletePatient() async {
+    await api.deletePatient();
   }
 
 
