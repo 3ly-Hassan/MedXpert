@@ -11,7 +11,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   Patient? patient = null;
   APIService api = new APIService();
   getPatientFRomDb() async {
-    Patient? p = await api.getProfile();
+    Patient? p = await api.getPatientProfile();
     if (p != null) {
       patient = p;
       emit(GetProfileState());

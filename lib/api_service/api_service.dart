@@ -48,6 +48,8 @@ class APIService {
   //   );
   // }
 
+
+
   // measurements
   Future<Measurement?> createMeasurement(Measurement reqMeasurement) async {
     String url = "$api/vitalSign/createvitalSign";
@@ -87,25 +89,45 @@ class APIService {
     }
   }
 
-  Future<Measurement?> updateMeasurement(String id) async {
-    String url = "$api/vitalSign/updatevitalSign?id=$id";
+  Future<List<dynamic>> getDoctorMeasurement(String patientName)async {
+     String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
     print("getting data");
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
-        Measurement measurement =
-            Measurement.fromJson(json.decode(response.body)["data"]);
-        print(json.decode(response.body)["msg"]);
+        final List<Measurement> measurement = json.decode(response.body)["data"];
         return measurement;
       } else {
         print(json.decode(response.body)["msg"]);
-        return null;
+        return [];
       }
     } catch (e) {
       print(e.toString());
-      return null;
+      return [];
     }
+
   }
+
+  // Future<Measurement?> updateMeasurement(String id) async {
+  //   String url = "$api/vitalSign/updatevitalSign?id=$id";
+  //   print("getting data");
+  //   try {
+  //     final response = await http.patch(Uri.parse(url), headers: headers);
+  //     if (response.statusCode == 200) {
+  //       Measurement measurement =
+  //           Measurement.fromJson(json.decode(response.body)["data"]);
+  //       print(json.decode(response.body)["msg"]);
+  //       return measurement;
+  //     } else {
+  //       print(json.decode(response.body)["msg"]);
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   Future<void> deleteMeasurement(String id) async {
     String url = "$api/vitalSign/deletevitalSign?id=$id";
@@ -121,9 +143,10 @@ class APIService {
     }
   }
 
-  // profile
 
-  Future<Patient?> getProfile() async {
+
+  // patient profile
+  Future<Patient?> getPatientProfile() async {
     String url = "$api/patient/getPatient";
     print("getting data");
     try {
@@ -142,6 +165,28 @@ class APIService {
       return null;
     }
   }
+
+  Future<Patient?> updatePatient(Patient patient) async{
+     String url = "$api/patient/updatePatient";
+       try {
+      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(patient.toJson()));
+      if (response.statusCode == 200) {
+        Patient patient =
+            Patient.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return patient;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
+
 
   //teams
 

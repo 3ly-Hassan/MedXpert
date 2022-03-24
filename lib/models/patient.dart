@@ -5,6 +5,7 @@ class Patient {
   String? username;
   String? password;
   String? birthDate;
+  num? weight;
   String? gender;
   List<dynamic>? type;
   List<dynamic>? followers;
@@ -21,6 +22,7 @@ class Patient {
     this.password,
     this.birthDate,
     this.gender,
+    this.weight,
     this.type,
     this.followers,
     this.clinicians,
@@ -36,6 +38,7 @@ class Patient {
     username = json['username'];
     password = json['password'];
     birthDate = json['birthDate'];
+    weight = json['weight'];
     gender = json['gender'];
     type = json['type'];
     followers = json['followers'];
@@ -45,32 +48,22 @@ class Patient {
     updatedAt = json['updatedAt'];
   }
 
-// Map<String, dynamic> toJson() {
-//   final Map<String, dynamic> data = new Map<String, dynamic>();
-//   if (this.followings != null) {
-//     data['followings'] = this.followings!.map((v) => v.toJson()).toList();
-//   }
-//   data['_id'] = this.sId;
-//   data['email'] = this.email;
-//   data['username'] = this.username;
-//   data['password'] = this.password;
-//   data['birthDate'] = this.birthDate;
-//   data['gender'] = this.gender;
-//   if (this.type != null) {
-//     data['type'] = this.type!.map((v) => v.toJson()).toList();
-//   }
-//   if (this.followers != null) {
-//     data['followers'] = this.followers!.map((v) => v.toJson()).toList();
-//   }
-//   if (this.clinicians != null) {
-//     data['clinicians'] = this.clinicians!.map((v) => v.toJson()).toList();
-//   }
-//   if (this.chronics != null) {
-//     data['chronics'] = this.chronics!.map((v) => v.toJson()).toList();
-//   }
-//   data['createdAt'] = this.createdAt;
-//   data['updatedAt'] = this.updatedAt;
-//   data['__v'] = this.iV;
-//   return data;
-// }
+Map<String, dynamic> toJson() {
+  final Map<String, dynamic> data = new Map<String, dynamic>();
+
+  data['email'] = this.email;
+  data['username'] = this.username;
+  data['birthDate'] = this.birthDate;
+  data['gender'] = this.gender;
+  data['weight'] = this.weight;
+  if (this.type != null) {
+    data['type'] = this.type!.map((v) => v.toJson()).toList();
+  }
+
+  // if (this.chronics != null) {
+  //   data['chronics'] = this.chronics!.map((v) => v.toJson()).toList();
+  // }
+
+  return data;
+}
 }

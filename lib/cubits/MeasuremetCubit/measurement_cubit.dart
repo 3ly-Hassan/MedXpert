@@ -10,6 +10,7 @@ part 'measurement_state.dart';
 class MeasurementCubit extends Cubit<MeasurementState> {
   APIService api = new APIService();
   List<Measurement> measurements = [];
+  List<Measurement> doctorMeasurement = [];
   Patient patient = Patient();
   List<int> expanded = [];
   bool empty = false;
@@ -18,15 +19,11 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   static MeasurementCubit get(context) => BlocProvider.of(context);
 
-  Future<List<Measurement>> _measurement_from_db() async {
-    var measurements = await api.get_measurements();
-
-    return measurements.map((m) => Measurement.fromJson(m)).toList();
-  }
+  // measurements
 
   List<Measurement> get_measurements() {
     emit(MeasurementLoading());
-    _measurement_from_db().then((measurements) {
+    _patientMeasurementFromDb().then((measurements) {
       if (measurements.length == 0) {
         empty = true;
         emit(MeasurementEmpty());
@@ -38,6 +35,36 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     });
     print(measurements);
     return measurements;
+  }
+
+    Future<List<Measurement>> _patientMeasurementFromDb() async {
+    var measurements = await api.get_measurements();
+
+    return measurements.map((m) => Measurement.fromJson(m)).toList();
+  }
+
+
+  List<Measurement> getDoctorMeasurement(String name) {
+     emit(MeasurementLoading());
+    _doctorMeasurementFromDb(name).then((doctorMeasurement) {
+      if (doctorMeasurement.length == 0) {
+        empty = true;
+        emit(MeasurementEmpty());
+        return doctorMeasurement;
+      }
+      empty = false;
+      this.doctorMeasurement = doctorMeasurement;
+      emit(MeasurementLoaded(doctorMeasurement));
+    });
+    print(doctorMeasurement);
+    return doctorMeasurement;
+  }
+
+
+    Future<List<Measurement>> _doctorMeasurementFromDb(String name) async {
+    var measurements = await api.getDoctorMeasurement(name);
+
+    return measurements.map((m) => Measurement.fromJson(m)).toList();
   }
 
   void createMeasurement(Measurement measurement) {
@@ -78,6 +105,11 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteMeasurement(id);
   }
 
+
+
+
+  //patient profile
+
   void getPatientProfile() {
     emit(GetPatientProfileLoading());
     _getPatientProfile().then((value) {
@@ -90,9 +122,26 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   }
 
   Future<Patient?> _getPatientProfile() async {
-    Patient? p = await api.getProfile();
+    Patient? p = await api.getPatientProfile();
     return p;
   }
+
+  void updatePatientProfile(Patient patient) {
+    emit(updatePatientProfileLoading());
+     _updatePatient(patient).then((value) {
+      if (value == null) {
+        return null;
+      }
+      patient = value;
+      emit(updatePatientProfileLoaded());
+    });
+  }
+
+  Future<Patient?> _updatePatient(Patient patient) async {
+    Patient? p = await api.updatePatient(patient);
+    return p;
+  }
+
 
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);

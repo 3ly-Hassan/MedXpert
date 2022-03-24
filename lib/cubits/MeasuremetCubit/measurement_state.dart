@@ -33,4 +33,8 @@ class GetPatientProfileLoading extends MeasurementState {}
 
 class GetPatientProfileLoaded extends MeasurementState {}
 
+class updatePatientProfileLoading extends MeasurementState {}
+
+class updatePatientProfileLoaded extends MeasurementState {}
+
 class ToggleReadOnly extends MeasurementState {}
