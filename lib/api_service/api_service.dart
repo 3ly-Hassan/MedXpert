@@ -25,9 +25,10 @@ class APIService {
           await http.post(Uri.parse(url), body: requestModel.toJson());
       if (response.statusCode == 200) {
         LoginResponseModel responseModel =
-            LoginResponseModel.fromJson(json.decode(response.body)['data']);
+            LoginResponseModel.fromJson(json.decode(response.body));
         return responseModel;
       } else {
+        print('a7a');
         print(json.decode(response.body)["msg"]);
         return null;
       }
@@ -47,8 +48,6 @@ class APIService {
   //     json.decode(response.body),
   //   );
   // }
-
-
 
   // measurements
   Future<Measurement?> createMeasurement(Measurement reqMeasurement) async {
@@ -89,14 +88,15 @@ class APIService {
     }
   }
 
-  Future<List<dynamic>> getDoctorMeasurement(String patientName)async {
-     String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
+  Future<List<dynamic>> getDoctorMeasurement(String patientName) async {
+    String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       print(response.body);
       if (response.statusCode == 200) {
-        final List<Measurement> measurement = json.decode(response.body)["data"];
+        final List<Measurement> measurement =
+            json.decode(response.body)["data"];
         return measurement;
       } else {
         print(json.decode(response.body)["msg"]);
@@ -106,7 +106,6 @@ class APIService {
       print(e.toString());
       return [];
     }
-
   }
 
   // Future<Measurement?> updateMeasurement(String id) async {
@@ -143,8 +142,6 @@ class APIService {
     }
   }
 
-
-
   // patient profile
   Future<Patient?> getPatientProfile() async {
     String url = "$api/patient/getPatient";
@@ -166,13 +163,13 @@ class APIService {
     }
   }
 
-  Future<Patient?> updatePatient(Patient patient) async{
-     String url = "$api/patient/updatePatient";
-       try {
-      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(patient.toJson()));
+  Future<Patient?> updatePatient(Patient patient) async {
+    String url = "$api/patient/updatePatient";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(patient.toJson()));
       if (response.statusCode == 200) {
-        Patient patient =
-            Patient.fromJson(json.decode(response.body)["data"]);
+        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return patient;
       } else {
@@ -185,9 +182,9 @@ class APIService {
     }
   }
 
-  Future<void> deletePatient() async{
-     String url = "$api/patient/deletePatient";
-       try {
+  Future<void> deletePatient() async {
+    String url = "$api/patient/deletePatient";
+    try {
       final response = await http.delete(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
@@ -201,7 +198,6 @@ class APIService {
       return null;
     }
   }
-
 
   //teams
 

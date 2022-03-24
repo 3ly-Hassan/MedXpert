@@ -33,7 +33,7 @@ class MedSignUpCubit extends Cubit<MedSignUpStates> {
     emit(ChooseGender());
   }
 
-  String typeVal = '0';
+  String typeVal = '1';
   typeRadio(value) {
     typeVal = value;
     emit(ChooseType());

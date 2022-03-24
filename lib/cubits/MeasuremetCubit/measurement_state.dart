@@ -42,3 +42,5 @@ class deletePatientProfileLoading extends MeasurementState {}
 class deletePatientProfileLoaded extends MeasurementState {}
 
 class ToggleReadOnly extends MeasurementState {}
+
+class UpdateGender extends MeasurementState {}

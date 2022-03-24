@@ -1,5 +1,6 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/pages/profile/components/profileBody.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,9 +26,16 @@ class ProfileScreen extends StatelessWidget {
             title: cubit.readOnly ? Text('Profile') : Text('Edit Profile'),
             actions: [
               IconButton(
-                  onPressed: () {
-                    cubit.toggleReadOnly();
-                  },
+                  onPressed: cubit.readOnly
+                      ? () {
+                          cubit.toggleReadOnly();
+                        }
+                      : () {
+                          var patient = Patient();
+                          patient.birthDate = birthController.text;
+                          patient.email = birthController.text;
+                          patient.username = nameController.text;
+                        },
                   icon: cubit.readOnly ? Icon(Icons.edit) : Icon(Icons.save)),
               !cubit.readOnly
                   ? TextButton(

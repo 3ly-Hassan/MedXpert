@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
+import '../../../cubits/SignUpCubit/cubit.dart';
+
 class ProfileBody extends StatelessWidget {
   ProfileBody(
       {Key? key,
@@ -147,7 +149,51 @@ class ProfileBody extends StatelessWidget {
                         SizedBox(height: 10),
                       ],
                     ),
-                  )
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          minVerticalPadding: 0,
+                          minLeadingWidth: 10,
+                          contentPadding: EdgeInsetsDirectional.zero,
+                          title: Text('male'),
+                          leading: Radio<String>(
+                            autofocus:
+                                MeasurementCubit.get(context).genderVal ==
+                                        'male'
+                                    ? true
+                                    : false,
+                            value: 'male',
+                            groupValue: MeasurementCubit.get(context).genderVal,
+                            onChanged: (value) {
+                              MeasurementCubit.get(context).genderRadio(value);
+                            },
+                            activeColor: Colors.green,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          contentPadding: EdgeInsetsDirectional.zero,
+                          title: Text('female'),
+                          leading: Radio(
+                            autofocus:
+                                MeasurementCubit.get(context).genderVal ==
+                                        'female'
+                                    ? true
+                                    : false,
+                            value: 'female',
+                            groupValue: MeasurementCubit.get(context).genderVal,
+                            onChanged: (value) {
+                              MeasurementCubit.get(context).genderRadio(value);
+                            },
+                            activeColor: Colors.green,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

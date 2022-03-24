@@ -36,9 +36,11 @@ class MedLoginCubit extends Cubit<MedLoginStates> {
     emit(MedLoginLoadingState());
     _login(requestModel).then((value) {
       if (value == null) {
+        print('ali..............');
         return;
       }
       loginModel = value;
+      print('asdfghjkl');
       emit(MedLoginSuccessState(loginModel));
     }).catchError((e) {
       emit(MedLoginErrorState(e));

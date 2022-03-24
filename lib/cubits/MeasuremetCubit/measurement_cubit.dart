@@ -37,15 +37,14 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return measurements;
   }
 
-    Future<List<Measurement>> _patientMeasurementFromDb() async {
+  Future<List<Measurement>> _patientMeasurementFromDb() async {
     var measurements = await api.get_measurements();
 
     return measurements.map((m) => Measurement.fromJson(m)).toList();
   }
 
-
   List<Measurement> getDoctorMeasurement(String name) {
-     emit(MeasurementLoading());
+    emit(MeasurementLoading());
     _doctorMeasurementFromDb(name).then((doctorMeasurement) {
       if (doctorMeasurement.length == 0) {
         empty = true;
@@ -60,8 +59,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return doctorMeasurement;
   }
 
-
-    Future<List<Measurement>> _doctorMeasurementFromDb(String name) async {
+  Future<List<Measurement>> _doctorMeasurementFromDb(String name) async {
     var measurements = await api.getDoctorMeasurement(name);
 
     return measurements.map((m) => Measurement.fromJson(m)).toList();
@@ -105,9 +103,6 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteMeasurement(id);
   }
 
-
-
-
   //patient profile
 
   void getPatientProfile() {
@@ -117,6 +112,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
         return null;
       }
       patient = value;
+      genderVal = patient.gender;
       emit(GetPatientProfileLoaded());
     });
   }
@@ -128,34 +124,30 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   void updatePatientProfile(Patient patient) {
     emit(updatePatientProfileLoading());
-     _updatePatient(patient).then((value) {
+    _updatePatient(patient).then((value) {
       if (value == null) {
         return null;
       }
-       this.patient = value;
+      this.patient = value;
       emit(updatePatientProfileLoaded());
     });
   }
-
-
 
   Future<Patient?> _updatePatient(Patient patient) async {
     Patient? p = await api.updatePatient(patient);
     return p;
   }
 
-
   void deletePatient() {
-     emit(deletePatientProfileLoading());
-     _deletePatient().then((value) {
+    emit(deletePatientProfileLoading());
+    _deletePatient().then((value) {
       emit(deletePatientProfileLoaded());
     });
   }
 
-    Future<void> _deletePatient() async {
+  Future<void> _deletePatient() async {
     await api.deletePatient();
   }
-
 
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
@@ -165,5 +157,11 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   toggleReadOnly() {
     readOnly = !readOnly;
     emit(ToggleReadOnly());
+  }
+
+  String? genderVal;
+  genderRadio(value) {
+    genderVal = value;
+    emit(UpdateGender());
   }
 }
