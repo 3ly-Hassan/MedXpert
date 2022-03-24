@@ -1,4 +1,5 @@
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/invitation.dart';
@@ -48,8 +49,6 @@ class APIService {
   //   );
   // }
 
-
-
   // measurements
   Future<Measurement?> createMeasurement(Measurement reqMeasurement) async {
     String url = "$api/vitalSign/createvitalSign";
@@ -89,14 +88,15 @@ class APIService {
     }
   }
 
-  Future<List<dynamic>> getDoctorMeasurement(String patientName)async {
-     String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
+  Future<List<dynamic>> getDoctorMeasurement(String patientName) async {
+    String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       print(response.body);
       if (response.statusCode == 200) {
-        final List<Measurement> measurement = json.decode(response.body)["data"];
+        final List<Measurement> measurement =
+            json.decode(response.body)["data"];
         return measurement;
       } else {
         print(json.decode(response.body)["msg"]);
@@ -106,7 +106,6 @@ class APIService {
       print(e.toString());
       return [];
     }
-
   }
 
   // Future<Measurement?> updateMeasurement(String id) async {
@@ -143,8 +142,6 @@ class APIService {
     }
   }
 
-
-
   // patient profile
   Future<Patient?> getPatientProfile() async {
     String url = "$api/patient/getPatient";
@@ -166,13 +163,13 @@ class APIService {
     }
   }
 
-  Future<Patient?> updatePatient(Patient patient) async{
-     String url = "$api/patient/updatePatient";
-       try {
-      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(patient.toJson()));
+  Future<Patient?> updatePatient(Patient patient) async {
+    String url = "$api/patient/updatePatient";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(patient.toJson()));
       if (response.statusCode == 200) {
-        Patient patient =
-            Patient.fromJson(json.decode(response.body)["data"]);
+        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return patient;
       } else {
@@ -185,9 +182,9 @@ class APIService {
     }
   }
 
-  Future<void> deletePatient() async{
-     String url = "$api/patient/deletePatient";
-       try {
+  Future<void> deletePatient() async {
+    String url = "$api/patient/deletePatient";
+    try {
       final response = await http.delete(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
@@ -202,6 +199,62 @@ class APIService {
     }
   }
 
+  // doctor profile
+  Future<Doctor?> getDoctorProfile() async {
+    String url = "$api/doctor/getDoctor";
+    print("getting data");
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        print('good');
+        return doctor;
+      } else {
+        print('not good');
+
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<Doctor?> updateDoctor(Doctor doctor) async {
+    String url = "$api/doctor/updateDoc";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(doctor.toJson()));
+      if (response.statusCode == 200) {
+        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return doctor;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> deleteDoctor() async {
+    String url = "$api/doctor/deleteDoctor";
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   //teams
 

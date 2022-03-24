@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
+import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<Measurement> measurements = [];
   List<Measurement> doctorMeasurement = [];
   Patient patient = Patient();
+  Doctor doctor = Doctor();
   List<int> expanded = [];
   bool empty = false;
   bool readOnly = true;
@@ -37,15 +39,14 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return measurements;
   }
 
-    Future<List<Measurement>> _patientMeasurementFromDb() async {
+  Future<List<Measurement>> _patientMeasurementFromDb() async {
     var measurements = await api.get_measurements();
 
     return measurements.map((m) => Measurement.fromJson(m)).toList();
   }
 
-
   List<Measurement> getDoctorMeasurement(String name) {
-     emit(MeasurementLoading());
+    emit(MeasurementLoading());
     _doctorMeasurementFromDb(name).then((doctorMeasurement) {
       if (doctorMeasurement.length == 0) {
         empty = true;
@@ -60,8 +61,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     return doctorMeasurement;
   }
 
-
-    Future<List<Measurement>> _doctorMeasurementFromDb(String name) async {
+  Future<List<Measurement>> _doctorMeasurementFromDb(String name) async {
     var measurements = await api.getDoctorMeasurement(name);
 
     return measurements.map((m) => Measurement.fromJson(m)).toList();
@@ -105,9 +105,6 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteMeasurement(id);
   }
 
-
-
-
   //patient profile
 
   void getPatientProfile() {
@@ -128,34 +125,75 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   void updatePatientProfile(Patient patient) {
     emit(updatePatientProfileLoading());
-     _updatePatient(patient).then((value) {
+    _updatePatient(patient).then((value) {
       if (value == null) {
         return null;
       }
-       this.patient = value;
+      this.patient = value;
       emit(updatePatientProfileLoaded());
     });
   }
-
-
 
   Future<Patient?> _updatePatient(Patient patient) async {
     Patient? p = await api.updatePatient(patient);
     return p;
   }
 
-
   void deletePatient() {
-     emit(deletePatientProfileLoading());
-     _deletePatient().then((value) {
+    emit(deletePatientProfileLoading());
+    _deletePatient().then((value) {
       emit(deletePatientProfileLoaded());
     });
   }
 
-    Future<void> _deletePatient() async {
+  Future<void> _deletePatient() async {
     await api.deletePatient();
   }
 
+  //doctor profile
+
+  void getdoctorProfile() {
+    emit(GetDoctorProfileLoading());
+    _getDoctorProfile().then((value) {
+      if (value == null) {
+        return null;
+      }
+      doctor = value;
+      emit(GetDoctorProfileLoaded());
+    });
+  }
+
+  Future<Doctor?> _getDoctorProfile() async {
+    Doctor? doc = await api.getDoctorProfile();
+    return doc;
+  }
+
+  void updateDoctorProfile(Doctor doctor) {
+    emit(UpdateDoctorProfileLoading());
+    _updateDoctor(doctor).then((value) {
+      if (value == null) {
+        return null;
+      }
+      this.doctor = value;
+      emit(UpdateDoctorProfileLoaded());
+    });
+  }
+
+  Future<Doctor?> _updateDoctor(Doctor doctor) async {
+    Doctor? doc = await api.updateDoctor(doctor);
+    return doc;
+  }
+
+  void deleteDoctor() {
+    emit(DeleteDoctorProfileLoading());
+    _deleteDoctor().then((value) {
+      emit(DeleteDoctorProfileLoaded());
+    });
+  }
+
+  Future<void> _deleteDoctor() async {
+    await api.deleteDoctor();
+  }
 
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
