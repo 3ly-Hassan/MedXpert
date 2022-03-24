@@ -1,4 +1,5 @@
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/invitation.dart';
@@ -184,6 +185,63 @@ class APIService {
 
   Future<void> deletePatient() async {
     String url = "$api/patient/deletePatient";
+    try {
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // doctor profile
+  Future<Doctor?> getDoctorProfile() async {
+    String url = "$api/doctor/getDoctor";
+    print("getting data");
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        print('good');
+        return doctor;
+      } else {
+        print('not good');
+
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<Doctor?> updateDoctor(Doctor doctor) async {
+    String url = "$api/doctor/updateDoc";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(doctor.toJson()));
+      if (response.statusCode == 200) {
+        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return doctor;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> deleteDoctor() async {
+    String url = "$api/doctor/deleteDoctor";
     try {
       final response = await http.delete(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {

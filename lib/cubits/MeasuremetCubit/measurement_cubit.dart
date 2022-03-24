@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
+import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<Measurement> measurements = [];
   List<Measurement> doctorMeasurement = [];
   Patient patient = Patient();
+  Doctor doctor = Doctor();
   List<int> expanded = [];
   bool empty = false;
   bool readOnly = true;
@@ -147,6 +149,51 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   Future<void> _deletePatient() async {
     await api.deletePatient();
+  }
+
+  //doctor profile
+
+  void getdoctorProfile() {
+    emit(GetDoctorProfileLoading());
+    _getDoctorProfile().then((value) {
+      if (value == null) {
+        return null;
+      }
+      doctor = value;
+      emit(GetDoctorProfileLoaded());
+    });
+  }
+
+  Future<Doctor?> _getDoctorProfile() async {
+    Doctor? doc = await api.getDoctorProfile();
+    return doc;
+  }
+
+  void updateDoctorProfile(Doctor doctor) {
+    emit(UpdateDoctorProfileLoading());
+    _updateDoctor(doctor).then((value) {
+      if (value == null) {
+        return null;
+      }
+      this.doctor = value;
+      emit(UpdateDoctorProfileLoaded());
+    });
+  }
+
+  Future<Doctor?> _updateDoctor(Doctor doctor) async {
+    Doctor? doc = await api.updateDoctor(doctor);
+    return doc;
+  }
+
+  void deleteDoctor() {
+    emit(DeleteDoctorProfileLoading());
+    _deleteDoctor().then((value) {
+      emit(DeleteDoctorProfileLoaded());
+    });
+  }
+
+  Future<void> _deleteDoctor() async {
+    await api.deleteDoctor();
   }
 
   invertExpand(i) {
