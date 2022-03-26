@@ -88,16 +88,16 @@ Map<String, dynamic> toJson() {
  
 
 class Clinicians {
-  Doctor? doctor;
+  String? doctorId;
   String? date;
 
   Clinicians({
-    this.doctor,
+    this.doctorId,
     this.date
   });
 
   Clinicians.fromJson(Map<String, dynamic> map) {
-    doctor = Doctor.fromJson(json.decode(map["doctor"]));
+    doctorId = map["doctor"];
     date = map["date"];
   }
 }
