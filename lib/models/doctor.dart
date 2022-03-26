@@ -1,3 +1,5 @@
+import 'package:final_pro/models/patient.dart';
+
 class Doctor {
   String? id;
   String? email;
@@ -36,7 +38,12 @@ class Doctor {
     updatedAt = json['updatedAt'];
     residency = json['residency'];
     specialization = json['specialization'];
-    followings = json['followings'];
+    if (json['followings'] != null) {
+      followings = <Patient>[];
+      json['followings'].forEach((v) {
+        followings!.add(new Patient.fromJson(v));
+      });
+   };
   }
 
   Map<String, dynamic> toJson() {
