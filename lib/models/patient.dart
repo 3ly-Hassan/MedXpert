@@ -67,3 +67,37 @@ Map<String, dynamic> toJson() {
   return data;
 }
 }
+ 
+
+class clinicians {
+  String? doctorId;
+  String? date;
+
+  clinicians({
+    this.doctorId,
+    this.date
+  });
+
+  clinicians.fromJson(Map<String, dynamic> json) {
+    doctorId = json["doctor_id"];
+    date = json["date"];
+  }
+}
+
+class chronics {
+  String? chronicName;
+  String? since;
+  String? state;
+
+  chronics({
+    this.chronicName,
+    this.since,
+    this.state
+  });
+
+  chronics.fromJson(Map<String, dynamic> json) {
+    chronicName = json["chronic_name"];
+    since = json["since"];
+    state = json["state"];
+  }
+}
