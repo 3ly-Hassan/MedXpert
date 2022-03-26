@@ -6,7 +6,6 @@ class Patient {
   String? sId;
   String? email;
   String? username;
-  String? password;
   String? birthDate;
   num? weight;
   String? gender;
@@ -22,7 +21,6 @@ class Patient {
     this.sId,
     this.email,
     this.username,
-    this.password,
     this.birthDate,
     this.gender,
     this.weight,
@@ -38,7 +36,6 @@ class Patient {
     sId = map['_id'];
     email = map['email'];
     username = map['username'];
-    password = map['password'];
     birthDate = map['birthDate'];
     weight = map['weight'];
     gender = map['gender'];
