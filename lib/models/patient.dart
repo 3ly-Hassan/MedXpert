@@ -35,7 +35,6 @@ class Patient {
   });
 
   Patient.fromJson(Map<String, dynamic> map) {
-    followings = map['followings'];
     sId = map['_id'];
     email = map['email'];
     username = map['username'];
@@ -44,8 +43,21 @@ class Patient {
     weight = map['weight'];
     gender = map['gender'];
     type = map['type'];
-    followers = map['followers'];
-    clinicians = map['clinicians'];
+
+    if (map['followers'] != null) {
+      followers = <Patient>[];
+      map['followers'].forEach((v) {
+        followers!.add(new Patient.fromJson(v));
+      });
+   };
+
+    if (map['followings'] != null) {
+      followings = <Patient>[];
+      map['followings'].forEach((v) {
+        followings!.add(new Patient.fromJson(v));
+      });
+   };
+
 
   if (map['clinicians'] != null) {
       clinicians = <Clinicians>[];
@@ -88,16 +100,16 @@ Map<String, dynamic> toJson() {
  
 
 class Clinicians {
-  String? doctorId;
+  Doctor? doctor;
   String? date;
 
   Clinicians({
-    this.doctorId,
+    this.doctor,
     this.date
   });
 
   Clinicians.fromJson(Map<String, dynamic> map) {
-    doctorId = map["doctor"];
+    doctor = Doctor.fromJson(json.decode(map["doctor"]));
     date = map["date"];
   }
 }
