@@ -1,3 +1,5 @@
+import 'package:final_pro/models/doctor.dart';
+
 class Patient {
   List<dynamic>? followings;
   String? sId;
@@ -70,16 +72,16 @@ Map<String, dynamic> toJson() {
  
 
 class clinicians {
-  String? doctorId;
+  Doctor? doctor;
   String? date;
 
   clinicians({
-    this.doctorId,
+    this.doctor,
     this.date
   });
 
   clinicians.fromJson(Map<String, dynamic> json) {
-    doctorId = json["doctor_id"];
+    doctor = json["doctor_id"];
     date = json["date"];
   }
 }
