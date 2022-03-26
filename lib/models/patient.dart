@@ -1,4 +1,5 @@
 import 'package:final_pro/models/doctor.dart';
+import 'dart:convert';
 
 class Patient {
   List<dynamic>? followings;
@@ -33,21 +34,36 @@ class Patient {
     this.updatedAt,
   });
 
-  Patient.fromJson(Map<String, dynamic> json) {
-    followings = json['followings'];
-    sId = json['_id'];
-    email = json['email'];
-    username = json['username'];
-    password = json['password'];
-    birthDate = json['birthDate'];
-    weight = json['weight'];
-    gender = json['gender'];
-    type = json['type'];
-    followers = json['followers'];
-    clinicians = json['clinicians'];
-    chronics = json['chronics'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
+  Patient.fromJson(Map<String, dynamic> map) {
+    followings = map['followings'];
+    sId = map['_id'];
+    email = map['email'];
+    username = map['username'];
+    password = map['password'];
+    birthDate = map['birthDate'];
+    weight = map['weight'];
+    gender = map['gender'];
+    type = map['type'];
+    followers = map['followers'];
+    clinicians = map['clinicians'];
+
+  if (map['clinicians'] != null) {
+      clinicians = <Clinicians>[];
+      map['clinicians'].forEach((v) {
+        clinicians!.add(new Clinicians.fromJson(v));
+      });
+   };
+
+   if (map['chronics'] != null) {
+      chronics = <Chronics>[];
+      map['chronics'].forEach((v) {
+        chronics!.add(new Chronics.fromJson(v));
+      });
+   };
+
+
+    createdAt = map['createdAt'];
+    updatedAt = map['updatedAt'];
   }
 
 Map<String, dynamic> toJson() {
@@ -71,33 +87,33 @@ Map<String, dynamic> toJson() {
 }
  
 
-class clinicians {
+class Clinicians {
   Doctor? doctor;
   String? date;
 
-  clinicians({
+  Clinicians({
     this.doctor,
     this.date
   });
 
-  clinicians.fromJson(Map<String, dynamic> json) {
-    doctor = json["doctor_id"];
-    date = json["date"];
+  Clinicians.fromJson(Map<String, dynamic> map) {
+    doctor = Doctor.fromJson(json.decode(map["doctor"]));
+    date = map["date"];
   }
 }
 
-class chronics {
+class Chronics {
   String? chronicName;
   String? since;
   String? state;
 
-  chronics({
+  Chronics({
     this.chronicName,
     this.since,
     this.state
   });
 
-  chronics.fromJson(Map<String, dynamic> json) {
+  Chronics.fromJson(Map<String, dynamic> json) {
     chronicName = json["chronic_name"];
     since = json["since"];
     state = json["state"];
