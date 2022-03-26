@@ -42,16 +42,16 @@ class Patient {
     type = map['type'];
 
     if (map['followers'] != null) {
-      followers = <Patient>[];
+      followers = <Follower>[];
       map['followers'].forEach((v) {
-        followers!.add(new Patient.fromJson(v));
+        followers!.add(new Follower.fromJson(v));
       });
    };
 
     if (map['followings'] != null) {
-      followings = <Patient>[];
+      followings = <Follower>[];
       map['followings'].forEach((v) {
-        followings!.add(new Patient.fromJson(v));
+        followings!.add(new Follower.fromJson(v));
       });
    };
 
@@ -126,5 +126,26 @@ class Chronics {
     chronicName = json["chronic_name"];
     since = json["since"];
     state = json["state"];
+  }
+}
+
+class Follower {
+  String? id;
+  String? username;
+  String? email;
+  String? gender;
+
+  Follower({
+    this.id,
+    this.username,
+    this.email,
+    this.gender
+  });
+
+  Follower.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    username = json["username"];
+    email = json["email"];
+    gender = json["gender"];
   }
 }
