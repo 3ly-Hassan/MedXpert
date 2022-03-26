@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/bloc_observer.dart';
-import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';

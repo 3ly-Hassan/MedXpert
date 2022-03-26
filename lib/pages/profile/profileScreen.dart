@@ -11,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var birthController = TextEditingController();
+  var weightController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
@@ -18,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
     nameController.text = model.username!;
     emailController.text = model.email!;
     birthController.text = model.birthDate!.substring(0, 10);
+    weightController.text = model.weight == null ? '' : model.weight.toString();
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
@@ -33,8 +35,12 @@ class ProfileScreen extends StatelessWidget {
                       : () {
                           var patient = Patient();
                           patient.birthDate = birthController.text;
-                          patient.email = birthController.text;
+                          patient.email = emailController.text;
                           patient.username = nameController.text;
+                          patient.weight = num.tryParse(weightController.text);
+                          patient.gender = cubit.genderVal;
+                          cubit.updatePatientProfile(patient);
+                          cubit.toggleReadOnly();
                         },
                   icon: cubit.readOnly ? Icon(Icons.edit) : Icon(Icons.save)),
               !cubit.readOnly
@@ -60,6 +66,7 @@ class ProfileScreen extends StatelessWidget {
             nameController: nameController,
             emailController: emailController,
             birthController: birthController,
+            weightController: weightController,
           )),
     );
   }

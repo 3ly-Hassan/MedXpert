@@ -3,20 +3,23 @@ import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../../cubits/SignUpCubit/cubit.dart';
 
 class ProfileBody extends StatelessWidget {
-  ProfileBody(
-      {Key? key,
-      this.nameController,
-      this.emailController,
-      this.birthController})
-      : super(key: key);
+  ProfileBody({
+    Key? key,
+    this.nameController,
+    this.emailController,
+    this.birthController,
+    this.weightController,
+  }) : super(key: key);
   final nameController;
   final emailController;
   final birthController;
+  final weightController;
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
@@ -137,16 +140,46 @@ class ProfileBody extends StatelessWidget {
                             label: 'Email',
                             prefix: LineAwesomeIcons.mail_bulk),
                         SizedBox(height: 10),
+                        // defaultFormField(
+                        //     readOnly: MeasurementCubit.get(context).readOnly,
+                        //     controller: birthController,
+                        //     type: TextInputType.text,
+                        //     validate: (validate) {
+                        //       return null;
+                        //     },
+                        //     label: 'Birth Date',
+                        //     prefix: LineAwesomeIcons.birthday_cake),
                         defaultFormField(
-                            readOnly: MeasurementCubit.get(context).readOnly,
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                firstDate: DateTime.parse('1950-01-01'),
+                                initialDate: DateTime.now(),
+                                lastDate: DateTime.now(),
+                              ).then((value) {
+                                birthController.text =
+                                    DateFormat('yyyy-MM-dd').format(value!);
+                              });
+                            },
+                            focusNode: AlwaysDisabledFocusNode(),
                             controller: birthController,
-                            type: TextInputType.text,
-                            validate: (validate) {
+                            type: TextInputType.datetime,
+                            validate: (value) {
                               return null;
                             },
                             label: 'Birth Date',
                             prefix: LineAwesomeIcons.birthday_cake),
                         SizedBox(height: 10),
+                        defaultFormField(
+                            readOnly: MeasurementCubit.get(context).readOnly,
+                            controller: weightController,
+                            type:
+                                TextInputType.numberWithOptions(decimal: true),
+                            validate: (validate) {
+                              return null;
+                            },
+                            label: 'Weight',
+                            prefix: LineAwesomeIcons.weight),
                       ],
                     ),
                   ),

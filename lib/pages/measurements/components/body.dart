@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../models/measurement.dart';
 import '../../../cubits/MeasuremetCubit/measurement_cubit.dart';

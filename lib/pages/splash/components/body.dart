@@ -1,11 +1,8 @@
-import 'package:final_pro/pages/complete_profile/complete_profile_screen.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:flutter/material.dart';
-// This is the best practice
 import '../../../cache_helper.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import '../../choose_who.dart';
 import '../components/splash_content.dart';
 import '../../../components/default_button.dart';
 
