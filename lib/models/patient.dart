@@ -1,3 +1,5 @@
+import 'package:final_pro/models/doctor.dart';
+
 class Patient {
   List<dynamic>? followings;
   String? sId;
@@ -66,4 +68,38 @@ Map<String, dynamic> toJson() {
 
   return data;
 }
+}
+ 
+
+class clinicians {
+  Doctor? doctor;
+  String? date;
+
+  clinicians({
+    this.doctor,
+    this.date
+  });
+
+  clinicians.fromJson(Map<String, dynamic> json) {
+    doctor = json["doctor_id"];
+    date = json["date"];
+  }
+}
+
+class chronics {
+  String? chronicName;
+  String? since;
+  String? state;
+
+  chronics({
+    this.chronicName,
+    this.since,
+    this.state
+  });
+
+  chronics.fromJson(Map<String, dynamic> json) {
+    chronicName = json["chronic_name"];
+    since = json["since"];
+    state = json["state"];
+  }
 }

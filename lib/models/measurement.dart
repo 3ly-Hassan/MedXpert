@@ -7,19 +7,27 @@ class Measurement {
   num? temp;
   int? pulse;
   int? respration;
-  String? pressure;
   num? weight;
   String? createdAt;
   String? fakeDate;
-  List<dynamic>? problems;
+  num? sugar;
+  num? oxegen;
+  num? systolicPressure;
+  num? diastolicPressure;
+  // List<dynamic>? problems;
+
   Measurement(
       {this.fakeDate,
       this.condition,
       this.temp,
       this.pulse,
       this.respration,
-      this.pressure,
-      this.weight});
+      this.diastolicPressure,
+      this.systolicPressure,
+      this.weight,
+      this.sugar,
+      this.oxegen
+      });
   Measurement.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     patientId = json["patient_id"];
@@ -27,10 +35,13 @@ class Measurement {
     temp = json["temp"];
     pulse = json["pulse"];
     respration = json["respration"];
-    pressure = json["pressure"];
+    diastolicPressure = json["diastolicPressure"];
+    systolicPressure = json["systolicPressure"];
     weight = json["weight"];
+    sugar = json["sugar"];
+    oxegen = json["oxegen"];
     createdAt = json["createdAt"];
-    problems = json["problems"];
+    // problems = json["problems"];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,8 +51,11 @@ class Measurement {
       'temp': temp,
       'pulse': pulse,
       'respration': respration,
-      'pressure': pressure,
+      'systolicPressure': systolicPressure,
+      'diastolicPressure': diastolicPressure,
       'weight': weight,
+      'sugar': sugar,
+      'oxegen': oxegen,
     };
     return map;
   }

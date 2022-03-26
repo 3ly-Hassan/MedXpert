@@ -170,9 +170,9 @@ class APIService {
       final response = await http.patch(Uri.parse(url),
           headers: headers, body: jsonEncode(patient.toJson()));
       if (response.statusCode == 200) {
-        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
+        Patient updatedpatient = Patient.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
-        return patient;
+        return updatedpatient;
       } else {
         print(json.decode(response.body)["msg"]);
         return null;
@@ -227,9 +227,9 @@ class APIService {
       final response = await http.patch(Uri.parse(url),
           headers: headers, body: jsonEncode(doctor.toJson()));
       if (response.statusCode == 200) {
-        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
+        Doctor returendDoctor = Doctor.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
-        return doctor;
+        return returendDoctor;
       } else {
         print(json.decode(response.body)["msg"]);
         return null;
