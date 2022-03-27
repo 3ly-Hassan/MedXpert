@@ -202,6 +202,42 @@ class APIService {
     }
   }
 
+  Future<void> addToList(Chronics chronics) async {
+    String url = "$api/patient/addToList";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(chronics.toJson()));
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
+  Future<void> deleteFromList(Chronics chronics) async {
+    String url = "$api/patient/deleteFromList";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(chronics.toJson()));
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
   // doctor profile
   Future<Doctor?> getDoctorProfile() async {
     String url = "$api/doctor/getDoctor";
