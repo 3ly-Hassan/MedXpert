@@ -26,8 +26,7 @@ class Measurement {
       this.systolicPressure,
       this.weight,
       this.sugar,
-      this.oxegen
-      });
+      this.oxegen});
   Measurement.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     patientId = json["patient_id"];
@@ -60,3 +59,10 @@ class Measurement {
     return map;
   }
 }
+//
+// class AddMeasurement {
+//   Measurement? measurement;
+//   String? msg;
+//
+//   AddMeasurement({this.measurement, this.msg});
+// }

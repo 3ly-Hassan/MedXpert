@@ -63,6 +63,7 @@ class APIService {
         return measurement;
       } else {
         print(json.decode(response.body)["msg"]);
+        print('A7a');
         return null;
       }
     } catch (e) {
@@ -170,7 +171,8 @@ class APIService {
       final response = await http.patch(Uri.parse(url),
           headers: headers, body: jsonEncode(patient.toJson()));
       if (response.statusCode == 200) {
-        Patient updatedpatient = Patient.fromJson(json.decode(response.body)["data"]);
+        Patient updatedpatient =
+            Patient.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return updatedpatient;
       } else {
@@ -227,7 +229,8 @@ class APIService {
       final response = await http.patch(Uri.parse(url),
           headers: headers, body: jsonEncode(doctor.toJson()));
       if (response.statusCode == 200) {
-        Doctor returendDoctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        Doctor returendDoctor =
+            Doctor.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
         return returendDoctor;
       } else {

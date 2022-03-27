@@ -148,14 +148,21 @@ class Body extends StatelessWidget {
               child: Column(
                 children: [
                   buildTextContainer('The Condition', m.condition),
-                  m.pressure != null
-                      ? buildTextContainer('The Blood Pressure', m.pressure)
+                  m.systolicPressure != null
+                      ? buildTextContainer('The Blood Pressure',
+                          '${m.systolicPressure}/${m.diastolicPressure}')
                       : Container(),
                   m.pulse != null
                       ? buildTextContainer('The Pulse Rate', m.pulse)
                       : Container(),
                   m.respration != null
                       ? buildTextContainer('The Respiration', m.respration)
+                      : Container(),
+                  m.sugar != null
+                      ? buildTextContainer('The Glucose', m.sugar)
+                      : Container(),
+                  m.oxegen != null
+                      ? buildTextContainer('The Oxygen', m.oxegen)
                       : Container(),
                   m.temp != null
                       ? buildTextContainer('The Temperature', m.temp)
