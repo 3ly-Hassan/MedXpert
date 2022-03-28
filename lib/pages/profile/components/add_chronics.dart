@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:final_pro/components/some_shared_components.dart';
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
@@ -11,6 +13,7 @@ class AddChronics extends StatelessWidget {
   var nameController = TextEditingController();
   var sinceController = TextEditingController();
   var stateController = TextEditingController();
+  var _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,46 +24,56 @@ class AddChronics extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                var model = Chronics();
-                model.chronicName = nameController.text;
-                model.since = sinceController.text;
-                model.state = stateController.text;
+                if (_key.currentState!.validate()) {
+                  var model = Chronics();
+                  model.chronicName = nameController.text;
+                  model.since = sinceController.text;
+                  model.state = stateController.text;
+                  MeasurementCubit.get(context).addToList(model);
+
+                  Navigator.pop(context);
+                }
               },
               icon: Icon(Icons.save))
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            defaultFormField(
-                controller: nameController,
-                type: TextInputType.text,
-                validate: (validate) {
-                  return null;
-                },
-                label: 'Name',
-                prefix: LineAwesomeIcons.address_book),
-            SizedBox(height: 20),
-            defaultFormField(
-                controller: sinceController,
-                type: TextInputType.number,
-                validate: (validate) {
-                  return null;
-                },
-                label: 'Since',
-                prefix: LineAwesomeIcons.times),
-            SizedBox(height: 20),
-            defaultFormField(
-                controller: stateController,
-                type: TextInputType.text,
-                validate: (validate) {
-                  return null;
-                },
-                label: 'State',
-                prefix: LineAwesomeIcons.damaged_house),
-            SizedBox(height: 20),
-          ],
+        child: Form(
+          key: _key,
+          child: Column(
+            children: [
+              defaultFormField(
+                  controller: nameController,
+                  type: TextInputType.text,
+                  validate: (validate) {
+                    if (nameController.text.isEmpty) return 'is required';
+                    return null;
+                  },
+                  label: 'Name',
+                  prefix: LineAwesomeIcons.address_book),
+              SizedBox(height: 20),
+              defaultFormField(
+                  controller: sinceController,
+                  type: TextInputType.number,
+                  validate: (validate) {
+                    if (sinceController.text.isEmpty) return 'is required';
+                    return null;
+                  },
+                  label: 'Since',
+                  prefix: LineAwesomeIcons.times),
+              SizedBox(height: 20),
+              defaultFormField(
+                  controller: stateController,
+                  type: TextInputType.text,
+                  validate: (validate) {
+                    return null;
+                  },
+                  label: 'State',
+                  prefix: LineAwesomeIcons.damaged_house),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

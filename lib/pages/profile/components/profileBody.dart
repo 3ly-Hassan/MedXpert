@@ -298,8 +298,17 @@ class ProfileBody extends StatelessWidget {
                   cubit.patient.chronics != null
                       ? Wrap(
                           children: cubit.patient.chronics!
-                              .map(
-                                  (e) => chronicsItem(e.chronicName!, e.since!))
+                              .map((e) => Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        chronicsItem(e.chronicName!, e.since!),
+                                      ],
+                                    ),
+                                  ))
                               .toList())
                       : Container(),
                   Padding(
@@ -334,9 +343,8 @@ class ProfileBody extends StatelessWidget {
             color: Colors.grey.shade100,
             borderRadius: BorderRadius.circular(50),
           ),
-          height: 30,
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 8),
+            padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 10),
             child: Column(
               children: [
                 Text(
@@ -359,35 +367,35 @@ class ProfileBody extends StatelessWidget {
                 Icons.cancel,
                 size: 20,
               )),
-          top: -13,
-          right: -8,
+          top: -11,
+          right: -6,
         )
       ],
     );
   }
 
-  Widget addItem() {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        height: 30,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16),
-          child: Text(
-            'Add',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
-                overflow: TextOverflow.ellipsis),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget addItem() {
+  //   return InkWell(
+  //     onTap: () {},
+  //     child: Container(
+  //       margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
+  //       decoration: BoxDecoration(
+  //         color: Colors.grey.shade100,
+  //         borderRadius: BorderRadius.circular(50),
+  //       ),
+  //       height: 30,
+  //       child: Padding(
+  //         padding: const EdgeInsets.only(left: 16.0, right: 16),
+  //         child: Text(
+  //           'Add',
+  //           style: TextStyle(
+  //               color: Colors.green,
+  //               fontSize: 22,
+  //               fontWeight: FontWeight.w900,
+  //               overflow: TextOverflow.ellipsis),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

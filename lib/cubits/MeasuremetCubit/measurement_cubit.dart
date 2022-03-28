@@ -160,21 +160,20 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     });
   }
 
-  Future<void>_addToList(Chronics chronics) async{
+  Future<void> _addToList(Chronics chronics) async {
     await api.addToList(chronics);
   }
 
-
-  
   void deleteFromList(Chronics chronics) {
     emit(deleteFromListLoading());
     _deleteFromList(chronics).then((_) {
-      patient.chronics?.removeWhere((c) => c.chronic_name == chronics.chronicName);
+      patient.chronics
+          ?.removeWhere((c) => c.chronicName == chronics.chronicName);
       emit(deleteFromListLoaded());
     });
   }
 
-  Future<void>_deleteFromList(Chronics chronics) async{
+  Future<void> _deleteFromList(Chronics chronics) async {
     await api.addToList(chronics);
   }
 
