@@ -1,5 +1,8 @@
+import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/components/some_shared_components.dart';
+import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +23,34 @@ class ProfileBody extends StatelessWidget {
   final emailController;
   final birthController;
   final weightController;
+  List<String> cities = [
+    'Alex',
+    'Aswan',
+    'Asyut',
+    'Beheira',
+    'Beni-Suef',
+    'Cairo',
+    'Dakahlia',
+    'Damietta',
+    'Faiyum',
+    'Gharbia',
+    'Giza',
+    'Ismallia',
+    'Kafr-ElSheikh',
+    'Luxor',
+    'Matruh',
+    'Minya',
+    'Monufia',
+    'New-Valley',
+    'North_Sinai',
+    'Port-Said',
+    'Qena',
+    'Red-Sea',
+    'Sharqia',
+    'Sohag',
+    'South-Sinai',
+    'Suez'
+  ];
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
@@ -180,6 +211,43 @@ class ProfileBody extends StatelessWidget {
                             },
                             label: 'Weight',
                             prefix: LineAwesomeIcons.weight),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'Residency :',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 5.0, top: 10),
+                              child: DropdownButton<String>(
+                                  hint: Text('choose your city'),
+                                  value:
+                                      MeasurementCubit.get(context).dropValue,
+                                  items: cities
+                                      .map(
+                                        (e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Text(e),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (v) {
+                                    print('Ali');
+                                    MeasurementCubit.get(context)
+                                        .chooseFromDropDown(v);
+                                  }),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -227,6 +295,23 @@ class ProfileBody extends StatelessWidget {
                       ),
                     ],
                   ),
+                  cubit.patient.chronics != null
+                      ? Wrap(
+                          children: cubit.patient.chronics!
+                              .map(
+                                  (e) => chronicsItem(e.chronicName!, e.since!))
+                              .toList())
+                      : Container(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: DefaultButton(
+                      text: 'Add to your chronics',
+                      press: () {
+                        Navigator.pushNamed(context, AddChronics.routeName);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20)
                 ],
               ),
             ),
@@ -237,5 +322,72 @@ class ProfileBody extends StatelessWidget {
               style: TextStyle(fontSize: 26),
             ),
           );
+  }
+
+  //
+  Widget chronicsItem(String text, String since, {String? state}) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          height: 30,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 8),
+            child: Column(
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis),
+                ),
+                Text('since $since')
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.cancel,
+                size: 20,
+              )),
+          top: -13,
+          right: -8,
+        )
+      ],
+    );
+  }
+
+  Widget addItem() {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        height: 30,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16),
+          child: Text(
+            'Add',
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
+                overflow: TextOverflow.ellipsis),
+          ),
+        ),
+      ),
+    );
   }
 }

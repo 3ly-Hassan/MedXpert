@@ -5,6 +5,7 @@ import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
+import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,4 +23,5 @@ final Map<String, WidgetBuilder> routes = {
   ProfileScreen.routeName: (context) => ProfileScreen(),
   AddMeasurements.routeName: (context) => AddMeasurements(),
   Measurements.routeName: (context) => Measurements(),
+  AddChronics.routeName: (context) => AddChronics(),
 };

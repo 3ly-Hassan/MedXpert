@@ -17,6 +17,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<int> expanded = [];
   bool empty = false;
   bool readOnly = true;
+  String? dropValue;
   MeasurementCubit() : super(MeasurementInitial());
 
   static MeasurementCubit get(context) => BlocProvider.of(context);
@@ -210,5 +211,10 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   genderRadio(value) {
     genderVal = value;
     emit(UpdateGender());
+  }
+
+  chooseFromDropDown(value) {
+    dropValue = value;
+    emit(UpdateDrop());
   }
 }
