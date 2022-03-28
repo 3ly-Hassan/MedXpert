@@ -315,26 +315,26 @@ class APIService {
     }
   }
 
-  Future<Doctor?> addSpecialization(String specialization) async {
+  Future<void> addSpecialization(String specialization) async {
     String url = "$api/doctor/addSpecialization";
     return _specialization(specialization, url);
   }
 
-  Future<Doctor?> deleteSpecialization(String specialization) async {
+  Future<void> deleteSpecialization(String specialization) async {
     String url = "$api/doctor/deleteSpecialization";
     return _specialization(specialization, url);
   }
 
-  Future<Doctor?> _specialization(String specialization, String url) async {
+  Future<void> _specialization(String specialization, String url) async {
     try {
       final Map<String, dynamic> _specialization = new Map<String, dynamic>();
       _specialization["specialization"] = specialization;
       final response = await http.patch(Uri.parse(url),
           headers: headers, body: jsonEncode(_specialization));
       if (response.statusCode == 200) {
-        Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        // Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
-        return doctor;
+        return;
       } else {
         print(json.decode(response.body)["msg"]);
         return null;

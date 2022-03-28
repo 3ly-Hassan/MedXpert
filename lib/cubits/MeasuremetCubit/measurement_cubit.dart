@@ -224,6 +224,30 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteDoctor();
   }
 
+  void addSpecialization(String spec) {
+     emit(addSpecializationLoading());
+    _addSpecialization(spec).then((_) {
+      doctor.specialization?.add(spec);
+      emit(addSpecializationLoaded());
+    });
+  }
+
+  Future<void> _addSpecialization(String spec) async{
+    await api.addSpecialization(spec);
+  }
+
+  void deleteSpecialization(String spec) {
+     emit(deleteSpecializationLoading());
+    _deleteSpecialization(spec).then((_) {
+      doctor.specialization?.remove(spec);
+      emit(deleteSpecializationLoaded());
+    });
+  }
+
+  Future<void> _deleteSpecialization(String spec) async{
+    await api.deleteSpecialization(spec);
+  }
+
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
     emit(MeasurementExpanded());
