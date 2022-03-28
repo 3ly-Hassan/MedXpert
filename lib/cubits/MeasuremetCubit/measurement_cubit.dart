@@ -152,6 +152,32 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deletePatient();
   }
 
+  void addToList(Chronics chronics) {
+    emit(addToListLoading());
+    _addToList(chronics).then((_) {
+      patient.chronics?.add(chronics);
+      emit(addToListLoaded());
+    });
+  }
+
+  Future<void>_addToList(Chronics chronics) async{
+    await api.addToList(chronics);
+  }
+
+
+  
+  void deleteFromList(Chronics chronics) {
+    emit(deleteFromListLoading());
+    _deleteFromList(chronics).then((_) {
+      patient.chronics?.removeWhere((c) => c.chronic_name == chronics.chronicName);
+      emit(deleteFromListLoaded());
+    });
+  }
+
+  Future<void>_deleteFromList(Chronics chronics) async{
+    await api.addToList(chronics);
+  }
+
   //doctor profile
 
   void getdoctorProfile() {

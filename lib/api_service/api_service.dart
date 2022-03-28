@@ -202,6 +202,42 @@ class APIService {
     }
   }
 
+  Future<void> addToList(Chronics chronics) async {
+    String url = "$api/patient/addToList";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(chronics.toJson()));
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> deleteFromList(Chronics chronics) async {
+    String url = "$api/patient/deleteFromList";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(chronics.toJson()));
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   // doctor profile
   Future<Doctor?> getDoctorProfile() async {
     String url = "$api/doctor/getDoctor";
@@ -256,6 +292,56 @@ class APIService {
       }
     } catch (e) {
       print(e.toString());
+      return null;
+    }
+  }
+
+  Future<List<dynamic>> getAllDoctor() async {
+    String url = "$api/doctor/getAllDoctors";
+    print("getting data");
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        List<dynamic> doctors = json.decode(response.body)["data"];
+        print('good');
+        return doctors;
+      } else {
+        print('not good');
+        return [];
+      }
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future<Doctor?> addSpecialization(String specialization) async {
+    String url = "$api/doctor/addSpecialization";
+    return _specialization(specialization, url);
+  }
+
+  Future<Doctor?> deleteSpecialization(String specialization) async {
+    String url = "$api/doctor/deleteSpecialization";
+    return _specialization(specialization, url);
+  }
+
+  Future<Doctor?> _specialization(String specialization, String url) async {
+    try {
+      final Map<String, dynamic> _specialization = new Map<String, dynamic>();
+      _specialization["specialization"] = specialization;
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(_specialization));
+      if (response.statusCode == 200) {
+        Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return doctor;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+
       return null;
     }
   }

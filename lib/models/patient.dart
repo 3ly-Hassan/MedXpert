@@ -121,6 +121,17 @@ class Chronics {
     since = json["since"];
     state = json["state"];
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> chronics = new Map<String, dynamic>();
+     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data["chronic_name"] = this.chronicName;
+    data["since"] = this.since;
+    data["state"] = this.state;
+    chronics["chronics"] = data;
+
+   return chronics; 
+  }
 }
 
 class Follower {

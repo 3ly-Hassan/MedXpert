@@ -53,6 +53,14 @@ class DeleteDoctorProfileLoading extends MeasurementState {}
 
 class DeleteDoctorProfileLoaded extends MeasurementState {}
 
+class addToListLoading extends MeasurementState {}
+
+class addToListLoaded extends MeasurementState {}
+
+class deleteFromListLoading extends MeasurementState {}
+
+class deleteFromListLoaded extends MeasurementState {}
+
 class ToggleReadOnly extends MeasurementState {}
 
 class UpdateGender extends MeasurementState {}
