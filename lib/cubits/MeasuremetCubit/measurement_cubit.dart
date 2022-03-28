@@ -116,6 +116,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       }
       patient = value;
       genderVal = patient.gender;
+      print(patient.residency);
+      dropValue = patient.residency;
       emit(GetPatientProfileLoaded());
     });
   }

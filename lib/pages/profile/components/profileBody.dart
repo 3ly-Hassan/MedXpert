@@ -2,6 +2,7 @@ import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/components/some_shared_components.dart';
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -228,23 +229,25 @@ class ProfileBody extends StatelessWidget {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 5.0, top: 10),
-                              child: DropdownButton<String>(
-                                  hint: Text('choose your city'),
-                                  value:
-                                      MeasurementCubit.get(context).dropValue,
-                                  items: cities
-                                      .map(
-                                        (e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: (v) {
-                                    print('Ali');
-                                    MeasurementCubit.get(context)
-                                        .chooseFromDropDown(v);
-                                  }),
+                              child: cubit.readOnly
+                                  ? Text(cubit.dropValue ?? 'Not set yet')
+                                  : DropdownButton<String>(
+                                      hint: Text('choose your city'),
+                                      value: MeasurementCubit.get(context)
+                                          .dropValue,
+                                      items: cities
+                                          .map(
+                                            (e) => DropdownMenuItem<String>(
+                                              value: e,
+                                              child: Text(e),
+                                            ),
+                                          )
+                                          .toList(),
+                                      onChanged: (v) {
+                                        print('Ali');
+                                        MeasurementCubit.get(context)
+                                            .chooseFromDropDown(v);
+                                      }),
                             ),
                           ],
                         )
@@ -305,7 +308,7 @@ class ProfileBody extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        chronicsItem(e.chronicName!, e.since!),
+                                        chronicsItem(e, context),
                                       ],
                                     ),
                                   ))
@@ -334,7 +337,7 @@ class ProfileBody extends StatelessWidget {
   }
 
   //
-  Widget chronicsItem(String text, String since, {String? state}) {
+  Widget chronicsItem(Chronics chronics, context) {
     return Stack(
       children: [
         Container(
@@ -348,21 +351,23 @@ class ProfileBody extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  text,
+                  chronics.chronicName!,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       overflow: TextOverflow.ellipsis),
                 ),
-                Text('since $since')
+                Text('since ${chronics.since!.substring(0, 4)}')
               ],
             ),
           ),
         ),
         Positioned(
           child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                MeasurementCubit.get(context).deleteFromList(chronics);
+              },
               icon: Icon(
                 Icons.cancel,
                 size: 20,

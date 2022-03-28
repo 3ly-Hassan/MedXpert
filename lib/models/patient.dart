@@ -8,6 +8,7 @@ class Patient {
   String? username;
   String? birthDate;
   num? weight;
+  String? residency;
   String? gender;
   List<dynamic>? type;
   List<dynamic>? followers;
@@ -16,21 +17,21 @@ class Patient {
   String? createdAt;
   String? updatedAt;
 
-  Patient({
-    this.followings,
-    this.sId,
-    this.email,
-    this.username,
-    this.birthDate,
-    this.gender,
-    this.weight,
-    this.type,
-    this.followers,
-    this.clinicians,
-    this.chronics,
-    this.createdAt,
-    this.updatedAt,
-  });
+  Patient(
+      {this.followings,
+      this.sId,
+      this.email,
+      this.username,
+      this.birthDate,
+      this.gender,
+      this.weight,
+      this.type,
+      this.followers,
+      this.clinicians,
+      this.chronics,
+      this.createdAt,
+      this.updatedAt,
+      this.residency});
 
   Patient.fromJson(Map<String, dynamic> map) {
     sId = map['_id'];
@@ -40,6 +41,7 @@ class Patient {
     weight = map['weight'];
     gender = map['gender'];
     type = map['type'];
+    residency = map['residency'];
 
     if (map['followers'] != null) {
       followers = <Follower>[];
@@ -47,7 +49,6 @@ class Patient {
         followers!.add(new Follower.fromJson(v));
       });
     }
-    ;
 
     if (map['followings'] != null) {
       followings = <Follower>[];
@@ -55,7 +56,6 @@ class Patient {
         followings!.add(new Follower.fromJson(v));
       });
     }
-    ;
 
     if (map['clinicians'] != null) {
       clinicians = <Clinicians>[];
@@ -124,13 +124,13 @@ class Chronics {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> chronics = new Map<String, dynamic>();
-     final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data["chronic_name"] = this.chronicName;
     data["since"] = this.since;
     data["state"] = this.state;
     chronics["chronics"] = data;
 
-   return chronics; 
+    return chronics;
   }
 }
 
