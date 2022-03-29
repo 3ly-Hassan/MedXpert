@@ -1,7 +1,6 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
-import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/invitation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -205,7 +204,8 @@ class APIService {
   Future<void> addToList(Chronics chronics) async {
     String url = "$api/patient/addToList";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(chronics.toJson()));
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(chronics.toJson()));
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -218,12 +218,12 @@ class APIService {
       return null;
     }
   }
-
 
   Future<void> deleteFromList(Chronics chronics) async {
     String url = "$api/patient/deleteFromList";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(chronics.toJson()));
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(chronics.toJson()));
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -236,7 +236,6 @@ class APIService {
       return null;
     }
   }
-
 
   // doctor profile
   Future<Doctor?> getDoctorProfile() async {

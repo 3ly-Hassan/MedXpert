@@ -7,6 +7,7 @@ import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
+import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'pages/register/sign_up.dart';
@@ -22,4 +23,5 @@ final Map<String, WidgetBuilder> routes = {
   ProfileScreen.routeName: (context) => ProfileScreen(),
   AddMeasurements.routeName: (context) => AddMeasurements(),
   Measurements.routeName: (context) => Measurements(),
+  Teams.routeName: (context) => Teams(),
 };

@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/bloc_observer.dart';
+import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
-import 'package:final_pro/pages/measurements/measurements.dart';
-import 'package:final_pro/pages/profile/profileScreen.dart';
-import 'package:final_pro/pages/register/sign_up.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';
@@ -14,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cache_helper.dart';
 import 'constants.dart';
 import 'cubits/MeasuremetCubit/measurement_cubit.dart';
-import 'cubits/ProfileCubit/cubit.dart';
 
 void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
@@ -64,6 +61,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) => MeasurementCubit()..getPatientProfile()),
+        BlocProvider(
+          create: (context) => TeamsCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

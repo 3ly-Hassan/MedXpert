@@ -35,6 +35,25 @@ const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 
+//---------Teams---------//
+const String kCreateInvitation = "Create invitation";
+const String kUseInvitation = "Use invitation";
+const String kYourInvitationNumber = "Your Invitation Number";
+const String kCopy = "Copy";
+const String kCopied = "Copied!";
+const String kCancel = "Cancel";
+const String kFollowers = "Followers";
+const String kFollowings = "Followings";
+const String kShare = "Share";
+const List dropDownValues = [kFollowers, kFollowings];
+const String kShareMessage = 'Enter your share message !';
+const String kOk = 'Ok';
+const String kLoading = 'Loading...';
+const String kUseAnInvitation = 'Use an invitation';
+const String kEnterTheNumber = 'Your number';
+const String kPleaseEnterANumber = 'Please enter a number!';
+const String kOnlyNumbersAreAllowed = 'Only numbers are allowed!';
+
 final otpInputDecoration = InputDecoration(
   contentPadding:
       EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),
@@ -60,6 +79,20 @@ void showToast({
       msg: text!,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: chooseToastColor(state!),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+Future<void> showCentralToast({
+  @required String? text,
+  @required ToastStates? state,
+}) =>
+    Fluttertoast.showToast(
+      msg: text!,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 5,
       backgroundColor: chooseToastColor(state!),
       textColor: Colors.white,

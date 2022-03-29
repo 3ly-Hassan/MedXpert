@@ -37,6 +37,8 @@ dependencies:
   shared_preferences: ^2.0.13
   line_awesome_flutter:
   intl: ^0.17.0
+  equatable: 2.0.3
+  share_plus: 4.0.3
 
 dev_dependencies:
   flutter_test:
