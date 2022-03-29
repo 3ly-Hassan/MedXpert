@@ -50,7 +50,8 @@ OutlineInputBorder outlineInputBorder() {
   );
 }
 
-String? token = '';
+String token = '';
+String? role;
 var splash = true;
 void showToast({
   @required String? text,

@@ -134,6 +134,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
         return null;
       }
       this.patient = value;
+      print(this.patient.residency);
+      print(this.patient.residency.runtimeType);
       emit(updatePatientProfileLoaded());
     });
   }
@@ -225,26 +227,26 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   }
 
   void addSpecialization(String spec) {
-     emit(addSpecializationLoading());
+    emit(addSpecializationLoading());
     _addSpecialization(spec).then((_) {
       doctor.specialization?.add(spec);
       emit(addSpecializationLoaded());
     });
   }
 
-  Future<void> _addSpecialization(String spec) async{
+  Future<void> _addSpecialization(String spec) async {
     await api.addSpecialization(spec);
   }
 
   void deleteSpecialization(String spec) {
-     emit(deleteSpecializationLoading());
+    emit(deleteSpecializationLoading());
     _deleteSpecialization(spec).then((_) {
       doctor.specialization?.remove(spec);
       emit(deleteSpecializationLoaded());
     });
   }
 
-  Future<void> _deleteSpecialization(String spec) async{
+  Future<void> _deleteSpecialization(String spec) async {
     await api.deleteSpecialization(spec);
   }
 
