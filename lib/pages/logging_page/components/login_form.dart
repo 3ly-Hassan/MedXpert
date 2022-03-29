@@ -28,85 +28,84 @@ class SignForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MedLoginCubit(),
-      child: BlocConsumer<MedLoginCubit, MedLoginStates>(
-        listener: (context, state) {
-          if (state is MedLoginSuccessState) {
-            if (state.loginModel.token != "") {
-              print(state.loginModel.msg);
-              print(state.loginModel.token);
-
+    return BlocConsumer<MedLoginCubit, MedLoginStates>(
+      listener: (context, state) {
+        if (state is MedLoginSuccessState) {
+          if (state.loginModel.token != "") {
+            print(state.loginModel.msg);
+            print(state.loginModel.token);
+            CacheHelper.saveData(key: 'role', value: role).then((value) {
               CacheHelper.saveData(
                 key: 'token',
                 value: state.loginModel.token,
               ).then((value) {
-                token = state.loginModel.token;
+                token = state.loginModel.token!;
                 MeasurementCubit.get(context).getPatientProfile();
                 Navigator.pushReplacementNamed(context, DashBord.routeName);
               });
-            } else {
-              print(state.loginModel.msg);
+            });
+          } else {
+            print(state.loginModel.msg);
 
-              showToast(
-                text: state.loginModel.msg,
-                state: ToastStates.ERROR,
-              );
-            }
-          } else if (state is MedLoginErrorState) {
             showToast(
-              text: 'something has been occurred',
+              text: state.loginModel.msg,
               state: ToastStates.ERROR,
             );
-            print(state.error);
           }
-        },
-        builder: (context, state) {
-          return Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                buildEmailFormField(),
-                SizedBox(height: 30),
-                buildPasswordFormField(),
-                SizedBox(height: 30),
-                Row(
-                  children: [
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, ForgotPasswordScreen.routeName),
-                      child: Text(
-                        "Forgot Password",
-                        style: TextStyle(decoration: TextDecoration.underline),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 20),
-                ConditionalBuilder(
-                  condition: state is! MedLoginLoadingState,
-                  builder: (context) => DefaultButton(
-                      text: "Continue",
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          MedLoginCubit.get(context)
-                              .userLogin(loginRequestModel);
-                        }
-
-                        // if all are valid then go to success screen
-                        KeyboardUtil.hideKeyboard(context);
-                      }),
-                  fallback: (context) => Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ],
-            ),
+        } else if (state is MedLoginErrorState) {
+          showToast(
+            text: 'something has been occurred',
+            state: ToastStates.ERROR,
           );
-        },
-      ),
+          print(state.error);
+        }
+      },
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              buildEmailFormField(),
+              SizedBox(height: 30),
+              buildPasswordFormField(),
+              SizedBox(height: 30),
+              Row(
+                children: [
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, ForgotPasswordScreen.routeName),
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 20),
+              ConditionalBuilder(
+                condition: state is! MedLoginLoadingState,
+                builder: (context) => DefaultButton(
+                    text: "Continue",
+                    press: () {
+                      if (role == null) {
+                        MedLoginCubit.get(context).notRole(false);
+                      } else if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        MedLoginCubit.get(context).userLogin(loginRequestModel);
+                      }
+
+                      // if all are valid then go to success screen
+                      KeyboardUtil.hideKeyboard(context);
+                    }),
+                fallback: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -139,7 +138,7 @@ class SignForm extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) {
         loginRequestModel.email = newValue;
-        loginRequestModel.role = 'patient';
+        loginRequestModel.role = role;
       },
       onChanged: (value) {},
       validator: (value) {

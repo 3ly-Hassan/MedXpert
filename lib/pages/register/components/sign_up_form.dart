@@ -153,7 +153,7 @@ class SignUpForm extends StatelessWidget {
                     contentPadding: EdgeInsetsDirectional.zero,
                     title: Text('Company'),
                     leading: Radio(
-                        value: 'company',
+                        value: 'pharma_inc',
                         groupValue: MedSignUpCubit.get(context).typeVal,
                         onChanged: (value) {
                           MedSignUpCubit.get(context).typeRadio(value);
