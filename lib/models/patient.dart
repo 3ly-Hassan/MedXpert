@@ -104,7 +104,7 @@ class Clinicians {
   Clinicians({this.doctor, this.date});
 
   Clinicians.fromJson(Map<String, dynamic> map) {
-    doctor = Doctor.fromJson(json.decode(map["doctor"]));
+    doctor = Doctor.fromJson(map["doctor"]);
     date = map["date"];
   }
 }
