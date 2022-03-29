@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/drop_down_app_bar.dart';
 import 'components/body.dart';
 
 class Teams extends StatelessWidget {
@@ -9,10 +10,11 @@ class Teams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text("Teams"),
-        ),
-        body: Body());
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: DropDownAppBar(),
+      ),
+      body: Body(),
+    );
   }
 }

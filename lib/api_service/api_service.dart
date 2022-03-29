@@ -1,7 +1,6 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
-import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/invitation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
