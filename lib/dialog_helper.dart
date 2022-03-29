@@ -1,9 +1,11 @@
+import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'constants.dart';
+import 'models/invitation.dart';
 
 class DialogHelper {
   //ToDo : it is your choice => barrierDismissible: false, // user must tap button!
@@ -139,7 +141,12 @@ class DialogHelper {
                 child: Text(kOk),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Navigator.of(context).pop();
+                    final APIService apiService = APIService();
+                    final InvitationResponseModel response = await apiService
+                        .useInvitationPatient(textController.text);
+
+                    print('the error: ${response.msg}');
+
                     //TODO take your action
                   }
                 },
