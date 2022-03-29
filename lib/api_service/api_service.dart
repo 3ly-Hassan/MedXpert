@@ -295,6 +295,56 @@ class APIService {
     }
   }
 
+  Future<List<dynamic>> getAllDoctor() async {
+    String url = "$api/doctor/getAllDoctors";
+    print("getting data");
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        List<dynamic> doctors = json.decode(response.body)["data"];
+        print('good');
+        return doctors;
+      } else {
+        print('not good');
+        return [];
+      }
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future<void> addSpecialization(String specialization) async {
+    String url = "$api/doctor/addSpecialization";
+    return _specialization(specialization, url);
+  }
+
+  Future<void> deleteSpecialization(String specialization) async {
+    String url = "$api/doctor/deleteSpecialization";
+    return _specialization(specialization, url);
+  }
+
+  Future<void> _specialization(String specialization, String url) async {
+    try {
+      final Map<String, dynamic> _specialization = new Map<String, dynamic>();
+      _specialization["specialization"] = specialization;
+      final response = await http.patch(Uri.parse(url),
+          headers: headers, body: jsonEncode(_specialization));
+      if (response.statusCode == 200) {
+        // Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        print(json.decode(response.body)["msg"]);
+        return;
+      } else {
+        print(json.decode(response.body)["msg"]);
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+
+      return null;
+    }
+  }
+
   //teams
 
   Future<Invitation?> createInvitation() async {

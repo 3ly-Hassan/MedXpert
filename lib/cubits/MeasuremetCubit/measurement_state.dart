@@ -61,6 +61,16 @@ class deleteFromListLoading extends MeasurementState {}
 
 class deleteFromListLoaded extends MeasurementState {}
 
+class addSpecializationLoading extends MeasurementState {}
+
+class addSpecializationLoaded extends MeasurementState {}
+
+class deleteSpecializationLoading extends MeasurementState {}
+
+class deleteSpecializationLoaded extends MeasurementState {}
+
 class ToggleReadOnly extends MeasurementState {}
 
 class UpdateGender extends MeasurementState {}
+
+class UpdateDrop extends MeasurementState {}
