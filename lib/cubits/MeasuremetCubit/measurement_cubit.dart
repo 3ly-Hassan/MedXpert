@@ -17,6 +17,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   List<int> expanded = [];
   bool empty = false;
   bool readOnly = true;
+  String? dropValue;
   MeasurementCubit() : super(MeasurementInitial());
 
   static MeasurementCubit get(context) => BlocProvider.of(context);
@@ -115,6 +116,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       }
       patient = value;
       genderVal = patient.gender;
+      print(patient.residency);
+      dropValue = patient.residency;
       emit(GetPatientProfileLoaded());
     });
   }
@@ -131,6 +134,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
         return null;
       }
       this.patient = value;
+      print(this.patient.residency);
+      print(this.patient.residency.runtimeType);
       emit(updatePatientProfileLoaded());
     });
   }
@@ -159,21 +164,20 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     });
   }
 
-  Future<void>_addToList(Chronics chronics) async{
+  Future<void> _addToList(Chronics chronics) async {
     await api.addToList(chronics);
   }
 
-
-  
   void deleteFromList(Chronics chronics) {
     emit(deleteFromListLoading());
     _deleteFromList(chronics).then((_) {
-      patient.chronics?.removeWhere((c) => c.chronic_name == chronics.chronicName);
+      patient.chronics
+          ?.removeWhere((c) => c.chronicName == chronics.chronicName);
       emit(deleteFromListLoaded());
     });
   }
 
-  Future<void>_deleteFromList(Chronics chronics) async{
+  Future<void> _deleteFromList(Chronics chronics) async {
     await api.addToList(chronics);
   }
 
@@ -222,6 +226,30 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     await api.deleteDoctor();
   }
 
+  void addSpecialization(String spec) {
+    emit(addSpecializationLoading());
+    _addSpecialization(spec).then((_) {
+      doctor.specialization?.add(spec);
+      emit(addSpecializationLoaded());
+    });
+  }
+
+  Future<void> _addSpecialization(String spec) async {
+    await api.addSpecialization(spec);
+  }
+
+  void deleteSpecialization(String spec) {
+    emit(deleteSpecializationLoading());
+    _deleteSpecialization(spec).then((_) {
+      doctor.specialization?.remove(spec);
+      emit(deleteSpecializationLoaded());
+    });
+  }
+
+  Future<void> _deleteSpecialization(String spec) async {
+    await api.deleteSpecialization(spec);
+  }
+
   invertExpand(i) {
     expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
     emit(MeasurementExpanded());
@@ -236,5 +264,10 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   genderRadio(value) {
     genderVal = value;
     emit(UpdateGender());
+  }
+
+  chooseFromDropDown(value) {
+    dropValue = value;
+    emit(UpdateDrop());
   }
 }

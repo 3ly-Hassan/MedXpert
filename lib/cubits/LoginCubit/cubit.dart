@@ -57,4 +57,16 @@ class MedLoginCubit extends Cubit<MedLoginStates> {
 
     emit(MedChangePasswordVisibilityState());
   }
+
+  bool isRole = true;
+  notRole(value) {
+    isRole = value;
+    emit(RoleState());
+  }
+
+  int? selectedItem;
+  void selectRole(int i) {
+    selectedItem = i;
+    emit(SelectState());
+  }
 }

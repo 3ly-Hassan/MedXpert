@@ -156,6 +156,9 @@ class Body extends StatelessWidget {
                 validate: (value) {
                   if (value != '' && int.tryParse(value!) is! int)
                     return 'write a right value of your respiration';
+                  if (value != '' &&
+                      (int.parse(value!) < 0 || int.parse(value) > 80))
+                    return 'must be in (0:80)';
                   return null;
                 },
                 onSaved: (value) {},

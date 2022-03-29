@@ -5,6 +5,7 @@ import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
+import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
@@ -24,4 +25,5 @@ final Map<String, WidgetBuilder> routes = {
   AddMeasurements.routeName: (context) => AddMeasurements(),
   Measurements.routeName: (context) => Measurements(),
   Teams.routeName: (context) => Teams(),
+  AddChronics.routeName: (context) => AddChronics(),
 };

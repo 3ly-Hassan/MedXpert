@@ -18,4 +18,8 @@ class MedLoginErrorState extends MedLoginStates {
   MedLoginErrorState(this.error);
 }
 
+class RoleState extends MedLoginStates {}
+
+class SelectState extends MedLoginStates {}
+
 class MedChangePasswordVisibilityState extends MedLoginStates {}

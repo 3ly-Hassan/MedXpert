@@ -39,6 +39,8 @@ class ProfileScreen extends StatelessWidget {
                           patient.username = nameController.text;
                           patient.weight = num.tryParse(weightController.text);
                           patient.gender = cubit.genderVal;
+                          patient.residency = cubit.dropValue;
+                          print(patient.residency.runtimeType);
                           cubit.updatePatientProfile(patient);
                           cubit.toggleReadOnly();
                         },
