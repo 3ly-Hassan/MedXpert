@@ -85,9 +85,10 @@ class Patient {
     data['birthDate'] = this.birthDate;
     data['gender'] = this.gender;
     data['weight'] = this.weight;
-    if (this.type != null) {
-      data['type'] = this.type!.map((v) => v.toJson()).toList();
-    }
+    data['residency'] = this.residency;
+    // if (this.type != null) {
+    //   data['type'] = this.type!.map((v) => v.toJson()).toList();
+    // }
 
     // if (this.chronics != null) {
     //   data['chronics'] = this.chronics!.map((v) => v.toJson()).toList();
