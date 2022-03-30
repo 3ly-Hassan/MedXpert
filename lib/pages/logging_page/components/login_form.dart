@@ -40,7 +40,10 @@ class SignForm extends StatelessWidget {
                 value: state.loginModel.token,
               ).then((value) {
                 token = state.loginModel.token!;
-                MeasurementCubit.get(context).getPatientProfile();
+                if (role == 'patient')
+                  MeasurementCubit.get(context).getPatientProfile();
+                else if (role == 'doctor')
+                  MeasurementCubit.get(context).getdoctorProfile();
                 Navigator.pushReplacementNamed(context, DashBord.routeName);
               });
             });

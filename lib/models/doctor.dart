@@ -10,6 +10,7 @@ class Doctor {
   String? createdAt;
   String? updatedAt;
   String? residency;
+  String? birthDate;
   List<dynamic>? specialization;
   List<dynamic>? followings;
 
@@ -34,6 +35,7 @@ class Doctor {
     password = json['password'];
     bio = json['bio'];
     gender = json['gender'];
+    birthDate = json['birthDate'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     residency = json['residency'];
@@ -43,7 +45,8 @@ class Doctor {
       json['followings'].forEach((v) {
         followings!.add(new Patient.fromJson(v));
       });
-   };
+    }
+    ;
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +56,7 @@ class Doctor {
     data['username'] = this.username;
     data['bio'] = this.bio;
     data['gender'] = this.gender;
+    data['birthDate'] = this.birthDate;
     if (this.specialization != null) {
       data['specialization'] =
           this.specialization!.map((v) => v.toJson()).toList();

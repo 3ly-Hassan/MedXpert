@@ -3,14 +3,12 @@ import 'package:final_pro/components/some_shared_components.dart';
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/models/patient.dart';
+import 'package:final_pro/models/spec_checkBox.dart';
 import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
-import '../../../cubits/SignUpCubit/cubit.dart';
 
 class ProfileBody extends StatelessWidget {
   ProfileBody({
@@ -52,11 +50,11 @@ class ProfileBody extends StatelessWidget {
     'South-Sinai',
     'Suez'
   ];
+  List<String> specializations = [];
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
-
-    return cubit.patient.username != null
+    return cubit.patient.username != null || cubit.doctor.username != null
         ? SingleChildScrollView(
             child: Container(
               width: double.infinity,
@@ -70,11 +68,15 @@ class ProfileBody extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    cubit.patient.username!,
+                    role == 'patient'
+                        ? cubit.patient.username!
+                        : cubit.doctor.username!,
                     style: TextStyle(color: Colors.black, fontSize: 26),
                   ),
                   Text(
-                    cubit.patient.email!,
+                    role == 'patient'
+                        ? cubit.patient.email!
+                        : cubit.doctor.email!,
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 10),
@@ -202,16 +204,19 @@ class ProfileBody extends StatelessWidget {
                             label: 'Birth Date',
                             prefix: LineAwesomeIcons.birthday_cake),
                         SizedBox(height: 10),
-                        defaultFormField(
-                            readOnly: MeasurementCubit.get(context).readOnly,
-                            controller: weightController,
-                            type:
-                                TextInputType.numberWithOptions(decimal: true),
-                            validate: (validate) {
-                              return null;
-                            },
-                            label: 'Weight',
-                            prefix: LineAwesomeIcons.weight),
+                        role == 'patient'
+                            ? defaultFormField(
+                                readOnly:
+                                    MeasurementCubit.get(context).readOnly,
+                                controller: weightController,
+                                type: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                validate: (validate) {
+                                  return null;
+                                },
+                                label: 'Weight',
+                                prefix: LineAwesomeIcons.weight)
+                            : Container(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -298,32 +303,77 @@ class ProfileBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                  cubit.patient.chronics != null
-                      ? Wrap(
-                          children: cubit.patient.chronics!
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        chronicsItem(e, context),
-                                      ],
-                                    ),
-                                  ))
-                              .toList())
-                      : Container(),
+                  if (cubit.patient.chronics != null ||
+                      cubit.doctor.specialization != null)
+                    Wrap(
+                        children: cubit.patient.chronics != null
+                            ? cubit.patient.chronics!
+                                .map((e) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          chronicsItem(e, context),
+                                        ],
+                                      ),
+                                    ))
+                                .toList()
+                            : cubit.doctor.specialization!
+                                .map((e) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          chronicsItem(e, context),
+                                        ],
+                                      ),
+                                    ))
+                                .toList()),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: DefaultButton(
-                      text: 'Add to your chronics',
-                      press: () {
-                        Navigator.pushNamed(context, AddChronics.routeName);
-                      },
-                    ),
+                    child: cubit.checkBox
+                        ? DefaultButton(
+                            text: role == 'patient'
+                                ? 'Add to your chronics'
+                                : 'Add to your specializations',
+                            press: () {
+                              role == 'patient'
+                                  ? Navigator.pushNamed(
+                                      context, AddChronics.routeName)
+                                  : cubit.showCheckBoxes();
+                            },
+                          )
+                        : DefaultButton(
+                            text: 'Done',
+                            press: () {
+                              cubit.showCheckBoxes();
+                            },
+                          ),
                   ),
-                  SizedBox(height: 20)
+                  SizedBox(height: 20),
+                  Column(
+                    children: [
+                      ...checkBoxList.map(
+                        (item) => ListTile(
+                          onTap: () => onItemClicked(item,context),
+                          title: Text(
+                            item.title,
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                          leading: Checkbox(
+                            onChanged: (bool? value) => onItemClicked(item,context),
+                            value: item.value,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -377,6 +427,19 @@ class ProfileBody extends StatelessWidget {
         )
       ],
     );
+  }
+
+  onItemClicked(SpecCheckBox item,context) {
+    final c = MeasurementCubit.get(context);
+    var newValue = !item.value;
+    if(newValue)
+      {
+        specializations.add(item.title);
+      }
+    else
+      specializations.remove(item.title);
+   c .toggleCkValue(item);
+
   }
 
   // Widget addItem() {

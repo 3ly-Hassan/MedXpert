@@ -3,6 +3,7 @@ import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/patient.dart';
+import 'package:final_pro/models/spec_checkBox.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -190,6 +191,9 @@ class MeasurementCubit extends Cubit<MeasurementState> {
         return null;
       }
       doctor = value;
+      genderVal = doctor.gender;
+      print(doctor.residency);
+      dropValue = doctor.residency;
       emit(GetDoctorProfileLoaded());
     });
   }
@@ -269,5 +273,16 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   chooseFromDropDown(value) {
     dropValue = value;
     emit(UpdateDrop());
+  }
+
+  var checkBox = false;
+  showCheckBoxes() {
+    checkBox = !checkBox;
+    emit(ShowCheckBoxes());
+  }
+  toggleCkValue(SpecCheckBox checkBox)
+  {
+    checkBox.value = !checkBox.value;
+
   }
 }

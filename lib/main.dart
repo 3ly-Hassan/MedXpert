@@ -60,8 +60,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) => MeasurementCubit()..getPatientProfile()),
+        BlocProvider(create: (context) {
+          if (role == 'patient')
+            return MeasurementCubit()..getPatientProfile();
+          else if (role == 'doctor')
+            return MeasurementCubit()..getdoctorProfile();
+          else
+            return MeasurementCubit();
+        }),
         BlocProvider(
           create: (context) => TeamsCubit(),
         ),
