@@ -39,7 +39,7 @@ class Doctor {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     residency = json['residency'];
-    specialization = json['specialization'];
+    specialization = json['specialization'].cast<String>();
     if (json['followings'] != null) {
       followings = <Patient>[];
       json['followings'].forEach((v) {
@@ -57,10 +57,10 @@ class Doctor {
     data['bio'] = this.bio;
     data['gender'] = this.gender;
     data['birthDate'] = this.birthDate;
-    if (this.specialization != null) {
-      data['specialization'] =
-          this.specialization!.map((v) => v.toJson()).toList();
-    }
+    // if (this.specialization != null) {
+    //   data['specialization'] =
+    //       this.specialization!.map((v) => v.toJson()).toList();
+    // }
     return data;
   }
 }

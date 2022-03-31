@@ -71,6 +71,7 @@ OutlineInputBorder outlineInputBorder() {
 
 String? token;
 String? role;
+List<String> specializations = [];
 var splash = true;
 void showToast({
   @required String? text,

@@ -192,7 +192,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       }
       doctor = value;
       genderVal = doctor.gender;
-      print(genderVal);
+      var spec = doctor.specialization;
+      print(spec);
       dropValue = doctor.residency;
       emit(GetDoctorProfileLoaded());
     });
@@ -234,6 +235,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     emit(addSpecializationLoading());
     _addSpecialization(spec).then((_) {
       doctor.specialization?.addAll(spec);
+      print(doctor.specialization);
+      print('ssssssssssssssssssssssssss');
       emit(addSpecializationLoaded());
     });
   }

@@ -50,7 +50,6 @@ class ProfileBody extends StatelessWidget {
     'South-Sinai',
     'Suez'
   ];
-  List<String> specializations = [];
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
@@ -330,7 +329,7 @@ class ProfileBody extends StatelessWidget {
                                             MainAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          chronicsItem(e, context),
+                                          specializationsItem(e, context),
                                         ],
                                       ),
                                     ))
@@ -352,7 +351,9 @@ class ProfileBody extends StatelessWidget {
                         : DefaultButton(
                             text: 'Done',
                             press: () {
+                              print(specializations);
                               cubit.addSpecialization(specializations);
+                              specializations = [];
                               cubit.showCheckBoxes();
                             },
                           ),
@@ -364,7 +365,7 @@ class ProfileBody extends StatelessWidget {
                             ...checkBoxList.map(
                               (item) => ListTile(
                                 enabled: !cubit.doctor.specialization!
-                                    .contains(item),
+                                    .contains(item.title),
                                 onTap: () => onItemClicked(item, context),
                                 title: Text(
                                   item.title,
@@ -373,11 +374,14 @@ class ProfileBody extends StatelessWidget {
                                 ),
                                 leading: Checkbox(
                                   onChanged: cubit.doctor.specialization!
-                                          .contains(item)
+                                          .contains(item.title)
                                       ? (null)
                                       : (bool? value) =>
                                           onItemClicked(item, context),
-                                  value: item.value,
+                                  value: cubit.doctor.specialization!
+                                          .contains(item.title)
+                                      ? true
+                                      : item.value,
                                 ),
                               ),
                             ),
@@ -440,9 +444,52 @@ class ProfileBody extends StatelessWidget {
     );
   }
 
+  Widget specializationsItem(String specialization, context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 10),
+            child: Column(
+              children: [
+                Text(
+                  specialization,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          child: IconButton(
+              onPressed: () {
+                MeasurementCubit.get(context)
+                    .deleteSpecialization(specialization);
+              },
+              icon: Icon(
+                Icons.cancel,
+                size: 20,
+              )),
+          top: -14,
+          right: -8,
+        )
+      ],
+    );
+  }
+
   onItemClicked(SpecCheckBox item, context) {
     final c = MeasurementCubit.get(context);
     var newValue = !item.value;
+    print(newValue);
     if (newValue) {
       specializations.add(item.title);
     } else
