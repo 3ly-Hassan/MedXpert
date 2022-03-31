@@ -314,7 +314,7 @@ class APIService {
     }
   }
 
-  Future<void> addSpecialization(String specialization) async {
+  Future<void> addSpecialization(List<String> specialization) async {
     String url = "$api/doctor/addSpecialization";
     return _specialization(specialization, url);
   }
@@ -324,7 +324,7 @@ class APIService {
     return _specialization(specialization, url);
   }
 
-  Future<void> _specialization(String specialization, String url) async {
+  Future<void> _specialization(dynamic specialization, String url) async {
     try {
       final Map<String, dynamic> _specialization = new Map<String, dynamic>();
       _specialization["specialization"] = specialization;
@@ -344,6 +344,9 @@ class APIService {
       return null;
     }
   }
+
+
+
 
   //teams
 
