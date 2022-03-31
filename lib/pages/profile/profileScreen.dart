@@ -15,11 +15,15 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = MeasurementCubit.get(context);
-    var model = cubit.patient;
-    nameController.text = model.username!;
-    emailController.text = model.email!;
-    birthController.text = model.birthDate!.substring(0, 10);
-    weightController.text = model.weight == null ? '' : model.weight.toString();
+    var pModel = cubit.patient;
+    var dModel = cubit.doctor;
+    nameController.text = pModel.username ?? dModel.username!;
+    emailController.text = pModel.email ?? dModel.email!;
+    birthController.text = pModel.birthDate != null
+        ? pModel.birthDate!.substring(0, 10)
+        : dModel.birthDate!.substring(0, 10);
+    weightController.text =
+        pModel.weight == null ? '' : pModel.weight.toString();
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
@@ -48,10 +52,14 @@ class ProfileScreen extends StatelessWidget {
               !cubit.readOnly
                   ? TextButton(
                       onPressed: () {
-                        nameController.text = model.username!;
-                        emailController.text = model.email!;
-                        birthController.text =
-                            model.birthDate!.substring(0, 10);
+                        nameController.text = role == 'patient'
+                            ? pModel.username!
+                            : dModel.username!;
+                        emailController.text =
+                            role == 'patient' ? pModel.email! : dModel.email!;
+                        birthController.text = role == 'patient'
+                            ? pModel.birthDate!.substring(0, 10)
+                            : dModel.birthDate!.substring(0, 10);
                         cubit.toggleReadOnly();
                       },
                       child: Text(

@@ -337,7 +337,7 @@ class ProfileBody extends StatelessWidget {
                                 .toList()),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: cubit.checkBox
+                    child: !cubit.checkBox
                         ? DefaultButton(
                             text: role == 'patient'
                                 ? 'Add to your chronics'
@@ -352,28 +352,39 @@ class ProfileBody extends StatelessWidget {
                         : DefaultButton(
                             text: 'Done',
                             press: () {
+                              cubit.addSpecialization(specializations);
                               cubit.showCheckBoxes();
                             },
                           ),
                   ),
                   SizedBox(height: 20),
-                  Column(
-                    children: [
-                      ...checkBoxList.map(
-                        (item) => ListTile(
-                          onTap: () => onItemClicked(item,context),
-                          title: Text(
-                            item.title,
-                            style: TextStyle(color: Colors.black, fontSize: 20),
-                          ),
-                          leading: Checkbox(
-                            onChanged: (bool? value) => onItemClicked(item,context),
-                            value: item.value,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
+                  cubit.checkBox
+                      ? Column(
+                          children: [
+                            ...checkBoxList.map(
+                              (item) => ListTile(
+                                enabled: !cubit.doctor.specialization!
+                                    .contains(item),
+                                onTap: () => onItemClicked(item, context),
+                                title: Text(
+                                  item.title,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
+                                ),
+                                leading: Checkbox(
+                                  onChanged: cubit.doctor.specialization!
+                                          .contains(item)
+                                      ? (null)
+                                      : (bool? value) =>
+                                          onItemClicked(item, context),
+                                  value: item.value,
+                                ),
+                              ),
+                            ),
+                            Container(),
+                          ],
+                        )
+                      : Container(),
                 ],
               ),
             ),
@@ -429,17 +440,14 @@ class ProfileBody extends StatelessWidget {
     );
   }
 
-  onItemClicked(SpecCheckBox item,context) {
+  onItemClicked(SpecCheckBox item, context) {
     final c = MeasurementCubit.get(context);
     var newValue = !item.value;
-    if(newValue)
-      {
-        specializations.add(item.title);
-      }
-    else
+    if (newValue) {
+      specializations.add(item.title);
+    } else
       specializations.remove(item.title);
-   c .toggleCkValue(item);
-
+    c.toggleCkValue(item);
   }
 
   // Widget addItem() {

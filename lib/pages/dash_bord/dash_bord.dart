@@ -55,17 +55,39 @@ class _DashBordState extends State<DashBord> {
                             children: [
                               Text(
                                 MeasurementCubit.get(context)
-                                        .patient
-                                        .username ??
-                                    "Loading...",
+                                                .patient
+                                                .username ==
+                                            null &&
+                                        MeasurementCubit.get(context)
+                                                .doctor
+                                                .username ==
+                                            null
+                                    ? "Loading..."
+                                    : MeasurementCubit.get(context)
+                                            .patient
+                                            .username ??
+                                        MeasurementCubit.get(context)
+                                            .doctor
+                                            .username!,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     fontSize: 20),
                               ),
                               Text(
-                                MeasurementCubit.get(context).patient.email ??
-                                    "Loading...",
+                                MeasurementCubit.get(context).patient.email ==
+                                            null &&
+                                        MeasurementCubit.get(context)
+                                                .doctor
+                                                .email ==
+                                            null
+                                    ? "Loading..."
+                                    : MeasurementCubit.get(context)
+                                            .patient
+                                            .email ??
+                                        MeasurementCubit.get(context)
+                                            .doctor
+                                            .email!,
                                 style: TextStyle(
                                     fontFamily: 'Muli',
                                     color: Colors.white,

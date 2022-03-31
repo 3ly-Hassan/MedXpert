@@ -192,7 +192,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       }
       doctor = value;
       genderVal = doctor.gender;
-      print(doctor.residency);
+      print(genderVal);
       dropValue = doctor.residency;
       emit(GetDoctorProfileLoaded());
     });
@@ -280,9 +280,9 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     checkBox = !checkBox;
     emit(ShowCheckBoxes());
   }
-  toggleCkValue(SpecCheckBox checkBox)
-  {
-    checkBox.value = !checkBox.value;
 
+  toggleCkValue(SpecCheckBox checkBox) {
+    checkBox.value = !checkBox.value;
+    emit(ToggleCBValue());
   }
 }

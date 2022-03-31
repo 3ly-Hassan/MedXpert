@@ -76,3 +76,5 @@ class UpdateGender extends MeasurementState {}
 class UpdateDrop extends MeasurementState {}
 
 class ShowCheckBoxes extends MeasurementState {}
+
+class ToggleCBValue extends MeasurementState {}
