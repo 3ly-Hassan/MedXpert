@@ -1,5 +1,6 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/pages/profile/components/profileBody.dart';
 import 'package:flutter/material.dart';
@@ -36,18 +37,32 @@ class ProfileScreen extends StatelessWidget {
                       ? () {
                           cubit.toggleReadOnly();
                         }
-                      : () {
-                          var patient = Patient();
-                          patient.birthDate = birthController.text;
-                          patient.email = emailController.text;
-                          patient.username = nameController.text;
-                          patient.weight = num.tryParse(weightController.text);
-                          patient.gender = cubit.genderVal;
-                          patient.residency = cubit.dropValue;
-                          print(patient.residency.runtimeType);
-                          cubit.updatePatientProfile(patient);
-                          cubit.toggleReadOnly();
-                        },
+                      : role == 'patient'
+                          ? () {
+                              var patient = Patient();
+                              patient.birthDate = birthController.text;
+                              patient.email = emailController.text;
+                              patient.username = nameController.text;
+                              patient.weight =
+                                  num.tryParse(weightController.text);
+                              patient.gender = cubit.genderVal;
+                              patient.residency = cubit.dropValue;
+                              print(patient.residency.runtimeType);
+                              cubit.updatePatientProfile(patient);
+                              cubit.toggleReadOnly();
+                            }
+                          : () {
+                              var doctor = Doctor();
+                              doctor.birthDate = birthController.text;
+                              doctor.email = emailController.text;
+                              doctor.username = nameController.text;
+                              //patient.weight = num.tryParse(weightController.text);
+                              doctor.gender = cubit.genderVal;
+                              doctor.residency = cubit.dropValue;
+                              print(doctor.residency.runtimeType);
+                              cubit.updateDoctorProfile(doctor);
+                              cubit.toggleReadOnly();
+                            },
                   icon: cubit.readOnly ? Icon(Icons.edit) : Icon(Icons.save)),
               !cubit.readOnly
                   ? TextButton(
