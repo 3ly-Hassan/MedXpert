@@ -46,7 +46,8 @@ class _DashBordState extends State<DashBord> {
                           CircleAvatar(
                             radius: 32,
                             backgroundImage:
-                                AssetImage('assets/images/profile.png'),
+                            role == 'patient' ? 
+                                AssetImage('assets/images/patient.jpg') : AssetImage('assets/images/doctor.jpg') ,
                           ),
                           SizedBox(width: 16),
                           Column(
