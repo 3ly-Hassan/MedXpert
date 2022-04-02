@@ -53,6 +53,7 @@ const String kUseAnInvitation = 'Use an invitation';
 const String kEnterTheNumber = 'Your number';
 const String kPleaseEnterANumber = 'Please enter a number!';
 const String kOnlyNumbersAreAllowed = 'Only numbers are allowed!';
+const String kServerError = "server error";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

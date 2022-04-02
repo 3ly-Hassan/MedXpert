@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'components/loading_row.dart';
 import 'constants.dart';
 
 class DialogHelper {
@@ -18,15 +19,7 @@ class DialogHelper {
         builder: (context, state) {
           if (state is TeamsLoadingState) {
             return AlertDialog(
-              title: Text(kYourInvitationNumber),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(kLoading),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            );
+                title: Text(kYourInvitationNumber), content: LoadingRow());
           } else if (state is InvitationCreationState) {
             return AlertDialog(
               title: Text(kYourInvitationNumber),
@@ -101,6 +94,27 @@ class DialogHelper {
       barrierDismissible: true,
       builder: (context) => BlocBuilder<TeamsCubit, TeamsState>(
         builder: (context, state) {
+          if (state is TeamsLoadingState) {
+            return AlertDialog(
+              title: Text(kUseAnInvitation),
+              content: LoadingRow(),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(kCancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    //TODO may  be you need some delay here !
+                    BlocProvider.of<TeamsCubit>(context)
+                        .emitTeamsInitialState();
+                  },
+                ),
+                TextButton(
+                  child: Text(kOk),
+                  onPressed: null,
+                ),
+              ],
+            );
+          }
           return AlertDialog(
             title: Text(kUseAnInvitation),
             content: Row(
@@ -139,8 +153,9 @@ class DialogHelper {
                 child: Text(kOk),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Navigator.of(context).pop();
-                    //TODO take your action
+                    BlocProvider.of<TeamsCubit>(context)
+                        .emitTeamsLoadingState();
+                    onPressedOkButton(textController.text);
                   }
                 },
               ),
@@ -178,5 +193,9 @@ class DialogHelper {
     } else {
       return true;
     }
+  }
+
+  static Future<void> onPressedOkButton(String text) async {
+    await Future.delayed(Duration(seconds: 3));
   }
 }

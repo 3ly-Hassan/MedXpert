@@ -345,9 +345,6 @@ class APIService {
     }
   }
 
-
-
-
   //teams
 
   Future<Invitation?> createInvitation() async {
@@ -377,7 +374,7 @@ class APIService {
           InvitationResponseModel.fromJson(json.decode(response.body)["msg"]);
       return msg;
     } catch (e) {
-      return InvitationResponseModel(msg: "server error");
+      return InvitationResponseModel(msg: kServerError);
     }
   }
 

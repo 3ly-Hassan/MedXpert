@@ -5,9 +5,12 @@ import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../components/center_progress_indicator.dart';
+import '../../../components/error_bloc.dart';
 import '../../../cubits/teams_cubit/teams_cubit.dart';
 import '../../../models/patient.dart';
 import 'follower_card.dart';
+import 'list_inside_container.dart';
 
 List list = [
   FollowerCard(
@@ -86,70 +89,72 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    final x = BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
-
+    BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
     SizeConfig()..init(context);
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {},
       builder: (context, state) {
-        // if (state is TeamsLoadingState) {
-        //   return CenterProgressIndicator();
-        // }
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: SizeConfig.screenHeight * 0.71,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
+        bool isFollowersSelected =
+            BlocProvider.of<TeamsCubit>(context).isFollowersSelected;
+        if (state is TeamsLoadingState) {
+          return CenterProgressIndicator();
+        } else if (state is GetFollowingState) {
+          //
+          Widget getViewedList() {
+            if (role == "patient") {
+              if (isFollowersSelected) {
+                return ListInsideContainer(viewedList: state.model.followers);
+              } else
+                return ListInsideContainer(viewedList: state.model.followings);
+            } else {
+              return ListInsideContainer(viewedList: state.model.followings);
+            }
+          }
+
+          //
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                getViewedList(),
+                Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 8,
+                      ),
+                      DefaultButton(
+                        text: kCreateInvitation,
+                        press: () async {
+                          BlocProvider.of<TeamsCubit>(context)
+                              .emitTeamsLoadingState();
+                          DialogHelper.createInvitationDialog(context);
+                          await BlocProvider.of<TeamsCubit>(context)
+                              .createInvitationEvent();
+                        },
+                      ),
+                      Spacer(),
+                      DefaultButton(
+                        text: kUseInvitation,
+                        press: () {
+                          textController.clear();
+                          DialogHelper.useInvitationDialog(
+                              context, textController);
+                        },
+                      ),
+                      SizedBox(
+                        height: 8,
+                      )
+                    ],
+                  ),
+                  height: SizeConfig.screenHeight * 0.18,
+                  // color: Colors.amber,
                 ),
-                child: ListView.builder(
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.fromLTRB(8, index == 0 ? 10 : 0, 8, 10),
-                        child: list[index],
-                      );
-                    }),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 8,
-                    ),
-                    DefaultButton(
-                      text: kCreateInvitation,
-                      press: () async {
-                        BlocProvider.of<TeamsCubit>(context)
-                            .emitDialogLoadingSpinner();
-                        DialogHelper.createInvitationDialog(context);
-                        await BlocProvider.of<TeamsCubit>(context)
-                            .createInvitationEvent();
-                      },
-                    ),
-                    Spacer(),
-                    DefaultButton(
-                      text: kUseInvitation,
-                      press: () {
-                        textController.clear();
-                        DialogHelper.useInvitationDialog(
-                            context, textController);
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    )
-                  ],
-                ),
-                height: SizeConfig.screenHeight * 0.18,
-                // color: Colors.amber,
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        }
+        return ErrorBloc();
       },
     );
 
