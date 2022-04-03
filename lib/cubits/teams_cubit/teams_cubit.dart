@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
+import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/models/patient.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 import '../../models/doctor.dart';
@@ -9,6 +12,10 @@ import '../../models/invitation.dart';
 part 'teams_state.dart';
 
 class TeamsCubit extends Cubit<TeamsState> {
+  TeamsCubit() : super(TeamsInitialState());
+
+  APIService apiService = APIService();
+
   List<Follower> patientFollowers = [];
   List<Follower> patientFollowings = [];
   List<Follower> doctorFollowings = [];
@@ -16,9 +23,6 @@ class TeamsCubit extends Cubit<TeamsState> {
   Doctor? doctorModel;
 
   bool isFollowersSelected = true;
-
-  TeamsCubit() : super(TeamsInitialState());
-  APIService apiService = APIService();
 
   void emitTeamsInitialState() {
     emit(TeamsInitialState());
@@ -28,9 +32,6 @@ class TeamsCubit extends Cubit<TeamsState> {
     emit(TeamsLoadingState());
   }
 
-//   void emitGetFollowingInfoState{
-//     emit(GetFollowingState(model))
-// }
   void selectFollowers() {
     isFollowersSelected = true;
     emit(GetFollowingState(patientModel));
@@ -46,7 +47,8 @@ class TeamsCubit extends Cubit<TeamsState> {
     if (role == "patient") {
       print('I am a patient !!!!!!!!!');
       patientModel = await apiService.getPatientProfile();
-      // patientModel=Patient(gender: "male", email: "ssdhs@gmail.com", followers: [
+      // patientModel =
+      //     Patient(gender: "male", email: "ssdhs@gmail.com", followers: [
       //   Follower(email: "email 1", username: 'username 1'),
       //   Follower(email: "email 2", username: 'username 2'),
       // ], followings: [
@@ -61,11 +63,38 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
-  Future<void> createInvitationEvent() async {
-    // await Future.delayed(Duration(seconds: 3));
-    final invitationModel = await apiService.createInvitation();
-    emit(InvitationCreationState(
-        invitationNumber: invitationModel?.invitaionNumber));
+  Future refreshFollowingInfo(String text, BuildContext context) async {
+    //TODO: using context here is anti pattern !!
+    if (role == "patient") {
+      final InvitationResponseModel response =
+          await apiService.useInvitationPatient(text);
+      if (response.msg == kSuccessMessageFromDataBase) {
+        //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
+        //(the follower model itself) to add it
+        patientModel = await apiService.getPatientProfile();
+        emit(GetFollowingState(patientModel));
+        Navigator.of(context).pop();
+      } else {
+        BlocProvider.of<DialogCubit>(context)
+            .emitDialogErrorState(response.msg!);
+      }
+    }
+    //in case of doctor
+    else {
+      print('Doctor!!!!!!!!!');
+      final InvitationResponseModel response =
+          await apiService.useInvitationDoctor(text);
+      print(response.msg);
+      if (response.msg != kServerError) {
+        //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
+        //(the follower model itself) to add it
+        doctorModel = await apiService.getDoctorProfile();
+        emit(GetFollowingState(doctorModel));
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   Future<Object?> useInvitationEvent(String text) async {

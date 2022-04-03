@@ -1,3 +1,4 @@
+import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,14 +13,17 @@ class DialogHelper {
   static void createInvitationDialog(
     BuildContext context,
   ) {
+    BlocProvider.of<DialogCubit>(context).emitDialogLoadingState();
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => BlocBuilder<TeamsCubit, TeamsState>(
+      builder: (context) => BlocBuilder<DialogCubit, DialogState>(
         builder: (context, state) {
-          if (state is TeamsLoadingState) {
+          if (state is DialogLoadingState) {
             return AlertDialog(
-                title: Text(kYourInvitationNumber), content: LoadingRow());
+              title: Text(kYourInvitationNumber),
+              content: LoadingRow(),
+            );
           } else if (state is InvitationCreationState) {
             return AlertDialog(
               title: Text(kYourInvitationNumber),
@@ -64,7 +68,7 @@ class DialogHelper {
                 ),
               ],
             );
-          } else if (state is TeamsErrorState) {
+          } else if (state is DialogErrorState) {
             return AlertDialog(
               title: Text(kYourInvitationNumber),
               content: Text(state.errorMessage),
@@ -92,9 +96,9 @@ class DialogHelper {
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => BlocBuilder<TeamsCubit, TeamsState>(
+      builder: (context) => BlocBuilder<DialogCubit, DialogState>(
         builder: (context, state) {
-          if (state is TeamsLoadingState) {
+          if (state is DialogLoadingState) {
             return AlertDialog(
               title: Text(kUseAnInvitation),
               content: LoadingRow(),
@@ -103,14 +107,33 @@ class DialogHelper {
                   child: Text(kCancel),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    //TODO may  be you need some delay here !
-                    BlocProvider.of<TeamsCubit>(context)
-                        .emitTeamsInitialState();
                   },
                 ),
                 TextButton(
                   child: Text(kOk),
                   onPressed: null,
+                ),
+              ],
+            );
+          }
+          //
+          else if (state is DialogErrorState) {
+            return AlertDialog(
+              title: Text(kAlert),
+              content: Text(state.errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(kCancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(kOk),
+                  onPressed: () {
+                    BlocProvider.of<DialogCubit>(context)
+                        .emitDialogInitialState();
+                  },
                 ),
               ],
             );
@@ -123,6 +146,7 @@ class DialogHelper {
                   child: Form(
                     key: _formKey,
                     child: TextFormField(
+                      autofocus: true,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: kEnterTheNumber,
@@ -130,6 +154,10 @@ class DialogHelper {
                       ),
                       controller: textController,
                       validator: _validate,
+                      onFieldSubmitted: (_) async {
+                        await onPressedOkButton(
+                            context, _formKey, textController);
+                      },
                     ),
                   ),
                 ),
@@ -152,11 +180,7 @@ class DialogHelper {
               TextButton(
                 child: Text(kOk),
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    BlocProvider.of<TeamsCubit>(context)
-                        .emitTeamsLoadingState();
-                    onPressedOkButton(textController.text);
-                  }
+                  await onPressedOkButton(context, _formKey, textController);
                 },
               ),
             ],
@@ -195,7 +219,14 @@ class DialogHelper {
     }
   }
 
-  static Future<void> onPressedOkButton(String text) async {
-    await Future.delayed(Duration(seconds: 3));
+  static Future<void> onPressedOkButton(
+      BuildContext context,
+      GlobalKey<FormState> formKey,
+      TextEditingController textController) async {
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<DialogCubit>(context).emitDialogLoadingState();
+      await BlocProvider.of<TeamsCubit>(context)
+          .refreshFollowingInfo(textController.text, context);
+    }
   }
 }

@@ -1,6 +1,4 @@
-import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/constants.dart';
-import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,68 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../components/center_progress_indicator.dart';
 import '../../../components/error_bloc.dart';
 import '../../../cubits/teams_cubit/teams_cubit.dart';
-import '../../../models/patient.dart';
-import 'follower_card.dart';
+import 'buttons_container.dart';
 import 'list_inside_container.dart';
-
-List list = [
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-  FollowerCard(
-    follower: Follower(
-      username: "userName",
-      email: "email",
-      gender: "male",
-    ),
-  ),
-];
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -79,14 +17,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  TextEditingController textController = TextEditingController();
-
-  @override
-  void dispose() {
-    textController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
@@ -97,8 +27,25 @@ class _BodyState extends State<Body> {
         bool isFollowersSelected =
             BlocProvider.of<TeamsCubit>(context).isFollowersSelected;
         if (state is TeamsLoadingState) {
-          return CenterProgressIndicator();
-        } else if (state is GetFollowingState) {
+          return Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: CenterProgressIndicator(),
+                height: SizeConfig.screenHeight * 0.71,
+              ),
+              ButtonsContainer(),
+            ],
+          );
+        }
+        //
+        else if (state is TeamsErrorState) {
+          return Center(
+            child: Text(state.errorMessage),
+          );
+        }
+        //
+        else if (state is GetFollowingState) {
           //
           Widget getViewedList() {
             if (role == "patient") {
@@ -117,39 +64,7 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getViewedList(),
-                Container(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 8,
-                      ),
-                      DefaultButton(
-                        text: kCreateInvitation,
-                        press: () async {
-                          BlocProvider.of<TeamsCubit>(context)
-                              .emitTeamsLoadingState();
-                          DialogHelper.createInvitationDialog(context);
-                          await BlocProvider.of<TeamsCubit>(context)
-                              .createInvitationEvent();
-                        },
-                      ),
-                      Spacer(),
-                      DefaultButton(
-                        text: kUseInvitation,
-                        press: () {
-                          textController.clear();
-                          DialogHelper.useInvitationDialog(
-                              context, textController);
-                        },
-                      ),
-                      SizedBox(
-                        height: 8,
-                      )
-                    ],
-                  ),
-                  height: SizeConfig.screenHeight * 0.18,
-                  // color: Colors.amber,
-                ),
+                ButtonsContainer(),
               ],
             ),
           );

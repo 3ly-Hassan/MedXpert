@@ -54,6 +54,10 @@ const String kEnterTheNumber = 'Your number';
 const String kPleaseEnterANumber = 'Please enter a number!';
 const String kOnlyNumbersAreAllowed = 'Only numbers are allowed!';
 const String kServerError = "server error";
+const String kAlert = "Alert!";
+const String kSorryForThat =
+    "Sorry for that, but something went wrong, please try again";
+const String kSuccessMessageFromDataBase = 'success';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

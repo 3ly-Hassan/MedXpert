@@ -18,37 +18,39 @@ class _DropDownAppBarState extends State<DropDownAppBar> {
       children: [
         role == "patient"
             ? Expanded(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  menuMaxHeight: 4 * 50,
-                  dropdownColor: Theme.of(context).primaryColor,
-                  value: selectedValue, //followers
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    // color: themeContext.colorScheme.onBackground,
-                  ),
-                  elevation: 8,
-                  onChanged: (newValue) async {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
-                    if (selectedValue == dropDownValues[0]) {
-                      BlocProvider.of<TeamsCubit>(context).selectFollowers();
-                    } else {
-                      BlocProvider.of<TeamsCubit>(context).selectFollowings();
-                    }
-                  },
-                  items: dropDownValues.map<DropdownMenuItem<String>>(
-                    (dynamic value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    menuMaxHeight: 4 * 50,
+                    dropdownColor: Theme.of(context).primaryColor,
+                    value: selectedValue, //followers
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      // color: themeContext.colorScheme.onBackground,
+                    ),
+                    elevation: 8,
+                    onChanged: (newValue) async {
+                      setState(() {
+                        selectedValue = newValue!;
+                      });
+                      if (selectedValue == dropDownValues[0]) {
+                        BlocProvider.of<TeamsCubit>(context).selectFollowers();
+                      } else {
+                        BlocProvider.of<TeamsCubit>(context).selectFollowings();
+                      }
                     },
-                  ).toList(),
+                    items: dropDownValues.map<DropdownMenuItem<String>>(
+                      (dynamic value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
                 ),
               )
             : Text(kFollowings),

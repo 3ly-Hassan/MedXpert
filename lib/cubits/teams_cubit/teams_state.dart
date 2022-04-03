@@ -13,11 +13,6 @@ class GetFollowingState extends TeamsState {
   GetFollowingState(this.model);
 }
 
-class InvitationCreationState extends TeamsState {
-  final String? invitationNumber;
-  InvitationCreationState({required this.invitationNumber});
-}
-
 class TeamsErrorState extends TeamsState {
   final String errorMessage;
   TeamsErrorState({required this.errorMessage});
