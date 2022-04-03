@@ -4,6 +4,7 @@ class SizeConfig {
   static late MediaQueryData _mediaQueryData;
   static late double screenWidth;
   static late double screenHeight;
+  static late double screenHeightUnderAppAndStatusBar;
   static double? defaultSize;
   static Orientation? orientation;
 
@@ -11,6 +12,9 @@ class SizeConfig {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
+    screenHeightUnderAppAndStatusBar = (_mediaQueryData.size.height) -
+        (AppBar().preferredSize.height) -
+        (MediaQuery.of(context).padding.top);
     orientation = _mediaQueryData.orientation;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -17,7 +18,7 @@ class DefaultButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
       child: SizedBox(
         width: double.infinity,
-        height: (56),
+        height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.075,
         child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

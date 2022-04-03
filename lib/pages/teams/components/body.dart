@@ -27,15 +27,17 @@ class _BodyState extends State<Body> {
         bool isFollowersSelected =
             BlocProvider.of<TeamsCubit>(context).isFollowersSelected;
         if (state is TeamsLoadingState) {
-          return Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: CenterProgressIndicator(),
-                height: SizeConfig.screenHeight * 0.71,
-              ),
-              ButtonsContainer(),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: CenterProgressIndicator(),
+                  height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.74,
+                ),
+                ButtonsContainer(),
+              ],
+            ),
           );
         }
         //
@@ -58,7 +60,6 @@ class _BodyState extends State<Body> {
             }
           }
 
-          //
           return SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

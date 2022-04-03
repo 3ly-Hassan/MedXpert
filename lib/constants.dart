@@ -58,6 +58,9 @@ const String kAlert = "Alert!";
 const String kSorryForThat =
     "Sorry for that, but something went wrong, please try again";
 const String kSuccessMessageFromDataBase = 'success';
+const String kNoFollowersYet = 'No followers yet';
+const String kNoFollowingsYet = 'No followings yet';
+const int kNoFollowersAnimationDuration = 500;
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

@@ -26,10 +26,12 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.22,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: 8,
+            height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.011,
           ),
           DefaultButton(
             text: kCreateInvitation,
@@ -40,7 +42,7 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
                   .createInvitationEvent();
             },
           ),
-          Spacer(),
+          // Spacer(),
           DefaultButton(
             text: kUseInvitation,
             press: () {
@@ -50,11 +52,10 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
             },
           ),
           SizedBox(
-            height: 8,
+            height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.011,
           )
         ],
       ),
-      height: SizeConfig.screenHeight * 0.18,
       // color: Colors.amber,
     );
   }

@@ -96,32 +96,4 @@ class TeamsCubit extends Cubit<TeamsState> {
       }
     }
   }
-
-  Future<Object?> useInvitationEvent(String text) async {
-    if (role == "patient") {
-      print('patient!!!!!!!!!');
-      final InvitationResponseModel response =
-          await apiService.useInvitationPatient(text);
-      if (response.msg != kServerError) {
-        if (patientFollowers.isEmpty || patientFollowings.isEmpty) {
-          final patientModel = await apiService.getPatientProfile();
-          return patientModel;
-        }
-      } else {
-        return null;
-      }
-    } else {
-      print('Doctor!!!!!!!!!');
-      final InvitationResponseModel response =
-          await apiService.useInvitationDoctor(text);
-      if (response.msg != kServerError) {
-        if (doctorFollowings.isEmpty) {
-          final doctorModel = await apiService.getDoctorProfile();
-          return doctorModel;
-        }
-      } else {
-        return null;
-      }
-    }
-  }
 }
