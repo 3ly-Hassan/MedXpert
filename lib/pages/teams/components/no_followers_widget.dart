@@ -31,6 +31,7 @@ class _NoFollowersWidgetState extends State<NoFollowersWidget>
 
   @override
   Widget build(BuildContext context) {
+    // _controller.reset();
     _controller.forward();
     return FadeTransition(
       opacity: _animation,

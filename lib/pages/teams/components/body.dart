@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {
         if (state is GetFollowingStateWithToast) {
-          showToast(text: 'Done!', state: ToastStates.SUCCESS);
+          showCentralToast(text: 'Done!', state: ToastStates.SUCCESS);
         }
       },
       builder: (context, state) {
@@ -76,8 +76,8 @@ class _BodyState extends State<Body> {
               ],
             ),
           );
-        } else if (state is GetFollowingStateNoToast) {
-          //
+        } //
+        else if (state is GetFollowingStateNoToast) {
           return SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
