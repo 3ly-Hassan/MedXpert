@@ -22,7 +22,10 @@ class ListInsideContainer extends StatelessWidget {
       child: Container(
         height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.74,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
         ),
         child: viewedList.isEmpty
             ? NoFollowersWidget(

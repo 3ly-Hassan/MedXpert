@@ -19,8 +19,22 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    //
+    Widget getViewedList(dynamic state, bool isFollowersSelected) {
+      if (role == "patient") {
+        if (isFollowersSelected) {
+          return ListInsideContainer(viewedList: state.model.followers);
+        } else
+          return ListInsideContainer(viewedList: state.model.followings);
+      } else {
+        return ListInsideContainer(viewedList: state.model.followings);
+      }
+    }
+
+    //
     BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
     SizeConfig()..init(context);
+    //
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -49,22 +63,11 @@ class _BodyState extends State<Body> {
         //
         else if (state is GetFollowingState) {
           //
-          Widget getViewedList() {
-            if (role == "patient") {
-              if (isFollowersSelected) {
-                return ListInsideContainer(viewedList: state.model.followers);
-              } else
-                return ListInsideContainer(viewedList: state.model.followings);
-            } else {
-              return ListInsideContainer(viewedList: state.model.followings);
-            }
-          }
-
           return SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                getViewedList(),
+                getViewedList(state, isFollowersSelected),
                 ButtonsContainer(),
               ],
             ),
