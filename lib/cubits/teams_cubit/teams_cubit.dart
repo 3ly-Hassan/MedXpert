@@ -34,12 +34,12 @@ class TeamsCubit extends Cubit<TeamsState> {
 
   void selectFollowers() {
     isFollowersSelected = true;
-    emit(GetFollowingState(patientModel));
+    emit(GetFollowingStateNoToast(patientModel));
   }
 
   void selectFollowings() {
     isFollowersSelected = false;
-    emit(GetFollowingState(patientModel));
+    emit(GetFollowingStateNoToast(patientModel));
   }
 
   Future getFollowingInfo() async {
@@ -55,11 +55,11 @@ class TeamsCubit extends Cubit<TeamsState> {
       //   Follower(email: "email 3", username: 'username 3'),
       //   Follower(email: "email 4", username: 'username 4'),
       // ]);
-      emit(GetFollowingState(patientModel));
+      emit(GetFollowingStateNoToast(patientModel));
     } else {
       print('I am a doctor !!!!!!!!!');
       doctorModel = await apiService.getDoctorProfile();
-      emit(GetFollowingState(doctorModel));
+      emit(GetFollowingStateNoToast(doctorModel));
     }
   }
 
@@ -72,7 +72,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         patientModel = await apiService.getPatientProfile();
-        emit(GetFollowingState(patientModel));
+        emit(GetFollowingStateWithToast(patientModel));
         Navigator.of(context).pop();
       } else {
         BlocProvider.of<DialogCubit>(context)
@@ -89,7 +89,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         doctorModel = await apiService.getDoctorProfile();
-        emit(GetFollowingState(doctorModel));
+        emit(GetFollowingStateWithToast(doctorModel));
         return true;
       } else {
         return false;

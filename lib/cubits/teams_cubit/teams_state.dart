@@ -8,9 +8,14 @@ class TeamsInitialState extends TeamsState {}
 
 class TeamsLoadingState extends TeamsState {}
 
-class GetFollowingState extends TeamsState {
+class GetFollowingStateWithToast extends TeamsState {
   final model;
-  GetFollowingState(this.model);
+  GetFollowingStateWithToast(this.model);
+}
+
+class GetFollowingStateNoToast extends TeamsState {
+  final model;
+  GetFollowingStateNoToast(this.model);
 }
 
 class TeamsErrorState extends TeamsState {
