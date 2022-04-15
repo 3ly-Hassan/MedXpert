@@ -40,7 +40,6 @@ class _ListInsideContainerState extends State<ListInsideContainer>
   Widget build(BuildContext context) {
     _controller.reset();
     _controller.forward();
-    print(_controller.status);
 
     return FadeTransition(
       opacity: _animation,

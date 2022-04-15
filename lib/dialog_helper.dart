@@ -62,8 +62,10 @@ class DialogHelper {
                 TextButton(
                   child: Text(kShare),
                   onPressed: () async {
-                    await Share.share(state.invitationNumber!,
-                        subject: kYourInvitationNumber);
+                    await Share.share(
+                      state.invitationNumber!,
+                      subject: kYourInvitationNumber,
+                    );
                   },
                 ),
               ],
@@ -226,7 +228,7 @@ class DialogHelper {
     if (formKey.currentState!.validate()) {
       BlocProvider.of<DialogCubit>(context).emitDialogLoadingState();
       await BlocProvider.of<TeamsCubit>(context)
-          .refreshFollowingInfo(textController.text, context);
+          .useInvitationNumber(textController.text, context);
     }
   }
 }

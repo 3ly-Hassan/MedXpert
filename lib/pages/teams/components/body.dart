@@ -32,8 +32,8 @@ class _BodyState extends State<Body> {
     }
 
     //
-    BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
     SizeConfig()..init(context);
+    BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
     //
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {
@@ -65,7 +65,8 @@ class _BodyState extends State<Body> {
           );
         }
         //
-        else if (state is GetFollowingStateWithToast) {
+        else if (state is GetFollowingStateWithToast ||
+            state is GetFollowingStateNoToast) {
           //
           return SingleChildScrollView(
             child: Column(
@@ -77,17 +78,6 @@ class _BodyState extends State<Body> {
             ),
           );
         } //
-        else if (state is GetFollowingStateNoToast) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getViewedList(state, isFollowersSelected),
-                ButtonsContainer(),
-              ],
-            ),
-          );
-        }
         return ErrorBloc();
       },
     );

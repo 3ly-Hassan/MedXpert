@@ -24,14 +24,6 @@ class TeamsCubit extends Cubit<TeamsState> {
 
   bool isFollowersSelected = true;
 
-  void emitTeamsInitialState() {
-    emit(TeamsInitialState());
-  }
-
-  void emitTeamsLoadingState() {
-    emit(TeamsLoadingState());
-  }
-
   void selectFollowers() {
     isFollowersSelected = true;
     emit(GetFollowingStateNoToast(patientModel));
@@ -63,7 +55,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
-  Future refreshFollowingInfo(String text, BuildContext context) async {
+  Future useInvitationNumber(String text, BuildContext context) async {
     //TODO: using context here is anti pattern !!
     if (role == "patient") {
       final InvitationResponseModel response =
