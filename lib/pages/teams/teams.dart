@@ -17,7 +17,7 @@ class Teams extends StatefulWidget {
 
 class _TeamsState extends State<Teams> with TickerProviderStateMixin {
   late TabController _tabController;
-
+  final bool isPatient = role == 'patient';
   @override
   void dispose() {
     _tabController.dispose();
@@ -27,7 +27,7 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: isPatient ? 2 : 1, vsync: this);
     BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
   }
 
@@ -40,29 +40,43 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text("Teams"),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: <Widget>[
-            Tab(child: Text('Followers')),
-            Tab(child: Text('Followings')),
-          ],
-        ),
+        bottom: isPatient
+            ? TabBar(
+                controller: _tabController,
+                tabs: <Widget>[
+                  Tab(child: Text('Followers')),
+                  Tab(child: Text('Followings')),
+                ],
+              )
+            : TabBar(
+                controller: _tabController,
+                tabs: <Widget>[
+                  Tab(child: Text('Followings')),
+                ],
+              ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
-                  kContainerOfTeamsListRatio,
+              height: isPatient
+                  ? SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+                      kContainerOfTeamsListRatioForPatients
+                  : SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+                      kContainerOfTeamsListRatioForDoctors,
               child: TabBarView(
                 controller: _tabController,
-                children: <Widget>[
-                  Body(isFollowersSelected: true),
-                  Body(isFollowersSelected: false),
-                ],
+                children: isPatient
+                    ? <Widget>[
+                        Body(isFollowersSelected: true),
+                        Body(isFollowersSelected: false),
+                      ]
+                    : <Widget>[
+                        Body(isFollowersSelected: false),
+                      ],
               ),
             ),
-            ButtonsContainer(),
+            ButtonsContainer(isPatient: isPatient),
           ],
         ),
       ),

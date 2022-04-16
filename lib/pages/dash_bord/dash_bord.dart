@@ -20,7 +20,8 @@ class DashBord extends StatefulWidget {
 class _DashBordState extends State<DashBord> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig()..init(context);
+    SizeConfig().init(context);
+
     final size = MediaQuery.of(context).size;
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},

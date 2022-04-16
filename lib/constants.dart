@@ -61,8 +61,10 @@ const String kSuccessMessageFromDataBase = 'success';
 const String kNoFollowersYet = 'No followers yet';
 const String kNoFollowingsYet = 'No followings yet';
 const int kNoFollowersAnimationDuration = 500;
-const double kContainerOfTeamsListRatio = 0.78;
-const double kContainerOfTeamsButtonsRatio = 0.22;
+const double kContainerOfTeamsListRatioForPatients = 0.78;
+const double kContainerOfTeamsListRatioForDoctors = 0.86;
+const double kContainerOfTeamsButtonsRatioForPatients = 0.22;
+const double kContainerOfTeamsButtonsRatioForDoctors = 0.135;
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

@@ -12,7 +12,7 @@ class SizeConfig {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
-    screenHeightUnderAppAndStatusBarAndTabBar = (_mediaQueryData.size.height) -
+    screenHeightUnderAppAndStatusBarAndTabBar = (screenHeight) -
         (AppBar().preferredSize.height) -
         (MediaQuery.of(context).padding.top) -
         (TabBar(

@@ -8,7 +8,8 @@ import '../../../dialog_helper.dart';
 import '../../../size_config.dart';
 
 class ButtonsContainer extends StatefulWidget {
-  const ButtonsContainer({Key? key}) : super(key: key);
+  final bool isPatient;
+  const ButtonsContainer({Key? key, required this.isPatient}) : super(key: key);
 
   @override
   State<ButtonsContainer> createState() => _ButtonsContainerState();
@@ -26,8 +27,11 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
-          kContainerOfTeamsButtonsRatio,
+      height: widget.isPatient
+          ? SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+              kContainerOfTeamsButtonsRatioForPatients
+          : SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+              kContainerOfTeamsButtonsRatioForDoctors,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -35,15 +39,17 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
             height:
                 SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar * 0.011,
           ),
-          DefaultButton(
-            text: kCreateInvitation,
-            press: () async {
-              //show dialog at first, then call the method for creating invitation number
-              DialogHelper.createInvitationDialog(context);
-              await BlocProvider.of<DialogCubit>(context)
-                  .createInvitationEvent();
-            },
-          ),
+          widget.isPatient
+              ? DefaultButton(
+                  text: kCreateInvitation,
+                  press: () async {
+                    //show dialog at first, then call the method for creating invitation number
+                    DialogHelper.createInvitationDialog(context);
+                    await BlocProvider.of<DialogCubit>(context)
+                        .createInvitationEvent();
+                  },
+                )
+              : Container(),
           // Spacer(),
           DefaultButton(
             text: kUseInvitation,
