@@ -26,12 +26,14 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.22,
+      height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+          kContainerOfTeamsButtonsRatio,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.011,
+            height:
+                SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar * 0.011,
           ),
           DefaultButton(
             text: kCreateInvitation,
@@ -52,7 +54,8 @@ class _ButtonsContainerState extends State<ButtonsContainer> {
             },
           ),
           SizedBox(
-            height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.011,
+            height:
+                SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar * 0.011,
           )
         ],
       ),

@@ -1,39 +1,17 @@
 import 'package:final_pro/constants.dart';
-import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../components/center_progress_indicator.dart';
 import '../../../components/error_bloc.dart';
 import '../../../cubits/teams_cubit/teams_cubit.dart';
-import 'buttons_container.dart';
-import 'list_inside_container.dart';
+import 'get_viewed_list.dart';
 
-class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+class Body extends StatelessWidget {
+  final isFollowersSelected;
+  const Body({Key? key, required this.isFollowersSelected}) : super(key: key);
 
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  @override
   Widget build(BuildContext context) {
-    //
-    Widget getViewedList(dynamic state, bool isFollowersSelected) {
-      if (role == "patient") {
-        if (isFollowersSelected) {
-          return ListInsideContainer(viewedList: state.model.followers);
-        } else
-          return ListInsideContainer(viewedList: state.model.followings);
-      } else {
-        return ListInsideContainer(viewedList: state.model.followings);
-      }
-    }
-
-    //
-    SizeConfig()..init(context);
-    BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
     //
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {
@@ -42,21 +20,8 @@ class _BodyState extends State<Body> {
         }
       },
       builder: (context, state) {
-        bool isFollowersSelected =
-            BlocProvider.of<TeamsCubit>(context).isFollowersSelected;
         if (state is TeamsLoadingState) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: CenterProgressIndicator(),
-                  height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.74,
-                ),
-                ButtonsContainer(),
-              ],
-            ),
-          );
+          return CenterProgressIndicator();
         }
         //
         else if (state is TeamsErrorState) {
@@ -68,15 +33,8 @@ class _BodyState extends State<Body> {
         else if (state is GetFollowingStateWithToast ||
             state is GetFollowingStateNoToast) {
           //
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getViewedList(state, isFollowersSelected),
-                ButtonsContainer(),
-              ],
-            ),
-          );
+          return GetViewedList(
+              state: state, isFollowersSelected: isFollowersSelected);
         } //
         return ErrorBloc();
       },

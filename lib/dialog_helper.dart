@@ -140,6 +140,7 @@ class DialogHelper {
               ],
             );
           }
+
           return AlertDialog(
             title: Text(kUseAnInvitation),
             content: Row(

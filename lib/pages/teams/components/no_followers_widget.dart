@@ -50,7 +50,9 @@ class _NoFollowersWidgetState extends State<NoFollowersWidget>
                     'assets/images/relax.png',
                   ),
                   SizedBox(
-                    height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.011,
+                    height:
+                        SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+                            0.011,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16),

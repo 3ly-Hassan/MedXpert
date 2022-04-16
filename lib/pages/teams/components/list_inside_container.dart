@@ -3,8 +3,6 @@ import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../size_config.dart';
 import 'follower_card.dart';
 import 'no_followers_widget.dart';
 
@@ -41,14 +39,13 @@ class _ListInsideContainerState extends State<ListInsideContainer>
     _controller.reset();
     _controller.forward();
 
-    return FadeTransition(
-      opacity: _animation,
-      child: RefreshIndicator(
-        onRefresh: () async {
-          await BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
-        },
+    return RefreshIndicator(
+      onRefresh: () async {
+        await BlocProvider.of<TeamsCubit>(context).getFollowingInfo();
+      },
+      child: FadeTransition(
+        opacity: _animation,
         child: Container(
-          height: SizeConfig.screenHeightUnderAppAndStatusBar * 0.74,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25),
@@ -63,6 +60,8 @@ class _ListInsideContainerState extends State<ListInsideContainer>
                 )
               : ListView.builder(
                   itemCount: widget.viewedList.length,
+                  // physics: BouncingScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Padding(
                       padding:
