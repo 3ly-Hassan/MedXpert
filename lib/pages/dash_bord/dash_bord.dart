@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/dashBord_item.dart';
 import '../../constants.dart';
+import '../../size_config.dart';
 
 class DashBord extends StatefulWidget {
   static String routeName = "/dash";
@@ -21,6 +22,8 @@ class DashBord extends StatefulWidget {
 class _DashBordState extends State<DashBord> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     final size = MediaQuery.of(context).size;
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
@@ -48,8 +51,9 @@ class _DashBordState extends State<DashBord> {
                         children: [
                           CircleAvatar(
                             radius: 32,
-                            backgroundImage:
-                                AssetImage('assets/images/profile.png'),
+                            backgroundImage: role == 'patient'
+                                ? AssetImage('assets/images/patient.jpg')
+                                : AssetImage('assets/images/doctor.jpg'),
                           ),
                           SizedBox(width: 16),
                           Column(
@@ -124,11 +128,12 @@ class _DashBordState extends State<DashBord> {
                             title: 'Medication',
                           ),
                           DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(context, Teams.routeName);
-                              },
-                              image: 'assets/images/team.png',
-                              title: 'Teams'),
+                            onPress: () {
+                              Navigator.pushNamed(context, Teams.routeName);
+                            },
+                            image: 'assets/images/team.png',
+                            title: 'Teams',
+                          ),
                           DashBordItem(
                               onPress: () {
                                 Navigator.pushNamed(

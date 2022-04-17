@@ -345,9 +345,6 @@ class APIService {
     }
   }
 
-
-
-
   //teams
 
   Future<Invitation?> createInvitation() async {
@@ -374,10 +371,11 @@ class APIService {
     try {
       final response = await http.post(Uri.parse(url), headers: headers);
       InvitationResponseModel msg =
-          InvitationResponseModel.fromJson(json.decode(response.body)["msg"]);
+          InvitationResponseModel.fromJson(json.decode(response.body));
+      print("message ====> ${msg.msg.toString()}");
       return msg;
     } catch (e) {
-      return InvitationResponseModel(msg: "server error");
+      return InvitationResponseModel(msg: e.toString());
     }
   }
 

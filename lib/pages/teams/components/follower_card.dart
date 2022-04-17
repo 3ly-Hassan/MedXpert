@@ -12,7 +12,7 @@ class FollowerCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        color: Theme.of(context).primaryColorLight,
+        color: Colors.green.shade100,
       ),
       child: ListTile(
         leading: CircleAvatar(

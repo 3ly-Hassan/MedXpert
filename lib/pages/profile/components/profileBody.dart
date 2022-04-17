@@ -63,7 +63,7 @@ class ProfileBody extends StatelessWidget {
                   SizedBox(height: 40),
                   CircleAvatar(
                     radius: 50,
-                    child: Image.asset('assets/images/profile.png'),
+                    child: role == 'patient' ? Image.asset('assets/images/patient.jpg') : Image.asset('assets/images/doctor.jpg'),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -80,12 +80,13 @@ class ProfileBody extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Row(
-                    children: [
+                    children: role == 'patient' ? <Widget>[
                       Expanded(
                         child: Column(
                           children: [
-                            Text(
-                              '55',
+                            Text(  
+                        cubit.patient.followers!.length.toString()
+                        ,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 26,
@@ -107,7 +108,7 @@ class ProfileBody extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              '120',
+                        cubit.patient.followings!.length.toString(),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 26,
@@ -147,7 +148,7 @@ class ProfileBody extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
+                    ] : [],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),

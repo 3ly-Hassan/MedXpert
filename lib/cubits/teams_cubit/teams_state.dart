@@ -1,29 +1,24 @@
 part of 'teams_cubit.dart';
 
-abstract class TeamsState extends Equatable {
+abstract class TeamsState {
   const TeamsState();
 }
 
-class TeamsInitial extends TeamsState {
-  @override
-  List<Object> get props => [];
+class TeamsInitialState extends TeamsState {}
+
+class TeamsLoadingState extends TeamsState {}
+
+class GetFollowingStateWithToast extends TeamsState {
+  final model;
+  GetFollowingStateWithToast(this.model);
 }
 
-class TeamsLoadingState extends TeamsState {
-  @override
-  List<Object?> get props => [];
-}
-
-class InvitationCreationState extends TeamsState {
-  final String? invitationNumber;
-  InvitationCreationState({required this.invitationNumber});
-  @override
-  List<Object?> get props => [invitationNumber];
+class GetFollowingStateNoToast extends TeamsState {
+  final model;
+  GetFollowingStateNoToast(this.model);
 }
 
 class TeamsErrorState extends TeamsState {
   final String errorMessage;
   TeamsErrorState({required this.errorMessage});
-  @override
-  List<Object?> get props => [errorMessage];
 }

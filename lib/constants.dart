@@ -53,6 +53,18 @@ const String kUseAnInvitation = 'Use an invitation';
 const String kEnterTheNumber = 'Your number';
 const String kPleaseEnterANumber = 'Please enter a number!';
 const String kOnlyNumbersAreAllowed = 'Only numbers are allowed!';
+const String kServerError = "server error";
+const String kAlert = "Alert!";
+const String kSorryForThat =
+    "Sorry for that, but something went wrong, please try again";
+const String kSuccessMessageFromDataBase = 'success';
+const String kNoFollowersYet = 'No followers yet';
+const String kNoFollowingsYet = 'No followings yet';
+const int kNoFollowersAnimationDuration = 500;
+const double kContainerOfTeamsListRatioForPatients = 0.78;
+const double kContainerOfTeamsListRatioForDoctors = 0.86;
+const double kContainerOfTeamsButtonsRatioForPatients = 0.22;
+const double kContainerOfTeamsButtonsRatioForDoctors = 0.135;
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

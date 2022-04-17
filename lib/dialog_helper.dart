@@ -1,8 +1,10 @@
+import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'components/loading_row.dart';
 import 'constants.dart';
 
 class DialogHelper {
@@ -11,21 +13,16 @@ class DialogHelper {
   static void createInvitationDialog(
     BuildContext context,
   ) {
+    BlocProvider.of<DialogCubit>(context).emitDialogLoadingState();
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => BlocBuilder<TeamsCubit, TeamsState>(
+      builder: (context) => BlocBuilder<DialogCubit, DialogState>(
         builder: (context, state) {
-          if (state is TeamsLoadingState) {
+          if (state is DialogLoadingState) {
             return AlertDialog(
               title: Text(kYourInvitationNumber),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(kLoading),
-                  CircularProgressIndicator(),
-                ],
-              ),
+              content: LoadingRow(),
             );
           } else if (state is InvitationCreationState) {
             return AlertDialog(
@@ -65,13 +62,15 @@ class DialogHelper {
                 TextButton(
                   child: Text(kShare),
                   onPressed: () async {
-                    await Share.share(state.invitationNumber!,
-                        subject: kYourInvitationNumber);
+                    await Share.share(
+                      state.invitationNumber!,
+                      subject: kYourInvitationNumber,
+                    );
                   },
                 ),
               ],
             );
-          } else if (state is TeamsErrorState) {
+          } else if (state is DialogErrorState) {
             return AlertDialog(
               title: Text(kYourInvitationNumber),
               content: Text(state.errorMessage),
@@ -99,8 +98,49 @@ class DialogHelper {
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => BlocBuilder<TeamsCubit, TeamsState>(
+      builder: (context) => BlocBuilder<DialogCubit, DialogState>(
         builder: (context, state) {
+          if (state is DialogLoadingState) {
+            return AlertDialog(
+              title: Text(kUseAnInvitation),
+              content: LoadingRow(),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(kCancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(kOk),
+                  onPressed: null,
+                ),
+              ],
+            );
+          }
+          //
+          else if (state is DialogErrorState) {
+            return AlertDialog(
+              title: Text(kAlert),
+              content: Text(state.errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(kCancel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(kOk),
+                  onPressed: () {
+                    BlocProvider.of<DialogCubit>(context)
+                        .emitDialogInitialState();
+                  },
+                ),
+              ],
+            );
+          }
+
           return AlertDialog(
             title: Text(kUseAnInvitation),
             content: Row(
@@ -109,6 +149,7 @@ class DialogHelper {
                   child: Form(
                     key: _formKey,
                     child: TextFormField(
+                      autofocus: true,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: kEnterTheNumber,
@@ -116,6 +157,10 @@ class DialogHelper {
                       ),
                       controller: textController,
                       validator: _validate,
+                      onFieldSubmitted: (_) async {
+                        await onPressedOkButton(
+                            context, _formKey, textController);
+                      },
                     ),
                   ),
                 ),
@@ -138,10 +183,7 @@ class DialogHelper {
               TextButton(
                 child: Text(kOk),
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // Navigator.of(context).pop();
-                    //TODO take your action
-                  }
+                  await onPressedOkButton(context, _formKey, textController);
                 },
               ),
             ],
@@ -177,6 +219,17 @@ class DialogHelper {
       return false;
     } else {
       return true;
+    }
+  }
+
+  static Future<void> onPressedOkButton(
+      BuildContext context,
+      GlobalKey<FormState> formKey,
+      TextEditingController textController) async {
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<DialogCubit>(context).emitDialogLoadingState();
+      await BlocProvider.of<TeamsCubit>(context)
+          .useInvitationNumber(textController.text, context);
     }
   }
 }

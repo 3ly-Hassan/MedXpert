@@ -17,7 +17,7 @@ class DefaultButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
       child: SizedBox(
         width: double.infinity,
-        height: (56),
+        height: 56,
         child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
