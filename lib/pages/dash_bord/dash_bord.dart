@@ -1,4 +1,6 @@
+import 'package:final_pro/cache_helper.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
@@ -34,7 +36,8 @@ class _DashBordState extends State<DashBord> {
             ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16, top: 16, bottom: 6),
                 child: Column(
                   children: [
                     Container(
@@ -160,7 +163,29 @@ class _DashBordState extends State<DashBord> {
                               title: 'Settings'),
                         ],
                       ),
-                    )
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10)),
+                        width: double.infinity,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            CacheHelper.removeData(key: 'token').then((value) =>
+                                Navigator.pushReplacementNamed(
+                                    context, LoggingPage.routeName));
+                          },
+                          icon: Icon(
+                            Icons.logout,
+                            color: Colors.white,
+                          ),
+                          label: Text('Log Out',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              )),
+                        ))
                   ],
                 ),
               ),

@@ -450,20 +450,23 @@ class ProfileBody extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(right: 10, top: 10, left: 5, bottom: 10),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: kPrimaryColor,
             borderRadius: BorderRadius.circular(50),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 10),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16, bottom: 10, top: 6),
             child: Column(
               children: [
-                Text(
-                  specialization,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      overflow: TextOverflow.ellipsis),
+                Center(
+                  child: Text(
+                    specialization,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis),
+                  ),
                 ),
               ],
             ),
@@ -478,9 +481,10 @@ class ProfileBody extends StatelessWidget {
               icon: Icon(
                 Icons.cancel,
                 size: 20,
+                color: Colors.red,
               )),
-          top: -14,
-          right: -8,
+          top: -12,
+          right: -6,
         )
       ],
     );
