@@ -19,8 +19,8 @@ class FollowerCard extends StatelessWidget {
           radius: 32,
           backgroundImage: follower.isPatient!
               ? follower.gender == 'male'
-                  ? AssetImage('assets/images/patient.jpg')
-                  : AssetImage('assets/images/dash.png')
+                  ? AssetImage('assets/images/male_patient.png')
+                  : AssetImage('assets/images/female_patient.png')
               : AssetImage('assets/images/doctor.jpg'),
         ),
         title: Text(follower.username!),

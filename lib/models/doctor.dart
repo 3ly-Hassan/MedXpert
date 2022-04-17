@@ -44,7 +44,7 @@ class Doctor {
       print('problem here ############ ${json['followings']}');
       followings = <Follower>[];
       json['followings'].forEach((v) {
-        followings!.add(new Follower.fromJson(v['patient_id']));
+        followings!.add(new Follower.fromJsonDoctor(v['patient_id']));
       });
     }
     ;
