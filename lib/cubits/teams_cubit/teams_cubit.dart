@@ -102,15 +102,15 @@ class TeamsCubit extends Cubit<TeamsState> {
       print('Doctor!!!!!!!!!');
       final InvitationResponseModel response =
           await apiService.useInvitationDoctor(text);
-      print(response.msg);
-      if (response.msg != kServerError) {
+      if (response.msg != kSuccessMessageFromDataBase) {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         doctorModel = await apiService.getDoctorProfile();
         emit(GetFollowingStateWithToast(doctorModel));
-        return true;
+        Navigator.of(context).pop();
       } else {
-        return false;
+        BlocProvider.of<DialogCubit>(context)
+            .emitDialogErrorState(response.msg!);
       }
     }
   }
