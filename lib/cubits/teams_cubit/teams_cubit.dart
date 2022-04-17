@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/models/patient.dart';
@@ -32,6 +31,26 @@ class TeamsCubit extends Cubit<TeamsState> {
       patientModel = await apiService.getPatientProfile();
       combinedSortedList =
           _combineAndSort(patientModel!.followers!, patientModel!.clinicians!);
+      // patientModel = Patient(
+      //   gender: "male",
+      //   email: "ssdhs@gmail.com",
+      //   username: 'hgfhgf',
+      //   followings: [],
+      //   clinicians: [],
+      //   followers: [
+      //     Follower(
+      //         email: "email 1",
+      //         username: 'username 1',
+      //         isPatient: true,
+      //         gender: 'male'),
+      //     Follower(
+      //         email: "email 2",
+      //         username: 'username 2',
+      //         isPatient: true,
+      //         gender: 'female'),
+      //     Follower(email: "email 3", username: 'username 3', isPatient: false),
+      //   ],
+      // );
       // patientModel =
       //     Patient(gender: "male", email: "ssdhs@gmail.com", followers: [
       //   Follower(email: "email 1", username: 'username 1'),
@@ -123,6 +142,7 @@ class TeamsCubit extends Cubit<TeamsState> {
           username: clinician.doctor.username,
           email: clinician.doctor.email,
           gender: clinician.doctor.gender,
+          isPatient: false,
         ),
       );
     });

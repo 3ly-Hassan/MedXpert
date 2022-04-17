@@ -140,13 +140,20 @@ class Follower {
   String? username;
   String? email;
   String? gender;
+  bool? isPatient;
 
-  Follower({this.id, this.username, this.email, this.gender});
+  Follower(
+      {this.id,
+      this.username,
+      this.email,
+      this.gender,
+      required this.isPatient});
 
   Follower.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     username = json["username"];
     email = json["email"];
     gender = json["gender"];
+    isPatient = json["isPatient"];
   }
 }

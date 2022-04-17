@@ -17,8 +17,10 @@ class FollowerCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           radius: 32,
-          backgroundImage: follower.gender == 'male'
-              ? AssetImage('assets/images/profile.png')
+          backgroundImage: follower.isPatient!
+              ? follower.gender == 'male'
+                  ? AssetImage('assets/images/patient.jpg')
+                  : AssetImage('assets/images/dash.png')
               : AssetImage('assets/images/doctor.jpg'),
         ),
         title: Text(follower.username!),
