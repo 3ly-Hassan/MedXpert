@@ -41,9 +41,10 @@ class Doctor {
     residency = json['residency'];
     specialization = json['specialization'].cast<String>();
     if (json['followings'] != null) {
+      print('problem here ############ ${json['followings']}');
       followings = <Follower>[];
       json['followings'].forEach((v) {
-        followings!.add(new Follower.fromJson(v));
+        followings!.add(new Follower.fromJson(v['patient_id']));
       });
     }
     ;
