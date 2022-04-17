@@ -114,4 +114,22 @@ class TeamsCubit extends Cubit<TeamsState> {
       }
     }
   }
+
+  List<Follower> _combineAndSort(List followers, List clinicians) {
+    List combinedList = [];
+    //combine the patient followers list with Clinicians list
+    combinedList = followers;
+    clinicians.forEach((clinician) {
+      combinedList.add(
+        Follower(
+          id: clinician.doctor.id,
+          username: clinician.doctor.username,
+          email: clinician.doctor.email,
+          gender: clinician.doctor.gender,
+        ),
+      );
+    });
+    combinedList.sort((a, b) => a.username.compareTo(b.username));
+    return combinedList as List<Follower>;
+  }
 }
