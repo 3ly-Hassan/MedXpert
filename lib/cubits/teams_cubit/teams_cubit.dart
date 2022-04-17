@@ -102,7 +102,7 @@ class TeamsCubit extends Cubit<TeamsState> {
       print('Doctor!!!!!!!!!');
       final InvitationResponseModel response =
           await apiService.useInvitationDoctor(text);
-      if (response.msg != kSuccessMessageFromDataBase) {
+      if (response.msg == kSuccessMessageFromDataBase) {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         doctorModel = await apiService.getDoctorProfile();
