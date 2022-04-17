@@ -15,7 +15,7 @@ class GetViewedList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (role == "patient") {
       if (isFollowersSelected) {
-        return ListInsideContainer(viewedList: state.model.followers);
+        return ListInsideContainer(viewedList: state.combinedSortedList);
       } else
         return ListInsideContainer(viewedList: state.model.followings);
     } else {

@@ -19,26 +19,19 @@ class TeamsCubit extends Cubit<TeamsState> {
   List<Follower> patientFollowers = [];
   List<Follower> patientFollowings = [];
   List<Follower> doctorFollowings = [];
+  List<Follower> combinedSortedList = [];
   Patient? patientModel;
   Doctor? doctorModel;
 
   bool isFollowersSelected = true;
-
-  void selectFollowers() {
-    isFollowersSelected = true;
-    emit(GetFollowingStateNoToast(patientModel));
-  }
-
-  void selectFollowings() {
-    isFollowersSelected = false;
-    emit(GetFollowingStateNoToast(patientModel));
-  }
 
   Future getFollowingInfo() async {
     emit(TeamsLoadingState());
     if (role == "patient") {
       print('I am a patient !!!!!!!!!');
       patientModel = await apiService.getPatientProfile();
+      combinedSortedList =
+          _combineAndSort(patientModel!.followers!, patientModel!.clinicians!);
       // patientModel =
       //     Patient(gender: "male", email: "ssdhs@gmail.com", followers: [
       //   Follower(email: "email 1", username: 'username 1'),
@@ -73,7 +66,8 @@ class TeamsCubit extends Cubit<TeamsState> {
       //   Follower(email: "email 3", username: 'username 3'),
       //   Follower(email: "email 4", username: 'username 4'),
       // ]);
-      emit(GetFollowingStateNoToast(patientModel));
+      emit(GetFollowingStateNoToast(patientModel,
+          combinedSortedList: combinedSortedList));
     } else {
       print('I am a doctor !!!!!!!!!');
       doctorModel = await apiService.getDoctorProfile();
@@ -90,7 +84,10 @@ class TeamsCubit extends Cubit<TeamsState> {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         patientModel = await apiService.getPatientProfile();
-        emit(GetFollowingStateWithToast(patientModel));
+        combinedSortedList = _combineAndSort(
+            patientModel!.followers!, patientModel!.clinicians!);
+        emit(GetFollowingStateWithToast(patientModel,
+            combinedSortedList: combinedSortedList));
         Navigator.of(context).pop();
       } else {
         BlocProvider.of<DialogCubit>(context)
@@ -115,11 +112,11 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
-  List<Follower> _combineAndSort(List followers, List clinicians) {
-    List combinedList = [];
+  List<Follower> _combineAndSort(List followersList, List cliniciansList) {
     //combine the patient followers list with Clinicians list
-    combinedList = followers;
-    clinicians.forEach((clinician) {
+    //TODO : NOTE : Copy By Reference !!!
+    List<Follower> combinedList = [...followersList];
+    cliniciansList.forEach((clinician) {
       combinedList.add(
         Follower(
           id: clinician.doctor.id,
@@ -129,7 +126,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         ),
       );
     });
-    combinedList.sort((a, b) => a.username.compareTo(b.username));
-    return combinedList as List<Follower>;
+    combinedList.sort((a, b) => a.username!.compareTo(b.username!));
+    return combinedList;
   }
 }

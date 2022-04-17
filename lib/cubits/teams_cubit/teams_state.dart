@@ -10,12 +10,14 @@ class TeamsLoadingState extends TeamsState {}
 
 class GetFollowingStateWithToast extends TeamsState {
   final model;
-  GetFollowingStateWithToast(this.model);
+  final combinedSortedList;
+  GetFollowingStateWithToast(this.model, {this.combinedSortedList});
 }
 
 class GetFollowingStateNoToast extends TeamsState {
   final model;
-  GetFollowingStateNoToast(this.model);
+  final combinedSortedList;
+  GetFollowingStateNoToast(this.model, {this.combinedSortedList});
 }
 
 class TeamsErrorState extends TeamsState {
