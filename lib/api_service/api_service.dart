@@ -384,7 +384,7 @@ class APIService {
     try {
       final response = await http.post(Uri.parse(url), headers: headers);
       InvitationResponseModel msg =
-          InvitationResponseModel.fromJson(json.decode(response.body)["msg"]);
+          InvitationResponseModel.fromJson(json.decode(response.body));
       return msg;
     } catch (e) {
       return InvitationResponseModel(msg: "server error");
