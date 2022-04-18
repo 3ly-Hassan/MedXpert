@@ -405,7 +405,7 @@ class APIService {
   Future<bool> deleteFollowerFromPatient(String id) async {
     String url = "$api/patient/deleteFollowerFromPatient?id=$id";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers);
+      final response = await http.patch(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print('Delete Follower From Patient done');
         return true;
@@ -422,7 +422,7 @@ class APIService {
   Future<bool> deleteFollowingFromPatient(String id) async {
     String url = "$api/patient/deleteFollowingFromPatient?id=$id";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers);
+      final response = await http.patch(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print('Delete Following From Patient done');
         return true;
@@ -439,7 +439,7 @@ class APIService {
   Future<bool> deleteDoctorFromPatient(String id) async {
     String url = "$api/patient/deleteDoctorFromPatient?id=$id";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers);
+      final response = await http.patch(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print('Delete Doctor From Patient done');
         return true;
@@ -456,7 +456,7 @@ class APIService {
   Future<bool> deletePatientFromDoctor(String id) async {
     String url = "$api/doctor/deletePatientFromDoctor?id=$id";
     try {
-      final response = await http.patch(Uri.parse(url), headers: headers);
+      final response = await http.patch(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print('Delete Patient From Doctor done');
         return true;
