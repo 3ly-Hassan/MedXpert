@@ -46,14 +46,14 @@ class Patient {
     if (map['followers'] != null) {
       followers = <Follower>[];
       map['followers'].forEach((v) {
-        followers!.add(new Follower.fromJson(v));
+        followers!.add(new Follower.fromJsonPatient(v));
       });
     }
 
     if (map['followings'] != null) {
       followings = <Follower>[];
       map['followings'].forEach((v) {
-        followings!.add(new Follower.fromJson(v));
+        followings!.add(new Follower.fromJsonPatient(v));
       });
     }
 
@@ -140,13 +140,29 @@ class Follower {
   String? username;
   String? email;
   String? gender;
+  bool? isPatient;
 
-  Follower({this.id, this.username, this.email, this.gender});
+  Follower({
+    this.id,
+    this.username,
+    this.email,
+    this.gender,
+    required this.isPatient,
+  });
 
-  Follower.fromJson(Map<String, dynamic> json) {
+  Follower.fromJsonPatient(Map<String, dynamic> json) {
     id = json["_id"];
     username = json["username"];
     email = json["email"];
     gender = json["gender"];
+    isPatient = true;
+  }
+
+  Follower.fromJsonDoctor(Map<String, dynamic> json) {
+    id = json["_id"];
+    username = json["username"];
+    email = json["email"];
+    gender = json["gender"];
+    isPatient = false;
   }
 }

@@ -54,9 +54,11 @@ class _ListInsideContainerState extends State<ListInsideContainer>
           ),
           child: widget.viewedList.isEmpty
               ? NoFollowersWidget(
-                  msg: BlocProvider.of<TeamsCubit>(context).isFollowersSelected
-                      ? kNoFollowersYet
-                      : kNoFollowingsYet,
+                  msg: role == 'doctor'
+                      ? kNoFollowingsYet
+                      : BlocProvider.of<TeamsCubit>(context).isFollowersSelected
+                          ? kNoFollowersYet
+                          : kNoFollowingsYet,
                 )
               : ListView.builder(
                   itemCount: widget.viewedList.length,
