@@ -390,4 +390,72 @@ class APIService {
       return InvitationResponseModel(msg: "server error");
     }
   }
+
+  Future<bool> deleteFollowerFromPatient(String id) async {
+    String url = "$api/patient/deleteFollowerFromPatient?id=$id";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print('Delete Follower From Patient done');
+        return true;
+      } else {
+        print('Problem In Delete Follower From Patient');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In Delete Follower From Patient: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> deleteFollowingFromPatient(String id) async {
+    String url = "$api/patient/deleteFollowingFromPatient?id=$id";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print('Delete Following From Patient done');
+        return true;
+      } else {
+        print('Problem In Delete Following From Patient');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In Delete Following From Patient: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> deleteDoctorFromPatient(String id) async {
+    String url = "$api/patient/deleteDoctorFromPatient?id=$id";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print('Delete Doctor From Patient done');
+        return true;
+      } else {
+        print('Problem In Delete Doctor From Patient');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In Delete Doctor From Patient: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> deletePatientFromDoctor(String id) async {
+    String url = "$api/doctor/deletePatientFromDoctor?id=$id";
+    try {
+      final response = await http.patch(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        print('Delete Patient From Doctor done');
+        return true;
+      } else {
+        print('Problem In Delete Patient From Doctor');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In Delete Patient From Doctor: ${e.toString()}');
+      return false;
+    }
+  }
 }

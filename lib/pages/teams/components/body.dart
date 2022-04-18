@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
     return BlocConsumer<TeamsCubit, TeamsState>(
       listener: (context, state) {
         if (state is GetFollowingStateWithToast) {
-          showCentralToast(text: 'Done!', state: ToastStates.SUCCESS);
+          showToast(text: state.toastMessage, state: state.toastState);
         }
       },
       builder: (context, state) {

@@ -42,6 +42,15 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
         title: Text("Teams"),
         bottom: isPatient
             ? TabBar(
+                onTap: (index) {
+                  if (index == 0) {
+                    //followers Tap
+                    BlocProvider.of<TeamsCubit>(context).isFollowersTab = true;
+                  } else {
+                    BlocProvider.of<TeamsCubit>(context).isFollowersTab = false;
+                  }
+                  print(BlocProvider.of<TeamsCubit>(context).isFollowersTab);
+                },
                 controller: _tabController,
                 tabs: <Widget>[
                   Tab(child: Text('Followers')),

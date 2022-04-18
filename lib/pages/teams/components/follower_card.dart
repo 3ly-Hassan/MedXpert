@@ -1,6 +1,9 @@
+import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
 
 class FollowerCard extends StatelessWidget {
   final Follower follower;
@@ -15,6 +18,19 @@ class FollowerCard extends StatelessWidget {
         color: Colors.green.shade100,
       ),
       child: ListTile(
+        title: Text(follower.username!, overflow: TextOverflow.ellipsis),
+        subtitle: Text(follower.email!, overflow: TextOverflow.ellipsis),
+        trailing: TextButton(
+          child: Text(
+            kUnFollow,
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          onPressed: () {
+            DialogHelper.deleteDialog(context, follower);
+          },
+        ),
         leading: CircleAvatar(
           radius: 32,
           backgroundImage: follower.isPatient!
@@ -23,8 +39,6 @@ class FollowerCard extends StatelessWidget {
                   : AssetImage('assets/images/female_patient.png')
               : AssetImage('assets/images/doctor.jpg'),
         ),
-        title: Text(follower.username!),
-        subtitle: Text(follower.email!),
       ),
     );
 

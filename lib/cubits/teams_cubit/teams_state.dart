@@ -11,7 +11,10 @@ class TeamsLoadingState extends TeamsState {}
 class GetFollowingStateWithToast extends TeamsState {
   final model;
   final combinedSortedList;
-  GetFollowingStateWithToast(this.model, {this.combinedSortedList});
+  final String toastMessage;
+  final ToastStates toastState;
+  GetFollowingStateWithToast(this.model, this.toastMessage, this.toastState,
+      {this.combinedSortedList});
 }
 
 class GetFollowingStateNoToast extends TeamsState {

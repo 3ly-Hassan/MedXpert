@@ -19,6 +19,7 @@ class TeamsCubit extends Cubit<TeamsState> {
   List<Follower> patientFollowings = [];
   List<Follower> doctorFollowings = [];
   List<Follower> combinedSortedList = [];
+  bool isFollowersTab = true;
   Patient? patientModel;
   Doctor? doctorModel;
 
@@ -102,10 +103,9 @@ class TeamsCubit extends Cubit<TeamsState> {
       if (response.msg == kSuccessMessageFromDataBase) {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
-        patientModel = await apiService.getPatientProfile();
-        combinedSortedList = _combineAndSort(
-            patientModel!.followers!, patientModel!.clinicians!);
-        emit(GetFollowingStateWithToast(patientModel,
+        await updatePatientProfileAndCombinedSortedList();
+        emit(GetFollowingStateWithToast(
+            patientModel, kDone, ToastStates.SUCCESS,
             combinedSortedList: combinedSortedList));
         Navigator.of(context).pop();
       } else {
@@ -122,11 +122,43 @@ class TeamsCubit extends Cubit<TeamsState> {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
         //(the follower model itself) to add it
         doctorModel = await apiService.getDoctorProfile();
-        emit(GetFollowingStateWithToast(doctorModel));
+        emit(GetFollowingStateWithToast(
+            doctorModel, kDone, ToastStates.SUCCESS));
         Navigator.of(context).pop();
       } else {
         BlocProvider.of<DialogCubit>(context)
             .emitDialogErrorState(response.msg!);
+      }
+    }
+  }
+
+  Future deleteFollower(Follower follower) async {
+    emit(TeamsLoadingState());
+    if (role == 'patient') {
+      if (isFollowersTab) {
+        if (follower.isPatient!) {
+          await deleteFromPatientLogic(
+              follower, apiService.deleteFollowerFromPatient);
+        } else {
+          await deleteFromPatientLogic(
+              follower, apiService.deleteDoctorFromPatient);
+        }
+      } else {
+        await deleteFromPatientLogic(
+            follower, apiService.deleteFollowingFromPatient);
+      }
+    }
+
+    // if Doctor
+    else {
+      bool isDeleted = await apiService.deletePatientFromDoctor(follower.id!);
+      if (isDeleted) {
+        doctorModel = await apiService.getDoctorProfile();
+        emit(GetFollowingStateWithToast(
+            doctorModel, KDeletedDone, ToastStates.SUCCESS));
+      } else {
+        emit(GetFollowingStateWithToast(
+            doctorModel, KDeletedFailed, ToastStates.ERROR));
       }
     }
   }
@@ -148,5 +180,25 @@ class TeamsCubit extends Cubit<TeamsState> {
     });
     combinedList.sort((a, b) => a.username!.compareTo(b.username!));
     return combinedList;
+  }
+
+  Future<void> updatePatientProfileAndCombinedSortedList() async {
+    patientModel = await apiService.getPatientProfile();
+    combinedSortedList =
+        _combineAndSort(patientModel!.followers!, patientModel!.clinicians!);
+  }
+
+  Future deleteFromPatientLogic(Follower follower, Function apiCall) async {
+    bool isDeleted = await apiCall(follower.id!);
+    if (isDeleted) {
+      await updatePatientProfileAndCombinedSortedList();
+      emit(GetFollowingStateWithToast(
+          patientModel, KDeletedDone, ToastStates.SUCCESS,
+          combinedSortedList: combinedSortedList));
+    } else {
+      emit(GetFollowingStateWithToast(
+          patientModel, KDeletedFailed, ToastStates.ERROR,
+          combinedSortedList: combinedSortedList));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
+import 'package:final_pro/models/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
@@ -191,6 +192,33 @@ class DialogHelper {
         },
       ),
     );
+  }
+
+  static void deleteDialog(BuildContext context, Follower follower) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(kAreYouSure),
+            actions: <Widget>[
+              TextButton(
+                child: Text(kCancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(kYes),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await BlocProvider.of<TeamsCubit>(context)
+                      .deleteFollower(follower);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   static Future<void> copyAction(String copiedText) async {
