@@ -176,7 +176,7 @@ class _DashBordState extends State<DashBord> {
                         width: double.infinity,
                         child: TextButton.icon(
                           onPressed: () {
-                            CacheHelper.clearAll().then((value) =>
+                            CacheHelper.removeData(key: 'token').then((value) =>
                                 Navigator.pushReplacementNamed(
                                     context, LoggingPage.routeName));
                           },

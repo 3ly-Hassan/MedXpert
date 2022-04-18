@@ -113,11 +113,14 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     emit(GetPatientProfileLoading());
     _getPatientProfile().then((value) {
       if (value == null) {
+        print('hhhhhh');
         return null;
       }
       patient = value;
+      print('hhhhhh2');
       genderVal = patient.gender;
       print(patient.residency);
+      print(patient.email);
       dropValue = patient.residency;
       emit(GetPatientProfileLoaded());
     });

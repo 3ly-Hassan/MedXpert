@@ -39,10 +39,19 @@ class SignForm extends StatelessWidget {
                 key: 'token',
                 value: state.loginModel.token,
               ).then((value) {
+                APIService api = APIService();
+
                 token = state.loginModel.token!;
-                if (role == 'patient')
+                api.headers = {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': 'Bearer $token',
+                };
+                print(token);
+                if (role == 'patient') {
+                  print('a7a3');
                   MeasurementCubit.get(context).getPatientProfile();
-                else if (role == 'doctor')
+                } else if (role == 'doctor')
                   MeasurementCubit.get(context).getdoctorProfile();
                 Navigator.pushReplacementNamed(context, DashBord.routeName);
               });

@@ -121,7 +121,6 @@ class Body extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                 SignForm(),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
@@ -139,7 +138,7 @@ class Body extends StatelessWidget {
                 //     ),
                 //   ],
                 // ),
-                SizedBox(height: 20),
+
                 NoAccountText(),
               ],
             ),

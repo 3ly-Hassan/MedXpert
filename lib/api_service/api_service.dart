@@ -10,14 +10,22 @@ import '../models/patient.dart';
 
 class APIService {
   String api = "http://10.0.2.2:8000/api";
+  static final APIService _instance = APIService._internal();
+  factory APIService() {
+    return _instance;
+  }
 
-  final Map<String, String> headers = {
+  APIService._internal();
+  Map<String, String> _headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': 'Bearer $token',
   };
 
-  //authentication
+  set headers(Map<String, String> value) {
+    _headers = value;
+  } //authentication
+
   Future<LoginResponseModel?> userLogin(LoginRequestModel requestModel) async {
     String url = "$api/auth/login";
     try {
@@ -54,7 +62,7 @@ class APIService {
     String url = "$api/vitalSign/createvitalSign";
     try {
       final response = await http.post(Uri.parse(url),
-          headers: headers, body: jsonEncode(reqMeasurement.toJson()));
+          headers: _headers, body: jsonEncode(reqMeasurement.toJson()));
       if (response.statusCode == 201) {
         Measurement measurement =
             Measurement.fromJson(json.decode(response.body)["data"]);
@@ -76,7 +84,7 @@ class APIService {
     String url = "$api/vitalSign/getvitalSignPatient";
     print("getting data");
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> measurement = json.decode(response.body)["data"];
@@ -93,7 +101,7 @@ class APIService {
     String url = "$api/vitalSign/getVitalSignDoctor?name=$patientName";
     print("getting data");
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       print(response.body);
       if (response.statusCode == 200) {
         final List<Measurement> measurement =
@@ -132,7 +140,7 @@ class APIService {
   Future<void> deleteMeasurement(String id) async {
     String url = "$api/vitalSign/deletevitalSign?id=$id";
     try {
-      final response = await http.delete(Uri.parse(url), headers: headers);
+      final response = await http.delete(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -147,11 +155,13 @@ class APIService {
   Future<Patient?> getPatientProfile() async {
     String url = "$api/patient/getPatient";
     print("getting data");
+    print(_headers['Authorization']);
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
         print('good');
+        print(patient.email);
         return patient;
       } else {
         print('not good');
@@ -168,7 +178,7 @@ class APIService {
     String url = "$api/patient/updatePatient";
     try {
       final response = await http.patch(Uri.parse(url),
-          headers: headers, body: jsonEncode(patient.toJson()));
+          headers: _headers, body: jsonEncode(patient.toJson()));
       if (response.statusCode == 200) {
         Patient updatedpatient =
             Patient.fromJson(json.decode(response.body)["data"]);
@@ -187,7 +197,7 @@ class APIService {
   Future<void> deletePatient() async {
     String url = "$api/patient/deletePatient";
     try {
-      final response = await http.delete(Uri.parse(url), headers: headers);
+      final response = await http.delete(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -205,7 +215,7 @@ class APIService {
     String url = "$api/patient/addToList";
     try {
       final response = await http.patch(Uri.parse(url),
-          headers: headers, body: jsonEncode(chronics.toJson()));
+          headers: _headers, body: jsonEncode(chronics.toJson()));
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -223,7 +233,7 @@ class APIService {
     String url = "$api/patient/deleteFromList";
     try {
       final response = await http.patch(Uri.parse(url),
-          headers: headers, body: jsonEncode(chronics.toJson()));
+          headers: _headers, body: jsonEncode(chronics.toJson()));
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -241,8 +251,9 @@ class APIService {
   Future<Doctor?> getDoctorProfile() async {
     String url = "$api/doctor/getDoctor";
     print("getting data");
+    print(_headers['Authorization']);
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
         print('good');
@@ -262,7 +273,7 @@ class APIService {
     String url = "$api/doctor/updateDoc";
     try {
       final response = await http.patch(Uri.parse(url),
-          headers: headers, body: jsonEncode(doctor.toJson()));
+          headers: _headers, body: jsonEncode(doctor.toJson()));
       if (response.statusCode == 200) {
         Doctor returendDoctor =
             Doctor.fromJson(json.decode(response.body)["data"]);
@@ -281,7 +292,7 @@ class APIService {
   Future<void> deleteDoctor() async {
     String url = "$api/doctor/deleteDoctor";
     try {
-      final response = await http.delete(Uri.parse(url), headers: headers);
+      final response = await http.delete(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         print(json.decode(response.body)["msg"]);
         return;
@@ -299,7 +310,7 @@ class APIService {
     String url = "$api/doctor/getAllDoctors";
     print("getting data");
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         List<dynamic> doctors = json.decode(response.body)["data"];
         print('good');
@@ -329,7 +340,7 @@ class APIService {
       final Map<String, dynamic> _specialization = new Map<String, dynamic>();
       _specialization["specialization"] = specialization;
       final response = await http.patch(Uri.parse(url),
-          headers: headers, body: jsonEncode(_specialization));
+          headers: _headers, body: jsonEncode(_specialization));
       if (response.statusCode == 200) {
         // Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
         print(json.decode(response.body)["msg"]);
@@ -350,7 +361,7 @@ class APIService {
   Future<Invitation?> createInvitation() async {
     String url = "$api/patient/createInvitation";
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: _headers);
       if (response.statusCode == 200) {
         Invitation invitation =
             Invitation.fromJson(json.decode(response.body)["data"]);
@@ -369,7 +380,7 @@ class APIService {
   Future<InvitationResponseModel> useInvitationPatient(String code) async {
     String url = "$api/patient/useInvitation?code=$code";
     try {
-      final response = await http.post(Uri.parse(url), headers: headers);
+      final response = await http.post(Uri.parse(url), headers: _headers);
       InvitationResponseModel msg =
           InvitationResponseModel.fromJson(json.decode(response.body));
       print("message ====> ${msg.msg.toString()}");
@@ -382,7 +393,7 @@ class APIService {
   Future<InvitationResponseModel> useInvitationDoctor(String code) async {
     String url = "$api/doctor/useInvitation?code=$code";
     try {
-      final response = await http.post(Uri.parse(url), headers: headers);
+      final response = await http.post(Uri.parse(url), headers: _headers);
       InvitationResponseModel msg =
           InvitationResponseModel.fromJson(json.decode(response.body));
       return msg;
