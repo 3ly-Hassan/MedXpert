@@ -40,7 +40,9 @@ class MedLoginCubit extends Cubit<MedLoginStates> {
         return;
       }
       loginModel = value;
+
       print('asdfghjkl');
+      print(loginModel.token);
       emit(MedLoginSuccessState(loginModel));
     }).catchError((e) {
       emit(MedLoginErrorState(e));

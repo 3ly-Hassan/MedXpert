@@ -31,6 +31,7 @@ void main() async {
     if (token != null)
       widget = DashBord.routeName;
     else {
+      print('asd');
       widget = LoggingPage.routeName;
       splash = false;
     }
@@ -62,9 +63,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) {
-          if (role == 'patient')
+          if (role == 'patient') {
+            print('ALi75');
             return MeasurementCubit()..getPatientProfile();
-          else if (role == 'doctor')
+          } else if (role == 'doctor')
             return MeasurementCubit()..getdoctorProfile();
           else
             return MeasurementCubit();
