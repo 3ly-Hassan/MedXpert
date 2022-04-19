@@ -157,12 +157,4 @@ class Follower {
     gender = json["gender"];
     isPatient = true;
   }
-
-  Follower.fromJsonDoctor(Map<String, dynamic> json) {
-    id = json["_id"];
-    username = json["username"];
-    email = json["email"];
-    gender = json["gender"];
-    isPatient = false;
-  }
 }

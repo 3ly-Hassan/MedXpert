@@ -168,16 +168,14 @@ class TeamsCubit extends Cubit<TeamsState> {
     //TODO : NOTE : Copy By Reference !!!
     List<Follower> combinedList = [...followersList];
     cliniciansList.forEach((clinician) {
-      combinedList.add(
-        Follower.fromJsonDoctor(clinician.doctor),
-        // Follower(
-        //   id: clinician.doctor.id,
-        //   username: clinician.doctor.username,
-        //   email: clinician.doctor.email,
-        //   gender: clinician.doctor.gender,
-        //   isPatient: false,
-        // ),Abdo@123
-      );
+      print(clinician.doctor);
+      combinedList.add(Follower(
+        id: clinician.doctor.id,
+        username: clinician.doctor.username,
+        email: clinician.doctor.email,
+        gender: clinician.doctor.gender,
+        isPatient: false,
+      ));
     });
     combinedList.sort((a, b) => a.username!.compareTo(b.username!));
     return combinedList;
