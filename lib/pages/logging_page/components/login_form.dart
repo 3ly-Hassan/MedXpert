@@ -50,12 +50,15 @@ class SignForm extends StatelessWidget {
                 print(token);
                 if (role == 'patient') {
                   print('a7a3');
-                  MeasurementCubit.get(context).getPatientProfile();
+                  MeasurementCubit.get(context).getPatientProfile().then(
+                      (value) => Navigator.pushReplacementNamed(
+                          context, DashBord.routeName));
                 } else if (role == 'doctor') {
                   print('A7a4');
-                  MeasurementCubit.get(context).getdoctorProfile();
+                  MeasurementCubit.get(context).getdoctorProfile().then(
+                      (value) => Navigator.pushReplacementNamed(
+                          context, DashBord.routeName));
                 }
-                Navigator.pushReplacementNamed(context, DashBord.routeName);
               });
             });
           } else {

@@ -61,42 +61,14 @@ class _DashBordState extends State<DashBord> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                MeasurementCubit.get(context)
-                                                .patient
-                                                .username ==
-                                            null &&
-                                        MeasurementCubit.get(context)
-                                                .doctor
-                                                .username ==
-                                            null
-                                    ? "Loading..."
-                                    : role == 'patient'
-                                        ? MeasurementCubit.get(context)
-                                            .patient
-                                            .username!
-                                        : MeasurementCubit.get(context)
-                                            .doctor
-                                            .username!,
+                                buildTheNameText(context),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     fontSize: 20),
                               ),
                               Text(
-                                MeasurementCubit.get(context).patient.email ==
-                                            null &&
-                                        MeasurementCubit.get(context)
-                                                .doctor
-                                                .email ==
-                                            null
-                                    ? "Loading..."
-                                    : role == 'patient'
-                                        ? MeasurementCubit.get(context)
-                                            .patient
-                                            .email!
-                                        : MeasurementCubit.get(context)
-                                            .doctor
-                                            .email!,
+                                buildTheEmailText(context),
                                 style: TextStyle(
                                     fontFamily: 'Muli',
                                     color: Colors.white,
@@ -201,5 +173,27 @@ class _DashBordState extends State<DashBord> {
         ),
       ),
     );
+  }
+
+  String buildTheNameText(context) {
+    if (MeasurementCubit.get(context).patient.username == null &&
+        MeasurementCubit.get(context).doctor.username == null) {
+      return 'loading...';
+    } else if (role == 'patient') {
+      return MeasurementCubit.get(context).patient.username!;
+    } else {
+      return MeasurementCubit.get(context).doctor.username!;
+    }
+  }
+
+  String buildTheEmailText(context) {
+    if (MeasurementCubit.get(context).patient.email == null &&
+        MeasurementCubit.get(context).doctor.email == null) {
+      return 'loading...';
+    } else if (role == 'patient') {
+      return MeasurementCubit.get(context).patient.email!;
+    } else {
+      return MeasurementCubit.get(context).doctor.email!;
+    }
   }
 }

@@ -109,21 +109,20 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   //patient profile
 
-  void getPatientProfile() {
+  Future<Patient?> getPatientProfile() async {
     emit(GetPatientProfileLoading());
-    _getPatientProfile().then((value) {
-      if (value == null) {
-        print('hhhhhh');
-        return null;
-      }
-      patient = value;
-      print('hhhhhh2');
-      genderVal = patient.gender;
-      print(patient.residency);
-      print(patient.email);
-      dropValue = patient.residency;
-      emit(GetPatientProfileLoaded());
-    });
+    var p = await _getPatientProfile();
+    if (p == null) {
+      return p;
+    }
+    patient = p;
+    print('hhhhhh2');
+    genderVal = patient.gender;
+    print(patient.residency);
+    print(patient.email);
+    dropValue = patient.residency;
+    emit(GetPatientProfileLoaded());
+    return p;
   }
 
   Future<Patient?> _getPatientProfile() async {
@@ -187,19 +186,20 @@ class MeasurementCubit extends Cubit<MeasurementState> {
 
   //doctor profile
 
-  void getdoctorProfile() {
+  Future<Doctor?> getdoctorProfile() async {
     emit(GetDoctorProfileLoading());
-    _getDoctorProfile().then((value) {
-      if (value == null) {
-        return null;
-      }
-      doctor = value;
-      genderVal = doctor.gender;
-      var spec = doctor.specialization;
-      print(spec);
-      dropValue = doctor.residency;
-      emit(GetDoctorProfileLoaded());
-    });
+    var doc = await _getDoctorProfile();
+    if (doc == null) {
+      return doc;
+    }
+    doctor = doc;
+    genderVal = doctor.gender;
+    print(doctor.username);
+    var spec = doctor.specialization;
+    print(spec);
+    dropValue = doctor.residency;
+    emit(GetDoctorProfileLoaded());
+    return doc;
   }
 
   Future<Doctor?> _getDoctorProfile() async {
