@@ -70,10 +70,11 @@ class _DashBordState extends State<DashBord> {
                                                 .username ==
                                             null
                                     ? "Loading..."
-                                    : MeasurementCubit.get(context)
+                                    : role == 'patient'
+                                        ? MeasurementCubit.get(context)
                                             .patient
-                                            .username ??
-                                        MeasurementCubit.get(context)
+                                            .username!
+                                        : MeasurementCubit.get(context)
                                             .doctor
                                             .username!,
                                 style: TextStyle(
@@ -89,10 +90,11 @@ class _DashBordState extends State<DashBord> {
                                                 .email ==
                                             null
                                     ? "Loading..."
-                                    : MeasurementCubit.get(context)
+                                    : role == 'patient'
+                                        ? MeasurementCubit.get(context)
                                             .patient
-                                            .email ??
-                                        MeasurementCubit.get(context)
+                                            .email!
+                                        : MeasurementCubit.get(context)
                                             .doctor
                                             .email!,
                                 style: TextStyle(
