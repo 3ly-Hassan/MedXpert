@@ -63,7 +63,9 @@ class ProfileBody extends StatelessWidget {
                   SizedBox(height: 40),
                   CircleAvatar(
                     radius: 50,
-                    child: role == 'patient' ? Image.asset('assets/images/patient.jpg') : Image.asset('assets/images/doctor.jpg'),
+                    child: role == 'patient'
+                        ? Image.asset('assets/images/patient.jpg')
+                        : Image.asset('assets/images/doctor.jpg'),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -80,75 +82,76 @@ class ProfileBody extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Row(
-                    children: role == 'patient' ? <Widget>[
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(  
-                        cubit.patient.followers!.length.toString()
-                        ,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 26,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w700),
+                    children: role == 'patient'
+                        ? <Widget>[
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    cubit.patient.followers!.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 26,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    'Followers',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              'Followers',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w900),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                        cubit.patient.followings!.length.toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 26,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w700),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    cubit.patient.followings!.length.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 26,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    'Following',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              'Following',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w900),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                              '5',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 26,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w700),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '5',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 26,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    'Medicines',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: 'Muli',
+                                        fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              'Medicines',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontFamily: 'Muli',
-                                  fontWeight: FontWeight.w900),
-                            )
-                          ],
-                        ),
-                      ),
-                    ] : [],
+                          ]
+                        : [],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -185,15 +188,17 @@ class ProfileBody extends StatelessWidget {
                         //     prefix: LineAwesomeIcons.birthday_cake),
                         defaultFormField(
                             onTap: () {
-                              showDatePicker(
-                                context: context,
-                                firstDate: DateTime.parse('1950-01-01'),
-                                initialDate: DateTime.now(),
-                                lastDate: DateTime.now(),
-                              ).then((value) {
-                                birthController.text =
-                                    DateFormat('yyyy-MM-dd').format(value!);
-                              });
+                              if (!cubit.readOnly) {
+                                showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime.parse('1950-01-01'),
+                                  initialDate: DateTime.now(),
+                                  lastDate: DateTime.now(),
+                                ).then((value) {
+                                  birthController.text =
+                                      DateFormat('yyyy-MM-dd').format(value!);
+                                });
+                              }
                             },
                             focusNode: AlwaysDisabledFocusNode(),
                             controller: birthController,

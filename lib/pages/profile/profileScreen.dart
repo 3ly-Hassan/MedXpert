@@ -18,9 +18,10 @@ class ProfileScreen extends StatelessWidget {
     var cubit = MeasurementCubit.get(context);
     var pModel = cubit.patient;
     var dModel = cubit.doctor;
-    nameController.text = pModel.username ?? dModel.username!;
-    emailController.text = pModel.email ?? dModel.email!;
-    birthController.text = pModel.birthDate != null
+    nameController.text =
+        role == 'patient' ? pModel.username! : dModel.username!;
+    emailController.text = role == 'patient' ? pModel.email! : dModel.email!;
+    birthController.text = role == 'patient'
         ? pModel.birthDate!.substring(0, 10)
         : dModel.birthDate!.substring(0, 10);
     weightController.text =
@@ -54,10 +55,13 @@ class ProfileScreen extends StatelessWidget {
                           : () {
                               var doctor = Doctor();
                               doctor.birthDate = birthController.text;
+                              print(birthController.text);
                               doctor.email = emailController.text;
                               doctor.username = nameController.text;
                               //patient.weight = num.tryParse(weightController.text);
                               doctor.gender = cubit.genderVal;
+                              print(cubit.genderVal);
+                              print(cubit.dropValue);
                               doctor.residency = cubit.dropValue;
                               print(doctor.residency.runtimeType);
                               cubit.updateDoctorProfile(doctor);
