@@ -198,6 +198,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     var spec = doctor.specialization;
     print(spec);
     dropValue = doctor.residency;
+    print(doctor.residency);
     emit(GetDoctorProfileLoaded());
     return doc;
   }

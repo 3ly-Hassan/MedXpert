@@ -57,6 +57,7 @@ class Doctor {
     data['bio'] = this.bio;
     data['gender'] = this.gender;
     data['birthDate'] = this.birthDate;
+    data['residency'] = this.residency;
     // if (this.specialization != null) {
     //   data['specialization'] =
     //       this.specialization!.map((v) => v.toJson()).toList();
