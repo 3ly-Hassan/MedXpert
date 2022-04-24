@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+import '../../api_service/api_service.dart';
+
 class MedSignUpCubit extends Cubit<MedSignUpStates> {
   MedSignUpCubit() : super(MedSignUpInitialState());
 

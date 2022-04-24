@@ -2,6 +2,7 @@ import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
+import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -24,7 +25,8 @@ class APIService {
 
   set headers(Map<String, String> value) {
     _headers = value;
-  } //authentication
+  }
+  //authentication
 
   Future<LoginResponseModel?> userLogin(LoginRequestModel requestModel) async {
     String url = "$api/auth/login";
@@ -353,6 +355,36 @@ class APIService {
       print(e.toString());
 
       return null;
+    }
+  }
+
+  // forget pass
+  Future<ForgetPassResponseModel> forgetPass(
+      ForgetPassRequestModel requestModel) async {
+    String url = "$api/auth/passwordReset";
+    try {
+      print(requestModel.toJson());
+      final response =
+          await http.post(Uri.parse(url), body: requestModel.toJson());
+      print(response.body);
+      if (response.statusCode == 200) {
+        ForgetPassResponseModel r =
+            ForgetPassResponseModel.fromJson(json.decode(response.body));
+        r.statusCode = response.statusCode;
+        return r;
+      } else {
+        print('xxxx');
+        print('tttt');
+        ForgetPassResponseModel r =
+            ForgetPassResponseModel.fromJson(json.decode(response.body));
+        print('kkk');
+        r.statusCode = response.statusCode;
+        return r;
+      }
+    } catch (e) {
+      print('ي ابن الصرمة');
+      print(e.toString());
+      return ForgetPassResponseModel();
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/patient.dart';
+import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/spec_checkBox.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';

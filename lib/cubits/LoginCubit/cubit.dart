@@ -16,17 +16,6 @@ class MedLoginCubit extends Cubit<MedLoginStates> {
 
   LoginResponseModel loginModel = LoginResponseModel();
   String url = "http://10.0.2.2:8000/api/auth/login";
-  // void userLogin(LoginRequestModel requestModel) {
-  //   emit(MedLoginLoadingState());
-  //   http.post(Uri.parse(url), body: requestModel.toJson()).then((value) {
-  //     print(value.body);
-  //     loginModel = LoginResponseModel.fromJson(json.decode(value.body));
-  //     emit(MedLoginSuccessState(loginModel));
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(MedLoginErrorState(error.toString()));
-  //   });
-  // }
   Future<LoginResponseModel?> _login(LoginRequestModel requestModel) async {
     LoginResponseModel? responseModel = await api.userLogin(requestModel);
     return responseModel;

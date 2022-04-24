@@ -10,6 +10,38 @@ class SignUpResponseModel {
   }
 }
 
+class ForgetPassResponseModel {
+  final String? msg;
+  int? statusCode;
+
+  ForgetPassResponseModel({this.statusCode, this.msg});
+
+  factory ForgetPassResponseModel.fromJson(Map<String, dynamic> json) {
+    return ForgetPassResponseModel(
+      msg: json["msg"] != null ? json["msg"] : "",
+    );
+  }
+}
+
+class ForgetPassRequestModel {
+  String? email;
+  String? role;
+
+  ForgetPassRequestModel({
+    this.email,
+    this.role,
+  });
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      'email': email?.trim(),
+      'role': role?.trim(),
+    };
+
+    return map;
+  }
+}
+
 class SignUpRequestModel {
   String? username;
   String? email;
