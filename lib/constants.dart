@@ -71,6 +71,8 @@ const double kContainerOfTeamsListRatioForPatients = 0.78;
 const double kContainerOfTeamsListRatioForDoctors = 0.86;
 const double kContainerOfTeamsButtonsRatioForPatients = 0.22;
 const double kContainerOfTeamsButtonsRatioForDoctors = 0.135;
+const double kContainerOfMedicationCreationButton = 0.135;
+const double kContainerOfCreateMedicationListRatio = 0.94;
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

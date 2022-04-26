@@ -2,6 +2,7 @@ import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
+import 'package:final_pro/models/medication_drug.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -498,6 +499,30 @@ class APIService {
       }
     } catch (e) {
       print('Exception In Delete Patient From Doctor: ${e.toString()}');
+      return false;
+    }
+  }
+
+  //medication
+
+  Future<bool> createMedication(
+      String patientId, List<MedicationDrug> drugMedicationList) async {
+    String url = "$api/medication/createMedication?id=$patientId";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: _headers,
+        body: drugMedicationList,
+      );
+      if (response.statusCode == 200) {
+        print('create medication done');
+        return true;
+      } else {
+        print('Problem In create medication');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In create medication: ${e.toString()}');
       return false;
     }
   }
