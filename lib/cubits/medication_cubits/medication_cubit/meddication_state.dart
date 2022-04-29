@@ -1,6 +1,5 @@
 part of 'medication_cubit.dart';
 
-@immutable
 abstract class MedicationState {}
 
 class MedicationInitial extends MedicationState {}

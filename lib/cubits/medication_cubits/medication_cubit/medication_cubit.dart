@@ -1,11 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:final_pro/models/patient.dart';
-import 'package:meta/meta.dart';
 import 'package:final_pro/api_service/api_service.dart';
 
-import '../../models/doctor.dart';
+import '../../../models/doctor.dart';
 
-part 'medication_state.dart';
+part 'meddication_state.dart';
 
 class MedicationCubit extends Cubit<MedicationState> {
   MedicationCubit() : super(MedicationInitial());
