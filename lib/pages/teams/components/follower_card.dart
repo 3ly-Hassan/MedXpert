@@ -7,66 +7,55 @@ import '../../../constants.dart';
 
 class FollowerCard extends StatelessWidget {
   final Follower follower;
+  final Function? onTap;
+  final bool showTextButton;
 
-  const FollowerCard({Key? key, required this.follower}) : super(key: key);
+  const FollowerCard({
+    Key? key,
+    required this.follower,
+    this.onTap,
+    this.showTextButton = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: Colors.green.shade100,
-      ),
-      child: ListTile(
-        title: Text(follower.username!, overflow: TextOverflow.ellipsis),
-        subtitle: Text(follower.email!, overflow: TextOverflow.ellipsis),
-        trailing: TextButton(
-          child: Text(
-            kUnFollow,
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-            ),
-          ),
-          onPressed: () {
-            DialogHelper.deleteDialog(context, follower);
-          },
+    return GestureDetector(
+      onTap: onTap == null
+          ? null
+          : () {
+              onTap!();
+            },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: Colors.green.shade100,
         ),
-        leading: CircleAvatar(
-          radius: 32,
-          backgroundImage: follower.isPatient!
-              ? follower.gender == 'male'
-                  ? AssetImage('assets/images/male_patient.png')
-                  : AssetImage('assets/images/female_patient.png')
-              : AssetImage('assets/images/doctor.jpg'),
+        child: ListTile(
+          title: Text(follower.username!, overflow: TextOverflow.ellipsis),
+          subtitle: Text(follower.email!, overflow: TextOverflow.ellipsis),
+          trailing: showTextButton
+              ? TextButton(
+                  child: Text(
+                    kUnFollow,
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onPressed: () {
+                    DialogHelper.deleteDialog(context, follower);
+                  },
+                )
+              : null,
+          leading: CircleAvatar(
+            radius: 32,
+            backgroundImage: follower.isPatient!
+                ? follower.gender == 'male'
+                    ? AssetImage('assets/images/male_patient.png')
+                    : AssetImage('assets/images/female_patient.png')
+                : AssetImage('assets/images/doctor.jpg'),
+          ),
         ),
       ),
     );
-
-    // return Container(
-    //   width: double.infinity,
-    //   color: Colors.amber,
-    //   height: 130,
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       SizedBox(
-    //         height: 30,
-    //       ),
-    //       Stack(
-    //         alignment: Alignment.centerLeft,
-    //         children: [
-    //           Container(
-    //             color: Colors.red,
-    //             width: double.infinity,
-    //             height: 80,
-    //           ),
-    //           CircleAvatar(
-    //             radius: 25,
-    //           ),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

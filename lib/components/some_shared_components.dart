@@ -39,6 +39,7 @@ Widget defaultFormField({
   bool readOnly = false,
   @required String? Function(String?)? validate,
   @required String? label,
+  String? hintText,
   @required IconData? prefix,
   IconData? suffix,
   Function()? suffixPressed,
@@ -60,15 +61,13 @@ Widget defaultFormField({
       validator: validate,
       decoration: InputDecoration(
         labelText: label,
+        hintText: hintText,
         prefixIcon: Icon(
           prefix,
         ),
         suffixIcon: suffix != null
-            ? IconButton(
-                onPressed: suffixPressed,
-                icon: Icon(
-                  suffix,
-                ),
+            ? Icon(
+                suffix,
               )
             : null,
         border: OutlineInputBorder(),

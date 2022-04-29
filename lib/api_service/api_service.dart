@@ -3,6 +3,8 @@ import 'package:final_pro/models/article.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
+import 'package:final_pro/models/medication_drug.dart';
+import 'package:final_pro/models/min_drug_model.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -518,6 +520,59 @@ class APIService {
     } catch (e) {
       print('Exception In Delete Patient From Doctor: ${e.toString()}');
       return false;
+    }
+  }
+
+  //medication
+
+  Future<bool> createMedication(
+      String patientId, List drugMedicationList) async {
+    String url = "$api/medication/createMedication?id=$patientId";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode({
+          "drug_id": "6229dbf3ff73e23da667f8fd",
+          // "drug_name": "congestal",
+          "dose": 3,
+          "start_date": "2022-2-28",
+          "end_date": "2022-4-2"
+        }),
+      );
+      if (response.statusCode == 200) {
+        print('create medication done');
+        return true;
+      } else {
+        print('Problem In create medication: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In create medication: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<List?> searchForDrug(String searchKey) async {
+    String url = "$api/drug/autoComplete?key=$searchKey";
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('Search medication done');
+        final List data = json.decode(response.body)['data'];
+        final List drugModelList =
+            data.map((e) => MinDrugModel.fromJson(e)).toList();
+        return drugModelList;
+      } else {
+        print('Problem In Search medication');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In Search medication: ${e.toString()}');
+      return null;
     }
   }
 }

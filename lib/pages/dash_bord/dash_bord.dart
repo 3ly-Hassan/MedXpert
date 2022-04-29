@@ -3,6 +3,7 @@ import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/pages/article/articles.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
+import 'package:final_pro/pages/medication/medication_screen.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,10 @@ class _DashBordState extends State<DashBord> {
                         primary: false,
                         children: [
                           DashBordItem(
-                            onPress: () {},
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, MedicationScreen.routeName);
+                            },
                             image: 'assets/images/pharmacy.png',
                             title: 'Medication',
                           ),

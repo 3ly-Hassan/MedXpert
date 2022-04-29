@@ -38,7 +38,7 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
     //
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text("Teams"),
         bottom: isPatient
             ? TabBar(
