@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/bloc_observer.dart';
+import 'package:final_pro/cubits/Article_cubit/article_cubit.dart';
 import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
@@ -76,6 +77,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => DialogCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ArticleCubit(),
         ),
       ],
       child: MaterialApp(

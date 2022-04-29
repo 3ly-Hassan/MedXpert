@@ -1,5 +1,6 @@
 import 'package:final_pro/cache_helper.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/pages/article/articles.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
@@ -125,7 +126,10 @@ class _DashBordState extends State<DashBord> {
                               image: 'assets/images/profile.png',
                               title: 'Profile'),
                           DashBordItem(
-                              onPress: () {},
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, Articles.routeName);
+                              },
                               image: 'assets/images/copywriting.png',
                               title: 'Articles'),
                           DashBordItem(

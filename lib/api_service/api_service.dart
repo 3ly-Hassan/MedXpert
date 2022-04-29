@@ -1,4 +1,5 @@
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/models/article.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
@@ -373,8 +374,6 @@ class APIService {
         r.statusCode = response.statusCode;
         return r;
       } else {
-        print('xxxx');
-        print('tttt');
         ForgetPassResponseModel r =
             ForgetPassResponseModel.fromJson(json.decode(response.body));
         print('kkk');
@@ -385,6 +384,26 @@ class APIService {
       print('ي ابن الصرمة');
       print(e.toString());
       return ForgetPassResponseModel();
+    }
+  }
+
+//get articles
+  Future<Article> getAllArticles(key) async {
+    String url = "$api/patient/articles?keyword=$key";
+    print("getting data");
+    try {
+      final response = await http.get(Uri.parse(url), headers: _headers);
+      if (response.statusCode == 200) {
+        Article article = Article.fromJson(json.decode(response.body), 200);
+        print('good');
+        return article;
+      } else {
+        print('not good');
+        return Article(statusCode: response.statusCode);
+      }
+    } catch (e) {
+      print(e.toString());
+      return Article();
     }
   }
 

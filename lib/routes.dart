@@ -1,4 +1,5 @@
 import 'package:final_pro/pages/add_measurement/addMeasurements.dart';
+import 'package:final_pro/pages/article/articles.dart';
 import 'package:final_pro/pages/choose_who.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/forget_pass/forget_password.dart';
@@ -26,4 +27,5 @@ final Map<String, WidgetBuilder> routes = {
   Measurements.routeName: (context) => Measurements(),
   Teams.routeName: (context) => Teams(),
   AddChronics.routeName: (context) => AddChronics(),
+  Articles.routeName: (context) => Articles(),
 };

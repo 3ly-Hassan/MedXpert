@@ -46,7 +46,6 @@ class Doctor {
         followings!.add(new Follower.fromJsonPatient(v['patient_id']));
       });
     }
-    ;
   }
 
   Map<String, dynamic> toJson() {

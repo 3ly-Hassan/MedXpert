@@ -2,18 +2,13 @@ import 'package:final_pro/components/Form_error.dart';
 import 'package:final_pro/components/customSurfixButton.dart';
 import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/components/noAccountText.dart';
-import 'package:final_pro/cubits/SignUpCubit/cubit.dart';
-import 'package:final_pro/cubits/SignUpCubit/states.dart';
 import 'package:final_pro/cubits/forget_cubit/cubit.dart';
 import 'package:final_pro/cubits/forget_cubit/states.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
-import 'package:final_pro/pages/register/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants.dart';
-import '../../../size_config.dart';
-import '../forget_password.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -113,7 +108,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
+                          // If  you are using latest version of flutter then label text and hint text shown like this
                           // if you r using flutter less then 1.20.* then maybe this is not working properly
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           suffixIcon: CustomSuffixIcon(
