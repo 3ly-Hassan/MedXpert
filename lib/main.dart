@@ -82,6 +82,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ArticleCubit(),)
+          ,
             BlocProvider(
           create: (context) => MedicationCubit(),
         ),
