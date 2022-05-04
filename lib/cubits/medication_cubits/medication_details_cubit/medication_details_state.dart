@@ -11,3 +11,5 @@ class ShowSearchListState extends MedicationDetailsState {
   final List searchList;
   ShowSearchListState(this.searchList);
 }
+
+class GetMedicationState extends MedicationDetailsState {}

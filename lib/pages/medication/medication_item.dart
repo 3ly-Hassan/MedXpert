@@ -1,3 +1,4 @@
+import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/pages/medication/divider_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,30 +31,33 @@ class _MedicationItemState extends State<MedicationItem> {
     final bloc = BlocProvider.of<MedicationDetailsCubit>(context);
     final _formKey = GlobalKey<FormState>();
     //
-    return WillPopScope(
-      onWillPop: () async {
-        bloc.dispose();
-        return true;
+    return BlocBuilder<MedicationDetailsCubit, MedicationDetailsState>(
+      builder: (context, state) {
+        if (state is GetMedicationState) {
+          return WillPopScope(
+            onWillPop: () async {
+              bloc.dispose();
+              return true;
+            },
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (int i = 0; i <= bloc.indexController; i++)
+                      MedicationItemContainer(
+                        context: context,
+                        currentIndex: i,
+                        showDivider: i == bloc.indexController ? false : true,
+                      )
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        return ErrorBloc();
       },
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              for (int i = 0; i <= bloc.indexController; i++)
-                MedicationItemContainer(
-                    context: context,
-                    currentIndex: i,
-                    showDivider: i == bloc.indexController ? false : true,
-                    onPressed: () {
-                      setState(() {
-                        bloc.addNewMedicationItem();
-                      });
-                    })
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -62,13 +66,12 @@ class MedicationItemContainer extends StatelessWidget {
   final BuildContext context;
   final int currentIndex;
   final bool showDivider;
-  final Function onPressed;
+
   const MedicationItemContainer({
     Key? key,
     required this.context,
     required this.currentIndex,
     required this.showDivider,
-    required this.onPressed,
   }) : super(key: key);
 
   Future<void> _selectDate(
@@ -91,11 +94,44 @@ class MedicationItemContainer extends StatelessWidget {
     List drugSearchList = [];
     return Column(
       children: [
-        Text(
-          'Drug ${currentIndex + 1}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        Stack(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        'Drug ${currentIndex + 1}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: currentIndex == 0
+                        ? Theme.of(context).disabledColor
+                        : Theme.of(context).errorColor,
+                  ),
+                  onPressed: currentIndex == 0
+                      ? null
+                      : () {
+                          bloc.removeMedicationItem(currentIndex);
+                        },
+                ),
+              ],
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -233,7 +269,7 @@ class MedicationItemContainer extends StatelessWidget {
                     icon: Icon(Icons.add),
                     label: Text('Add new one!'),
                     onPressed: () {
-                      onPressed();
+                      bloc.addNewMedicationItem();
                     },
                   )
                 ],

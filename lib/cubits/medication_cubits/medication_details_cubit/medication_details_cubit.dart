@@ -59,6 +59,17 @@ class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
     doseTextControllerList.add(TextEditingController());
     startDateTextControllerList.add(TextEditingController());
     endDateTextControllerList.add(TextEditingController());
+    emit(GetMedicationState());
+  }
+
+  void removeMedicationItem(int index) {
+    indexController = indexController - 1;
+    selectedSuggestion.removeAt(index);
+    drugTextControllerList.removeAt(index);
+    doseTextControllerList.removeAt(index);
+    startDateTextControllerList.removeAt(index);
+    endDateTextControllerList.removeAt(index);
+    emit(GetMedicationState());
   }
 
   void emitLoadingState() {
