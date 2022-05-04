@@ -1,5 +1,5 @@
 import 'package:final_pro/components/default_button.dart';
-import 'package:final_pro/cubits/medication_cubits/medication_details_cubit/medication_details_cubit.dart';
+import 'package:final_pro/cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/pages/medication/medication_item.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +20,7 @@ class CreateMedicationScreen extends StatefulWidget {
 }
 
 class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late Follower _selectedPatient;
+  Follower? _selectedPatient;
 
   @override
   Widget build(BuildContext context) {
@@ -61,37 +60,38 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                 height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
                     kContainerOfCreateMedicationListRatio,
                 child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButtonFormField2<Follower>(
-                            onChanged: (item) {
-                              _selectedPatient = item!;
-                            },
-                            dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                  key: BlocProvider.of<CreateMedicationCubit>(context).formKey1,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButtonFormField2<Follower>(
+                              onChanged: (item) {
+                                _selectedPatient = item!;
+                              },
+                              dropdownDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20)),
-                              labelText: 'Patient',
-                              hintText: 'Select a patient',
-                              suffixIcon: Icon(Icons.accessibility_sharp),
+                              decoration: InputDecoration(
+                                labelText: 'Patient',
+                                hintText: 'Select a patient',
+                                suffixIcon: Icon(Icons.accessibility_sharp),
+                              ),
+                              items: dropDownPatients,
+                              validator: (item) {
+                                if (item == null) {
+                                  return 'Please select a patient';
+                                }
+                                return null;
+                              },
                             ),
-                            items: dropDownPatients,
-                            validator: (item) {
-                              if (item == null) {
-                                print('probleeeeeeeeeeeeeeeeeeeeeeeeeem');
-                              }
-                            },
                           ),
                         ),
-                      ),
-                      DividerLine(),
-                      MedicationItem(),
-                    ],
+                        DividerLine(),
+                        MedicationItem(),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -103,13 +103,11 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                   children: [
                     DefaultButton(
                       text: 'Create',
-                      press: () {
-                        List medicationList =
-                            BlocProvider.of<MedicationDetailsCubit>(context)
-                                .collectMedicationList();
-                        BlocProvider.of<MedicationDetailsCubit>(context)
+                      press: () async {
+                        await BlocProvider.of<CreateMedicationCubit>(context)
                             .createMedication(
-                                _selectedPatient.id!, medicationList);
+                          _selectedPatient == null ? '' : _selectedPatient!.id,
+                        );
                       },
                     ),
                   ],

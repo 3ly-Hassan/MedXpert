@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/medication_drug.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 import '../../../models/min_drug_model.dart';
 
-part 'medication_details_state.dart';
+part 'create_medication_state.dart';
 
-class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
-  MedicationDetailsCubit() : super(MedicationDetailsInitial());
+class CreateMedicationCubit extends Cubit<CreateMedicationState> {
+  CreateMedicationCubit() : super(MedicationDetailsInitial());
 
   APIService apiService = APIService();
 
@@ -21,6 +21,9 @@ class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
   List<TextEditingController> doseTextControllerList = [];
   List<TextEditingController> startDateTextControllerList = [];
   List<TextEditingController> endDateTextControllerList = [];
+
+  final formKey1 = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
 
   void dispose() {
     // drugTextControllerList.forEach((element) => element.dispose());
@@ -81,8 +84,14 @@ class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
     return drugList;
   }
 
-  Future createMedication(String patientId, List drugMedicationList) async {
+  Future createMedication(String? patientId) async {
     // emitLoadingState();
-    await apiService.createMedication(patientId, drugMedicationList);
+    final bool validator1 = formKey1.currentState!.validate();
+    final bool validator2 = formKey2.currentState!.validate();
+    if (validator1 && validator2) {
+      List medicationList = collectMedicationList();
+      await apiService.createMedication(patientId, medicationList);
+      print('Create Medication is valid and has been done!');
+    }
   }
 }

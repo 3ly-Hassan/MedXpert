@@ -526,7 +526,7 @@ class APIService {
   //medication
 
   Future<bool> createMedication(
-      String patientId, List drugMedicationList) async {
+      String? patientId, List drugMedicationList) async {
     String url = "$api/medication/createMedication?id=$patientId";
     print(drugMedicationList[0]);
     try {

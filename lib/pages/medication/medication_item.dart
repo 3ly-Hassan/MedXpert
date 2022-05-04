@@ -6,7 +6,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../components/center_progress_indicator.dart';
 import '../../components/some_shared_components.dart';
-import '../../cubits/medication_cubits/medication_details_cubit/medication_details_cubit.dart';
+import '../../constants.dart';
+import '../../cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
 import '../../date_helper.dart';
 import '../../models/min_drug_model.dart';
 import '../../size_config.dart';
@@ -21,17 +22,16 @@ class MedicationItem extends StatefulWidget {
 class _MedicationItemState extends State<MedicationItem> {
   @override
   void initState() {
-    BlocProvider.of<MedicationDetailsCubit>(context).addNewMedicationItem();
+    BlocProvider.of<CreateMedicationCubit>(context).addNewMedicationItem();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     //
-    final bloc = BlocProvider.of<MedicationDetailsCubit>(context);
-    final _formKey = GlobalKey<FormState>();
+    final bloc = BlocProvider.of<CreateMedicationCubit>(context);
     //
-    return BlocBuilder<MedicationDetailsCubit, MedicationDetailsState>(
+    return BlocBuilder<CreateMedicationCubit, CreateMedicationState>(
       builder: (context, state) {
         if (state is GetMedicationState) {
           return WillPopScope(
@@ -40,7 +40,7 @@ class _MedicationItemState extends State<MedicationItem> {
               return true;
             },
             child: Form(
-              key: _formKey,
+              key: bloc.formKey2,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -90,7 +90,7 @@ class MedicationItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<MedicationDetailsCubit>(context);
+    final bloc = BlocProvider.of<CreateMedicationCubit>(context);
     List drugSearchList = [];
     return Column(
       children: [
@@ -121,7 +121,7 @@ class MedicationItemContainer extends StatelessWidget {
                     Icons.clear,
                     color: currentIndex == 0
                         ? Theme.of(context).disabledColor
-                        : Theme.of(context).errorColor,
+                        : kErrorColor,
                   ),
                   onPressed: currentIndex == 0
                       ? null
@@ -206,11 +206,13 @@ class MedicationItemContainer extends StatelessWidget {
             validator: (value) {
               bool inSearchResult =
                   drugSearchList.any((element) => element.drugName == value);
+              // print('congestal'==);
               if (value!.isEmpty) {
                 return 'Please Enter a drug name';
               } else if (!inSearchResult) {
                 return 'Please select a valid drug name';
               }
+              return null;
             },
           ),
         ),
@@ -223,7 +225,12 @@ class MedicationItemContainer extends StatelessWidget {
             hintText: 'Enter the drug dose',
             prefix: null,
             suffix: Icons.medical_services,
-            // validate: (validate) {},
+            validate: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter the dose';
+              }
+              return null;
+            },
           ),
         ),
         Padding(
@@ -240,7 +247,12 @@ class MedicationItemContainer extends StatelessWidget {
                 bloc.startDateTextControllerList[currentIndex],
               );
             },
-            validate: (validate) {},
+            validate: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter the dose start date';
+              }
+              return null;
+            },
           ),
         ),
         Padding(
@@ -257,7 +269,12 @@ class MedicationItemContainer extends StatelessWidget {
                 bloc.endDateTextControllerList[currentIndex],
               );
             },
-            validate: (validate) {},
+            validate: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter the dose end date';
+              }
+              return null;
+            },
           ),
         ),
         showDivider

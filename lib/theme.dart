@@ -40,15 +40,24 @@ InputDecorationTheme inputDecorationTheme() {
     borderSide: BorderSide(color: kTextColor),
     gapPadding: 10,
   );
+
+  OutlineInputBorder outlineInputBorderError = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(28),
+    borderSide: BorderSide(color: kErrorColor!),
+    gapPadding: 10,
+  );
   return InputDecorationTheme(
     // If  you are using latest version of flutter then lable text and hint text shown like this
     // if you r using flutter less then 1.20.* then maybe this is not working properly
     // if we are define our floatingLabelBehavior in our theme then it's not applayed
+    //TODO: We need some playing here !
     floatingLabelBehavior: FloatingLabelBehavior.always,
     contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
     enabledBorder: outlineInputBorder,
-    focusedBorder: outlineInputBorder,
     border: outlineInputBorder,
+    focusedBorder: outlineInputBorder,
+    errorBorder: outlineInputBorderError,
+    focusedErrorBorder: outlineInputBorderError,
   );
 }
 
