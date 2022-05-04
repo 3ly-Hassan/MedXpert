@@ -22,12 +22,12 @@ class MedicationDrug {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = {};
-    data['drug_id'] = this.drugId;
-    data['drug_name'] = this.drugName;
-    data['dose'] = this.dose;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    return data;
+    return {
+      'drug_id': drugId,
+      'drug_name': drugName,
+      'dose': dose,
+      'start_date': startDate,
+      'end_date': endDate
+    };
   }
 }

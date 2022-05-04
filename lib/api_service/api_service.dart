@@ -528,19 +528,32 @@ class APIService {
   Future<bool> createMedication(
       String patientId, List drugMedicationList) async {
     String url = "$api/medication/createMedication?id=$patientId";
+    print(drugMedicationList[0]);
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: _headers,
-        body: jsonEncode({
-          "drug_id": "6229dbf3ff73e23da667f8fd",
-          // "drug_name": "congestal",
-          "dose": 3,
-          "start_date": "2022-2-28",
-          "end_date": "2022-4-2"
-        }),
-      );
-      if (response.statusCode == 200) {
+      final response = await http.post(Uri.parse(url),
+          headers: _headers,
+          body: jsonEncode(
+            {'drugs': drugMedicationList},
+            // {
+            //   'drugs': [
+            //     {
+            //       "drug_id": "6229dbf3ff73e23da667f8fd",
+            //       "drug_name": "congestal",
+            //       "dose": 3,
+            //       "start_date": "2022-2-28",
+            //       "end_date": "2022-4-2"
+            //     },
+            //     {
+            //       "drug_id": "6229dbf3ff73e23da667f8fd",
+            //       "drug_name": "congestalrsrf",
+            //       "dose": 3,
+            //       "start_date": "2022-2-28",
+            //       "end_date": "2022-4-2"
+            //     }
+            //   ]
+            // },
+          ));
+      if (response.statusCode == 201) {
         print('create medication done');
         return true;
       } else {
