@@ -44,11 +44,11 @@ class CreateMedicationCubit extends Cubit<CreateMedicationState> {
     for (int i = 0; i <= indexController; i++) {
       medicationList.add(
         MedicationDrug(
-          selectedSuggestion[i].drugId,
-          selectedSuggestion[i].drugName,
-          int.parse(doseTextControllerList[i].text),
-          startDateTextControllerList[i].text,
-          endDateTextControllerList[i].text,
+          drugId: selectedSuggestion[i].drugId,
+          drugName: selectedSuggestion[i].drugName,
+          dose: int.parse(doseTextControllerList[i].text),
+          startDate: startDateTextControllerList[i].text,
+          endDate: endDateTextControllerList[i].text,
         ).toJson(),
       );
     }
@@ -84,13 +84,14 @@ class CreateMedicationCubit extends Cubit<CreateMedicationState> {
     return drugList;
   }
 
-  Future createMedication(String? patientId) async {
+  Future createMedication(String? patientId, String medicationName) async {
     // emitLoadingState();
     final bool validator1 = formKey1.currentState!.validate();
     final bool validator2 = formKey2.currentState!.validate();
     if (validator1 && validator2) {
       List medicationList = collectMedicationList();
-      await apiService.createMedication(patientId, medicationList);
+      await apiService.createMedication(
+          patientId, medicationName, medicationList);
       print('Create Medication is valid and has been done!');
     }
   }

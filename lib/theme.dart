@@ -15,6 +15,10 @@ ThemeData theme() {
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
+    listTileTheme: ListTileThemeData(
+      tileColor: kPrimaryColorLight,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
   );
 }
 
@@ -52,7 +56,7 @@ InputDecorationTheme inputDecorationTheme() {
     // if we are define our floatingLabelBehavior in our theme then it's not applayed
     //TODO: We need some playing here !
     floatingLabelBehavior: FloatingLabelBehavior.always,
-    contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
+    contentPadding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
     enabledBorder: outlineInputBorder,
     border: outlineInputBorder,
     focusedBorder: outlineInputBorder,

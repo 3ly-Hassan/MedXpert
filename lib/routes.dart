@@ -6,16 +6,16 @@ import 'package:final_pro/pages/forget_pass/forget_password.dart';
 import 'package:final_pro/pages/login_success/login_success.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
-import 'package:final_pro/pages/medication/create_medication_screen.dart';
-import 'package:final_pro/pages/medication/medication_details_screen.dart';
-import 'package:final_pro/pages/medication/medication_screen.dart';
+import 'package:final_pro/pages/medication/create_medication_screen/create_medication_screen.dart';
+import 'package:final_pro/pages/medication/drugs_list_screen/drugs_list_screen.dart';
+import 'package:final_pro/pages/medication/medication_screen/medication_screen.dart';
+import 'package:final_pro/pages/medication/medications_list_screen/medications_list_screen.dart';
 import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'models/medication.dart';
 import 'pages/register/sign_up.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -34,5 +34,6 @@ final Map<String, WidgetBuilder> routes = {
   Articles.routeName: (context) => Articles(),
   MedicationScreen.routeName: (context) => MedicationScreen(),
   CreateMedicationScreen.routeName: (context) => CreateMedicationScreen(),
-  MedicationDetailsScreen.routeName: (context) => MedicationDetailsScreen(),
+  MedicationsListScreen.routeName: (context) => MedicationsListScreen(),
+  DrugsListScreen.routeName: (context) => DrugsListScreen(),
 };

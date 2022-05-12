@@ -1,15 +1,16 @@
 import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
 import 'package:final_pro/models/patient.dart';
-import 'package:final_pro/pages/medication/medication_item.dart';
+import 'package:final_pro/pages/medication/create_medication_screen/medication_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-import '../../constants.dart';
-import '../../cubits/medication_cubits/medication_cubit/medication_cubit.dart';
-import '../../size_config.dart';
-import 'divider_line.dart';
+import '../../../components/some_shared_components.dart';
+import '../../../constants.dart';
+import '../../../cubits/medication_cubits/medication_cubit/medication_cubit.dart';
+import '../../../size_config.dart';
+import '../shared_componenets/divider_line.dart';
 
 class CreateMedicationScreen extends StatefulWidget {
   static String routeName = "/create_medication";
@@ -21,6 +22,13 @@ class CreateMedicationScreen extends StatefulWidget {
 
 class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
   Follower? _selectedPatient;
+  TextEditingController medicationName = TextEditingController();
+
+  @override
+  void dispose() {
+    medicationName.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +96,23 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+                          child: defaultFormField(
+                            controller: medicationName,
+                            readOnly: false,
+                            label: 'Medication name',
+                            hintText: 'Enter the medication name',
+                            prefix: null,
+                            suffix: Icons.medical_services,
+                            validate: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter the the medication name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                         DividerLine(),
                         MedicationItem(),
                       ],
@@ -107,6 +132,7 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                         await BlocProvider.of<CreateMedicationCubit>(context)
                             .createMedication(
                           _selectedPatient == null ? '' : _selectedPatient!.id,
+                          medicationName.text,
                         );
                       },
                     ),

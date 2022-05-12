@@ -3,13 +3,13 @@ import 'package:final_pro/models/article.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
-import 'package:final_pro/models/medication_drug.dart';
 import 'package:final_pro/models/min_drug_model.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/login_model.dart';
+import '../models/medication.dart';
 import '../models/patient.dart';
 
 class APIService {
@@ -526,32 +526,17 @@ class APIService {
   //medication
 
   Future<bool> createMedication(
-      String? patientId, List drugMedicationList) async {
+      String? patientId, String medicationName, List drugMedicationList) async {
     String url = "$api/medication/createMedication?id=$patientId";
     print(drugMedicationList[0]);
     try {
       final response = await http.post(Uri.parse(url),
           headers: _headers,
           body: jsonEncode(
-            {'drugs': drugMedicationList},
-            // {
-            //   'drugs': [
-            //     {
-            //       "drug_id": "6229dbf3ff73e23da667f8fd",
-            //       "drug_name": "congestal",
-            //       "dose": 3,
-            //       "start_date": "2022-2-28",
-            //       "end_date": "2022-4-2"
-            //     },
-            //     {
-            //       "drug_id": "6229dbf3ff73e23da667f8fd",
-            //       "drug_name": "congestalrsrf",
-            //       "dose": 3,
-            //       "start_date": "2022-2-28",
-            //       "end_date": "2022-4-2"
-            //     }
-            //   ]
-            // },
+            {
+              'drugs': drugMedicationList,
+              'name': medicationName,
+            },
           ));
       if (response.statusCode == 201) {
         print('create medication done');
@@ -586,6 +571,50 @@ class APIService {
     } catch (e) {
       print('Exception In Search medication: ${e.toString()}');
       return null;
+    }
+  }
+
+  Future<List?> getMedicationsList(String followerId) async {
+    //for patient account remove '?id=$followerId' and make followerId optional !
+    String url = "$api/medication/getMedicationsByPatientId?id=$followerId";
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('Get Medications By Patient Id done');
+        final List data = json.decode(response.body)['data'];
+        final List medicationsList =
+            data.map((e) => Medication.fromJson(e)).toList();
+        return medicationsList;
+      } else {
+        print('Problem In Get Medications By Patient Id');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In Get Medications By Patient Id: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<bool> deleteMedication(String medicationId) async {
+    String url = "$api/medication/deleteMedication?id=$medicationId";
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('delete medication done');
+        return true;
+      } else {
+        print('Problem In delete medication');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In delete medication: ${e.toString()}');
+      return false;
     }
   }
 }

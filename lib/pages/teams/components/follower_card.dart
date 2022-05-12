@@ -42,7 +42,7 @@ class FollowerCard extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    DialogHelper.deleteDialog(context, follower);
+                    DialogHelper.deleteFollowerDialog(context, follower);
                   },
                 )
               : null,
