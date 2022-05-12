@@ -60,9 +60,10 @@ class _MedicationScreenState extends State<MedicationScreen> {
                           onTap: () async {
                             Navigator.of(context)
                                 .pushNamed(MedicationsListScreen.routeName);
+                            BlocProvider.of<MedicationsListCubit>(context)
+                                .followerId = state.followersList[index].id;
                             await BlocProvider.of<MedicationsListCubit>(context)
-                                .getMedicationsList(
-                                    state.followersList[index].id);
+                                .getMedicationsList();
                           },
                         ),
                       );

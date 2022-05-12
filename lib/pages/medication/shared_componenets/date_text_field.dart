@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/some_shared_components.dart';
+import '../../../constants.dart';
 import '../../../date_helper.dart';
 
 class DateTextField extends StatelessWidget {
@@ -29,7 +30,7 @@ class DateTextField extends StatelessWidget {
           lastDate: DateTime(2100));
       if (picked != null) {
         textController.text = DateHelper.getFormattedString(
-            date: picked, formattedString: 'yyyy-M-dd');
+            date: picked, formattedString: kFormattedString);
       }
     }
 

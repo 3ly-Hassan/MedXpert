@@ -90,7 +90,6 @@ class APIService {
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: _headers);
-      print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> measurement = json.decode(response.body)["data"];
         return measurement;
@@ -107,7 +106,6 @@ class APIService {
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: _headers);
-      print(response.body);
       if (response.statusCode == 200) {
         final List<Measurement> measurement =
             json.decode(response.body)["data"];
@@ -614,6 +612,27 @@ class APIService {
       }
     } catch (e) {
       print('Exception In delete medication: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> deleteDrug(String medicationId, String drugId) async {
+    String url = "$api/medication/deleteMedicationDrug?id=$medicationId";
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode({'drug_id': drugId}),
+      );
+      if (response.statusCode == 200) {
+        print('delete drug done');
+        return true;
+      } else {
+        print('Problem In delete drug');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In delete drug: ${e.toString()}');
       return false;
     }
   }

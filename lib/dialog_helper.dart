@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'components/loading_row.dart';
 import 'constants.dart';
+import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 
 class DialogHelper {
   //ToDo : it is your choice => barrierDismissible: false, // user must tap button!
@@ -243,6 +244,34 @@ class DialogHelper {
                   Navigator.of(context).pop();
                   await BlocProvider.of<MedicationsListCubit>(context)
                       .deleteMedication(medicationId, index);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  static deleteDrugDialog(
+      BuildContext context, String medicationId, String drugId, int index) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(kAreYouSure),
+            actions: <Widget>[
+              TextButton(
+                child: Text(kCancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(kYes),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await BlocProvider.of<DrugsListCubit>(context)
+                      .deleteDrug(medicationId, drugId, index, context);
                 },
               ),
             ],

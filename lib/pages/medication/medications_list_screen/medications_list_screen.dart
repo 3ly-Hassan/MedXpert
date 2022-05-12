@@ -1,6 +1,7 @@
 import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/pages/medication/drugs_list_screen/drugs_list_screen.dart';
 import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
@@ -72,19 +73,24 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
                               ],
                             ),
                           ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            color: kErrorColor,
-                            onPressed: () async {
-                              DialogHelper.deleteMedicationDialog(
-                                  context, medicationList[index].id, index);
-                            },
-                          ),
+                          trailing: medicationList[index].doctorId ==
+                                  BlocProvider.of<MedicationsListCubit>(context)
+                                      .currentDoctorId
+                              ? IconButton(
+                                  icon: Icon(Icons.delete),
+                                  color: kErrorColor,
+                                  onPressed: () async {
+                                    DialogHelper.deleteMedicationDialog(context,
+                                        medicationList[index].id, index);
+                                  },
+                                )
+                              : null,
                           onTap: () {
                             Navigator.of(context).pushNamed(
                               DrugsListScreen.routeName,
-                              arguments: medicationList[index],
                             );
+                            BlocProvider.of<DrugsListCubit>(context)
+                                .getDrugsList(medicationList[index]);
                           },
                         ),
                       );

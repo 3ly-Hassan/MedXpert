@@ -16,6 +16,7 @@ import 'cache_helper.dart';
 import 'constants.dart';
 import 'cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
+import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'cubits/medication_cubits/medication_cubit/medication_cubit.dart';
 
 void main() async {
@@ -92,6 +93,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MedicationsListCubit(),
+        ),
+        BlocProvider(
+          create: (context) => DrugsListCubit(),
         ),
       ],
       child: MaterialApp(
