@@ -1,5 +1,4 @@
 import 'package:final_pro/api_service/api_service.dart';
-import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +10,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
   DrugsListCubit() : super(DrugsListInitial());
   APIService apiService = APIService();
 
+  bool isDeleted = false;
   late Medication medicationItem;
   List drugs = [];
 
@@ -26,13 +26,11 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     drugs.removeAt(index);
     emit(GetDrugsListState(drugs));
 
-    bool isDeleted = await apiService.deleteDrug(medicationId, drugId);
+    isDeleted = await apiService.deleteDrug(medicationId, drugId);
 
     if (!isDeleted) {
       drugs.insert(index, packUp);
       emit(DeletionFailedState());
-    } else {
-      await BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
     }
   }
 }
