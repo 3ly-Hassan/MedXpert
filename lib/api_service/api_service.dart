@@ -3,13 +3,14 @@ import 'package:final_pro/models/article.dart';
 import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
-import 'package:final_pro/models/medication_drug.dart';
 import 'package:final_pro/models/min_drug_model.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/login_model.dart';
+import '../models/medication.dart';
+import '../models/medication_drug.dart';
 import '../models/patient.dart';
 
 class APIService {
@@ -90,7 +91,6 @@ class APIService {
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: _headers);
-      print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> measurement = json.decode(response.body)["data"];
         return measurement;
@@ -107,7 +107,6 @@ class APIService {
     print("getting data");
     try {
       final response = await http.get(Uri.parse(url), headers: _headers);
-      print(response.body);
       if (response.statusCode == 200) {
         final List<Measurement> measurement =
             json.decode(response.body)["data"];
@@ -526,21 +525,19 @@ class APIService {
   //medication
 
   Future<bool> createMedication(
-      String patientId, List drugMedicationList) async {
+      String? patientId, String medicationName, List drugMedicationList) async {
     String url = "$api/medication/createMedication?id=$patientId";
+    print(drugMedicationList[0]);
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: _headers,
-        body: jsonEncode({
-          "drug_id": "6229dbf3ff73e23da667f8fd",
-          // "drug_name": "congestal",
-          "dose": 3,
-          "start_date": "2022-2-28",
-          "end_date": "2022-4-2"
-        }),
-      );
-      if (response.statusCode == 200) {
+      final response = await http.post(Uri.parse(url),
+          headers: _headers,
+          body: jsonEncode(
+            {
+              'drugs': drugMedicationList,
+              'name': medicationName,
+            },
+          ));
+      if (response.statusCode == 201) {
         print('create medication done');
         return true;
       } else {
@@ -572,6 +569,93 @@ class APIService {
       }
     } catch (e) {
       print('Exception In Search medication: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<List?> getMedicationsList(String followerId) async {
+    //for patient account remove '?id=$followerId' and make followerId optional !
+    String url = "$api/medication/getMedicationsByPatientId?id=$followerId";
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('Get Medications By Patient Id done');
+        final List data = json.decode(response.body)['data'];
+        final List medicationsList =
+            data.map((e) => Medication.fromJson(e)).toList();
+        return medicationsList;
+      } else {
+        print('Problem In Get Medications By Patient Id');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In Get Medications By Patient Id: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<bool> deleteMedication(String medicationId) async {
+    String url = "$api/medication/deleteMedication?id=$medicationId";
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('delete medication done');
+        return true;
+      } else {
+        print('Problem In delete medication');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In delete medication: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> deleteDrug(String medicationId, String drugId) async {
+    String url = "$api/medication/deleteMedicationDrug?id=$medicationId";
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode({'drug_id': drugId}),
+      );
+      if (response.statusCode == 200) {
+        print('delete drug done');
+        return true;
+      } else {
+        print('Problem In delete drug');
+        return false;
+      }
+    } catch (e) {
+      print('Exception In delete drug: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<Medication?> addDrugToMedication(
+      String medicationId, MedicationDrug drug) async {
+    String url = "$api/medication/addMedicationDrug?id=$medicationId";
+    try {
+      print(drug.toJson());
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode(drug.toJson()),
+      );
+      if (response.statusCode == 200) {
+        return Medication.fromJson(jsonDecode(response.body)['data']);
+      } else {
+        print('Problem In adding drug');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In adding drug: ${e.toString()}');
       return null;
     }
   }

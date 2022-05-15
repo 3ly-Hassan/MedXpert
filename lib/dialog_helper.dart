@@ -1,4 +1,5 @@
 import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
+import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'components/loading_row.dart';
 import 'constants.dart';
+import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 
 class DialogHelper {
   //ToDo : it is your choice => barrierDismissible: false, // user must tap button!
@@ -194,7 +196,7 @@ class DialogHelper {
     );
   }
 
-  static void deleteDialog(BuildContext context, Follower follower) {
+  static void deleteFollowerDialog(BuildContext context, Follower follower) {
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -214,6 +216,62 @@ class DialogHelper {
                   Navigator.of(context).pop();
                   await BlocProvider.of<TeamsCubit>(context)
                       .deleteFollower(follower);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  static deleteMedicationDialog(
+      BuildContext context, String medicationId, int index) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(kAreYouSure),
+            actions: <Widget>[
+              TextButton(
+                child: Text(kCancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(kYes),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await BlocProvider.of<MedicationsListCubit>(context)
+                      .deleteMedication(medicationId, index);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  static deleteDrugDialog(
+      BuildContext context, String medicationId, String drugId, int index) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(kAreYouSure),
+            actions: <Widget>[
+              TextButton(
+                child: Text(kCancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(kYes),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await BlocProvider.of<DrugsListCubit>(context)
+                      .deleteDrug(medicationId, drugId, index, context);
                 },
               ),
             ],

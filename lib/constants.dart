@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 const kPrimaryColor = Color(0xFF10de62);
+const kPrimaryColorLight = Color(4291356361);
 const kPrimaryLightColor = Color(0xFFFFECDF);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
@@ -11,6 +12,7 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+final kErrorColor = Colors.red[700];
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -62,6 +64,7 @@ const String kNoFollowersYet = 'No followers yet';
 const String kNoFollowingsYet = 'No followings yet';
 const String kAreYouSure = 'Are you sure?';
 const String kYes = 'yes';
+const String kNo = 'No';
 const String kUnFollow = 'Un-follow';
 const String kDone = 'Done!';
 const String KDeletedDone = 'Deleted done!';
@@ -73,6 +76,7 @@ const double kContainerOfTeamsButtonsRatioForPatients = 0.22;
 const double kContainerOfTeamsButtonsRatioForDoctors = 0.135;
 const double kContainerOfMedicationCreationButton = 0.135;
 const double kContainerOfCreateMedicationListRatio = 0.94;
+const String kFormattedString = 'yyyy-M-dd';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

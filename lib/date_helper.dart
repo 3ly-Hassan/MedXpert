@@ -20,6 +20,12 @@ class DateHelper {
     }
   }
 
+  static String getFormattedStringFromISO(
+      String isoDate, String formattedString) {
+    final dateTime = DateTime.parse(isoDate);
+    return getFormattedString(date: dateTime, formattedString: formattedString);
+  }
+
   static int getIntUniqueId() {
     return DateTime.now().millisecondsSinceEpoch.remainder(100000);
   }

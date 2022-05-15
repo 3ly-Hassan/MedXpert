@@ -2,32 +2,37 @@ class MedicationDrug {
   String? drugId;
   String? drugName;
   int? dose;
+  bool? currentlyTaken;
   String? startDate;
   String? endDate;
 
   MedicationDrug(
-    this.drugId,
-    this.drugName,
-    this.dose,
-    this.startDate,
-    this.endDate,
-  );
+      {this.drugId,
+      this.drugName,
+      this.dose,
+      this.startDate,
+      this.endDate,
+      this.currentlyTaken = true});
 
-  MedicationDrug.fromJson(Map<String, dynamic> json) {
-    drugId = json['drug_id'];
-    drugName = json['drug_name'];
-    dose = json['dose'];
-    startDate = json['start_date'];
-    endDate = json['end_date'];
+  factory MedicationDrug.fromJson(Map<String, dynamic> json) {
+    return MedicationDrug(
+      drugId: json['drug_id'],
+      drugName: json['drug_name'],
+      dose: json['dose'],
+      startDate: json['start_date'],
+      endDate: json['end_date'],
+      currentlyTaken: json['currentlyTaken'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = {};
-    data['drug_id'] = this.drugId;
-    data['drug_name'] = this.drugName;
-    data['dose'] = this.dose;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    return data;
+    return {
+      'drug_id': drugId,
+      'drug_name': drugName,
+      'dose': dose,
+      'currentlyTaken': currentlyTaken,
+      'start_date': startDate,
+      'end_date': endDate
+    };
   }
 }

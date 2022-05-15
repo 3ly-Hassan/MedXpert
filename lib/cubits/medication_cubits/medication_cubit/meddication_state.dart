@@ -4,9 +4,9 @@ abstract class MedicationState {}
 
 class MedicationInitial extends MedicationState {}
 
-class GetPatientListState extends MedicationState {
-  final List patientList;
-  GetPatientListState(this.patientList);
+class GetFollowersListState extends MedicationState {
+  final List followersList;
+  GetFollowersListState(this.followersList);
 }
 
 class MedicationLoadingState extends MedicationState {}

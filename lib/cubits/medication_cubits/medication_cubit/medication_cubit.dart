@@ -15,10 +15,10 @@ class MedicationCubit extends Cubit<MedicationState> {
     emit(MedicationLoadingState());
   }
 
-  Future<void> getPatientList() async {
+  Future<void> getFollowersList() async {
     emit(MedicationLoadingState());
     final Doctor? doctorModel = await apiService.getDoctorProfile();
     patientList = doctorModel!.followings!;
-    emit(GetPatientListState(patientList));
+    emit(GetFollowersListState(patientList));
   }
 }
