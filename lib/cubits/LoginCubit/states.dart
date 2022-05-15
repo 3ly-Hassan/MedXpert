@@ -13,9 +13,9 @@ class MedLoginSuccessState extends MedLoginStates {
 }
 
 class MedLoginErrorState extends MedLoginStates {
-  final String error;
+  final String? error;
 
-  MedLoginErrorState(this.error);
+  MedLoginErrorState({this.error});
 }
 
 class RoleState extends MedLoginStates {}

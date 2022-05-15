@@ -462,19 +462,15 @@ class ProfileBody extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(
                 left: 16.0, right: 16, bottom: 10, top: 6),
-            child: Column(
-              children: [
-                Center(
-                  child: Text(
-                    specialization,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                ),
-              ],
+            child: Center(
+              child: Text(
+                specialization,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.clip),
+              ),
             ),
           ),
         ),

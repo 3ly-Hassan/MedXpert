@@ -1,10 +1,9 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/Article_cubit/article_cubit.dart';
 import 'package:final_pro/cubits/Article_cubit/article_states.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../cubits/Article_cubit/article_states.dart';
 
 class Articles extends StatefulWidget {
@@ -113,7 +112,14 @@ class _ArticlesState extends State<Articles> {
 
   Widget _buildArticleItem(image, title, desc, source, url) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        if (!await launchUrl(
+          url,
+          mode: LaunchMode.inAppWebView,
+          webViewConfiguration: const WebViewConfiguration(
+              headers: <String, String>{'my_header_key': 'my_header_value'}),
+        )) {}
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: EdgeInsets.all(5),

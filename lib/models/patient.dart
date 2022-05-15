@@ -16,22 +16,25 @@ class Patient {
   List<Chronics>? chronics;
   String? createdAt;
   String? updatedAt;
+  bool? verified;
 
-  Patient(
-      {this.followings,
-      this.sId,
-      this.email,
-      this.username,
-      this.birthDate,
-      this.gender,
-      this.weight,
-      this.type,
-      this.followers,
-      this.clinicians,
-      this.chronics,
-      this.createdAt,
-      this.updatedAt,
-      this.residency});
+  Patient({
+    this.followings,
+    this.sId,
+    this.email,
+    this.username,
+    this.birthDate,
+    this.gender,
+    this.weight,
+    this.type,
+    this.followers,
+    this.clinicians,
+    this.chronics,
+    this.createdAt,
+    this.updatedAt,
+    this.residency,
+    this.verified,
+  });
 
   Patient.fromJson(Map<String, dynamic> map) {
     sId = map['_id'];
@@ -42,6 +45,7 @@ class Patient {
     gender = map['gender'];
     type = map['type'];
     residency = map['residency'];
+    verified = map['verified'];
 
     if (map['followers'] != null) {
       followers = <Follower>[];
@@ -71,7 +75,6 @@ class Patient {
         chronics!.add(new Chronics.fromJson(v));
       });
     }
-    ;
 
     createdAt = map['createdAt'];
     updatedAt = map['updatedAt'];

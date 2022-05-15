@@ -6,16 +6,12 @@ import 'package:final_pro/cubits/LoginCubit/states.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/models/login_model.dart';
 import 'package:final_pro/pages/forget_pass/forget_password.dart';
-import 'package:final_pro/pages/login_success/login_success.dart';
+import 'package:final_pro/pages/logging_page/not%20verified.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../../../cache_helper.dart';
 import '../../../constants.dart';
-import '../../../enums.dart';
 import '../../../helper.dart';
-import '../../../size_config.dart';
-import '../../../components/Form_error.dart';
 import '../../../components/customSurfixButton.dart';
 import '../../dash_bord/dash_bord.dart';
 
@@ -49,15 +45,15 @@ class SignForm extends StatelessWidget {
                 };
                 print(token);
                 if (role == 'patient') {
-                  print('a7a3');
+
                   MeasurementCubit.get(context).getPatientProfile().then(
-                      (value) => Navigator.pushReplacementNamed(
-                          context, DashBord.routeName));
+
+                      (value) => MeasurementCubit.get(context).patient.verified!?Navigator.pushReplacementNamed(
+                          context, DashBord.routeName):Navigator.push(context, MaterialPageRoute(builder: (context)=>NotVerified())));
                 } else if (role == 'doctor') {
-                  print('A7a4');
                   MeasurementCubit.get(context).getdoctorProfile().then(
-                      (value) => Navigator.pushReplacementNamed(
-                          context, DashBord.routeName));
+                      (value) =>  MeasurementCubit.get(context).doctor.verified!?Navigator.pushReplacementNamed(
+                          context, DashBord.routeName):Navigator.push(context, MaterialPageRoute(builder: (context)=>NotVerified())));
                 }
               });
             });
@@ -142,7 +138,7 @@ class SignForm extends StatelessWidget {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // If  you are using latest version of flutter then  text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
@@ -169,7 +165,7 @@ class SignForm extends StatelessWidget {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // If  you are using latest version of flutter then  text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Mail.svg"),

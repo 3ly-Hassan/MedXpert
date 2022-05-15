@@ -5,6 +5,7 @@ import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class AddChronics extends StatelessWidget {
@@ -53,15 +54,36 @@ class AddChronics extends StatelessWidget {
                   label: 'Name',
                   prefix: LineAwesomeIcons.address_book),
               SizedBox(height: 20),
+              // defaultFormField(
+              //     controller: sinceController,
+              //     type: TextInputType.number,
+              //     validate: (validate) {
+              //       if (sinceController.text.isEmpty) return 'is required';
+              //       return null;
+              //     },
+              //     label: 'Since',
+              //     prefix: LineAwesomeIcons.times),
               defaultFormField(
+                  onSaved: (value) {},
+                  onTap: () {
+                    showDatePicker(
+                      context: context,
+                      firstDate: DateTime.parse('1960-01-01'),
+                      initialDate: DateTime.now(),
+                      lastDate: DateTime.now(),
+                    ).then((value) {
+                      sinceController.text =
+                          DateFormat('yyyy-MM-dd').format(value!);
+                    });
+                  },
+                  focusNode: AlwaysDisabledFocusNode(),
                   controller: sinceController,
-                  type: TextInputType.number,
-                  validate: (validate) {
-                    if (sinceController.text.isEmpty) return 'is required';
+                  type: TextInputType.datetime,
+                  validate: (value) {
                     return null;
                   },
                   label: 'Since',
-                  prefix: LineAwesomeIcons.times),
+                  prefix: Icons.date_range),
               SizedBox(height: 20),
               defaultFormField(
                   controller: stateController,

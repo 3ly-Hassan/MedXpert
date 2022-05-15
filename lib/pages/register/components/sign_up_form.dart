@@ -45,7 +45,7 @@ class SignUpForm extends StatelessWidget {
                   state: ToastStates.WARNING);
             }
           } else if (state is MedSignUpErrorState) {
-            showToast(text: state.error, state: ToastStates.ERROR);
+            showToast(text: 'error has occurred', state: ToastStates.ERROR);
           }
         },
         builder: (context, state) => Form(

@@ -13,6 +13,7 @@ class Doctor {
   String? birthDate;
   List<dynamic>? specialization;
   List<dynamic>? followings;
+  bool? verified;
 
   Doctor({
     this.id,
@@ -26,6 +27,7 @@ class Doctor {
     this.residency,
     this.specialization,
     this.followings,
+    this.verified,
   });
 
   Doctor.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class Doctor {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     residency = json['residency'];
+    verified = json['verified'];
     specialization = json['specialization'].cast<String>();
     if (json['followings'] != null) {
       followings = <Follower>[];
