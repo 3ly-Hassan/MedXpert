@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import '../../../cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
+import 'add_new_drug_screen.dart';
 
 class DrugsListScreen extends StatefulWidget {
   static String routeName = "/drug_list_screen";
@@ -27,6 +28,9 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isAuthorized =
+        BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
+            BlocProvider.of<MedicationsListCubit>(context).currentDoctorId;
     return WillPopScope(
       onWillPop: () async {
         if (BlocProvider.of<DrugsListCubit>(context).isDeleted) {
@@ -40,6 +44,14 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
           title: Text('Drugs list'),
           backgroundColor: Theme.of(context).primaryColor,
         ),
+        floatingActionButton: isAuthorized
+            ? FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AddNewDrugScreen.routeName);
+                },
+              )
+            : null,
         body: BlocConsumer<DrugsListCubit, DrugsListState>(
           listener: (context, state) {
             if (state is DeletionFailedState) {
@@ -113,10 +125,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                   )
                                 ],
                               ),
-                              medication.doctorId ==
-                                      BlocProvider.of<MedicationsListCubit>(
-                                              context)
-                                          .currentDoctorId
+                              isAuthorized
                                   ? IconButton(
                                       icon: Icon(Icons.delete),
                                       color: kErrorColor,

@@ -1,7 +1,7 @@
-import 'package:final_pro/components/default_button.dart';
 import 'package:final_pro/cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/pages/medication/create_medication_screen/medication_item.dart';
+import 'package:final_pro/pages/medication/shared_componenets/create_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -120,25 +120,15 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                   ),
                 ),
               ),
-              Container(
-                height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
-                    kContainerOfMedicationCreationButton,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DefaultButton(
-                      text: 'Create',
-                      press: () async {
-                        await BlocProvider.of<CreateMedicationCubit>(context)
-                            .createMedication(
-                          _selectedPatient == null ? '' : _selectedPatient!.id,
-                          medicationName.text,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              )
+              CreateButton(
+                onPress: () async {
+                  await BlocProvider.of<CreateMedicationCubit>(context)
+                      .createMedication(
+                    _selectedPatient == null ? '' : _selectedPatient!.id,
+                    medicationName.text,
+                  );
+                },
+              ),
             ],
           ),
         ),

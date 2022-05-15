@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import '../models/login_model.dart';
 import '../models/medication.dart';
+import '../models/medication_drug.dart';
 import '../models/patient.dart';
 
 class APIService {
@@ -634,6 +635,28 @@ class APIService {
     } catch (e) {
       print('Exception In delete drug: ${e.toString()}');
       return false;
+    }
+  }
+
+  Future<Medication?> addDrugToMedication(
+      String medicationId, MedicationDrug drug) async {
+    String url = "$api/medication/addMedicationDrug?id=$medicationId";
+    try {
+      print(drug.toJson());
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode(drug.toJson()),
+      );
+      if (response.statusCode == 200) {
+        return Medication.fromJson(jsonDecode(response.body)['data']);
+      } else {
+        print('Problem In adding drug');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In adding drug: ${e.toString()}');
+      return null;
     }
   }
 }

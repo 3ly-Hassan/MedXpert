@@ -11,3 +11,10 @@ class GetDrugsListState extends DrugsListState {
   final List drugs;
   GetDrugsListState(this.drugs);
 }
+
+class AddingDrugSuccessState extends DrugsListState {
+  final List drugs;
+  AddingDrugSuccessState(this.drugs);
+}
+
+class AddingDrugFailedState extends DrugsListState {}
