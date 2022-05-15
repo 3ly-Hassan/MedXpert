@@ -31,30 +31,32 @@ class _MedicationItemState extends State<MedicationItem> {
     //
     return BlocBuilder<CreateMedicationCubit, CreateMedicationState>(
       builder: (context, state) {
-        if (state is GetMedicationState) {
-          return WillPopScope(
-            onWillPop: () async {
-              bloc.dispose();
-              return true;
-            },
-            child: Form(
-              key: bloc.formKey2,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (int i = 0; i <= bloc.indexController; i++)
-                      MedicationItemContainer(
-                        context: context,
-                        currentIndex: i,
-                        showDivider: i == bloc.indexController ? false : true,
-                      )
-                  ],
-                ),
+        // if (state is GetMedicationState ||
+        //     state is CreateMedicationLoadingState) {
+        //
+        // }
+        // return ErrorBloc();
+        return WillPopScope(
+          onWillPop: () async {
+            bloc.dispose();
+            return true;
+          },
+          child: Form(
+            key: bloc.formKey2,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (int i = 0; i <= bloc.indexController; i++)
+                    MedicationItemContainer(
+                      context: context,
+                      currentIndex: i,
+                      showDivider: i == bloc.indexController ? false : true,
+                    )
+                ],
               ),
             ),
-          );
-        }
-        return ErrorBloc();
+          ),
+        );
       },
     );
   }

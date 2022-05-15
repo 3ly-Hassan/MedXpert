@@ -5,6 +5,8 @@ abstract class DrugsListState {}
 
 class DrugsListInitial extends DrugsListState {}
 
+class DrugsListLoadingState extends DrugsListState {}
+
 class DeletionFailedState extends DrugsListState {}
 
 class GetDrugsListState extends DrugsListState {

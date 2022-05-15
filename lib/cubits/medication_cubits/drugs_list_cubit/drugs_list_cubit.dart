@@ -38,6 +38,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
 
   Future addDrugToMedication(
       String medicationId, MedicationDrug drug, BuildContext context) async {
+    emit(DrugsListLoadingState());
     Medication? receivedMedication =
         await apiService.addDrugToMedication(medicationId, drug);
 

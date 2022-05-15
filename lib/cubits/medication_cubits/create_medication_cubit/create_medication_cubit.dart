@@ -9,7 +9,7 @@ import '../../../models/min_drug_model.dart';
 part 'create_medication_state.dart';
 
 class CreateMedicationCubit extends Cubit<CreateMedicationState> {
-  CreateMedicationCubit() : super(MedicationDetailsInitial());
+  CreateMedicationCubit() : super(CreateMedicationInitial());
 
   APIService apiService = APIService();
 
@@ -76,7 +76,7 @@ class CreateMedicationCubit extends Cubit<CreateMedicationState> {
   }
 
   void emitLoadingState() {
-    emit(MedicationDetailsLoadingState());
+    emit(CreateMedicationLoadingState());
   }
 
   Future<List?> searchForDrug(String searchKey) async {
@@ -84,15 +84,23 @@ class CreateMedicationCubit extends Cubit<CreateMedicationState> {
     return drugList;
   }
 
-  Future createMedication(String? patientId, String medicationName) async {
-    // emitLoadingState();
+  Future createMedication(
+      String? patientId, String medicationName, BuildContext context) async {
     final bool validator1 = formKey1.currentState!.validate();
     final bool validator2 = formKey2.currentState!.validate();
     if (validator1 && validator2) {
+      emitLoadingState();
       List medicationList = collectMedicationList();
-      await apiService.createMedication(
+      bool isCreated = await apiService.createMedication(
           patientId, medicationName, medicationList);
-      print('Create Medication is valid and has been done!');
+
+      if (isCreated) {
+        Navigator.of(context).pop();
+        emit(CreateMedicationSuccess());
+        print('Create Medication is valid and has been done!');
+      } else {
+        emit(CreateMedicationFailed());
+      }
     }
   }
 }

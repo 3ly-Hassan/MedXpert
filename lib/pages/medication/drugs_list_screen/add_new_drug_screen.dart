@@ -1,3 +1,4 @@
+import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/models/medication_drug.dart';
 import 'package:final_pro/pages/medication/shared_componenets/create_button.dart';
@@ -46,7 +47,7 @@ class _AddNewDrugScreenState extends State<AddNewDrugScreen> {
         title: Text('Add new drug'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: BlocListener<DrugsListCubit, DrugsListState>(
+      body: BlocConsumer<DrugsListCubit, DrugsListState>(
         listener: (context, state) {
           if (state is AddingDrugSuccessState) {
             showToast(
@@ -55,64 +56,72 @@ class _AddNewDrugScreenState extends State<AddNewDrugScreen> {
             showToast(text: 'Adding failed', state: ToastStates.ERROR);
           }
         },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
-                    kContainerOfCreateMedicationListRatio,
-                child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16),
-                        DrugSearchField(
-                            controller: drugTextController,
-                            onSuggestionSelected: (MinDrugModel suggestion) {
-                              drugTextController.text = suggestion.drugName!;
-                              selectedDrugId = suggestion.drugId!;
-                            }),
-                        DoseTextField(
-                            controller: doseTextController, readOnly: false),
-                        DateTextField(
-                            controller: startDateTextController,
-                            label: 'Start date',
-                            hintText: 'Enter dose start date',
-                            validationMessage:
-                                'Please enter the dose start date',
-                            readOnly: false),
-                        DateTextField(
-                            controller: endDateTextController,
-                            label: 'End date',
-                            hintText: 'Enter dose end date',
-                            validationMessage:
-                                'Please enter the end start date',
-                            readOnly: false),
-                      ],
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  height: SizeConfig.screenHeightUnderAppAndStatusBarAndTabBar *
+                      kContainerOfCreateMedicationListRatio,
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 16),
+                          DrugSearchField(
+                              controller: drugTextController,
+                              onSuggestionSelected: (MinDrugModel suggestion) {
+                                drugTextController.text = suggestion.drugName!;
+                                selectedDrugId = suggestion.drugId!;
+                              }),
+                          DoseTextField(
+                              controller: doseTextController, readOnly: false),
+                          DateTextField(
+                              controller: startDateTextController,
+                              label: 'Start date',
+                              hintText: 'Enter dose start date',
+                              validationMessage:
+                                  'Please enter the dose start date',
+                              readOnly: false),
+                          DateTextField(
+                              controller: endDateTextController,
+                              label: 'End date',
+                              hintText: 'Enter dose end date',
+                              validationMessage:
+                                  'Please enter the end start date',
+                              readOnly: false),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              CreateButton(onPress: () async {
-                if (_formKey.currentState!.validate()) {
-                  await BlocProvider.of<DrugsListCubit>(context)
-                      .addDrugToMedication(
-                    BlocProvider.of<DrugsListCubit>(context).medicationItem.id!,
-                    MedicationDrug(
-                      drugId: selectedDrugId,
-                      drugName: drugTextController.text,
-                      dose: int.parse(doseTextController.text),
-                      startDate: startDateTextController.text,
-                      endDate: endDateTextController.text,
-                    ),
-                    context,
-                  );
-                }
-              }),
-            ],
-          ),
-        ),
+                state is DrugsListLoadingState
+                    ? CenterProgressIndicator()
+                    : CreateButton(
+                        onPress: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await BlocProvider.of<DrugsListCubit>(context)
+                                .addDrugToMedication(
+                              BlocProvider.of<DrugsListCubit>(context)
+                                  .medicationItem
+                                  .id!,
+                              MedicationDrug(
+                                drugId: selectedDrugId,
+                                drugName: drugTextController.text,
+                                dose: int.parse(doseTextController.text),
+                                startDate: startDateTextController.text,
+                                endDate: endDateTextController.text,
+                              ),
+                              context,
+                            );
+                          }
+                        },
+                      ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
