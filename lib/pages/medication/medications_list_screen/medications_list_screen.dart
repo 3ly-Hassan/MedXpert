@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
+import '../create_medication_screen/create_medication_screen.dart';
+import '../shared_componenets/create_medication_floating_button.dart';
 
 //TODO: MAY BE WE NEED TO ADD ANIMATION IN VIEWING LIST IN ALL SCREENS LIKE WHAT WAS IN TEAMS
 
@@ -23,12 +25,20 @@ class MedicationsListScreen extends StatefulWidget {
 
 class _MedicationsListScreenState extends State<MedicationsListScreen> {
   @override
+  void initState() {
+    BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medications list'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
+      floatingActionButton:
+          role == 'patient' ? createMedicationFloatingButton(context) : null,
       body: BlocConsumer<MedicationsListCubit, MedicationsListState>(
         listener: (context, state) {
           if (state is DeleteFailedState) {

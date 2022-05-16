@@ -1,6 +1,7 @@
 import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
+import 'package:final_pro/pages/medication/shared_componenets/create_medication_floating_button.dart';
 import 'package:final_pro/pages/teams/components/follower_card.dart';
 import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed(CreateMedicationScreen.routeName);
-        },
-      ),
+      floatingActionButton: createMedicationFloatingButton(context),
       body: BlocBuilder<MedicationCubit, MedicationState>(
         builder: (context, state) {
           if (state is MedicationLoadingState) {
@@ -58,12 +54,11 @@ class _MedicationScreenState extends State<MedicationScreen> {
                           follower: state.followersList[index],
                           showTextButton: false,
                           onTap: () async {
+                            //only if doctor
                             Navigator.of(context)
                                 .pushNamed(MedicationsListScreen.routeName);
                             BlocProvider.of<MedicationsListCubit>(context)
                                 .followerId = state.followersList[index].id;
-                            await BlocProvider.of<MedicationsListCubit>(context)
-                                .getMedicationsList();
                           },
                         ),
                       );

@@ -83,30 +83,35 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButtonFormField2<Follower>(
-                                  onChanged: (item) {
-                                    _selectedPatient = item!;
-                                  },
-                                  dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  decoration: InputDecoration(
-                                    labelText: 'Patient',
-                                    hintText: 'Select a patient',
-                                    suffixIcon: Icon(Icons.accessibility_sharp),
-                                  ),
-                                  items: dropDownPatients,
-                                  validator: (item) {
-                                    if (item == null) {
-                                      return 'Please select a patient';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
+                            role == 'doctor'
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 20, 16, 8),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButtonFormField2<Follower>(
+                                        onChanged: (item) {
+                                          _selectedPatient = item!;
+                                        },
+                                        dropdownDecoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        decoration: InputDecoration(
+                                          labelText: 'Patient',
+                                          hintText: 'Select a patient',
+                                          suffixIcon:
+                                              Icon(Icons.accessibility_sharp),
+                                        ),
+                                        items: dropDownPatients,
+                                        validator: (item) {
+                                          if (item == null) {
+                                            return 'Please select a patient';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
                               child: defaultFormField(

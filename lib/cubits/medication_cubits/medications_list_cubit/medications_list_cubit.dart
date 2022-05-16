@@ -3,7 +3,9 @@ import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cubits/medication_cubits/medication_cubit/medication_cubit.dart';
 import 'package:meta/meta.dart';
 
+import '../../../constants.dart';
 import '../../../models/doctor.dart';
+import '../../../models/patient.dart';
 
 part 'medications_list_state.dart';
 
@@ -17,12 +19,21 @@ class MedicationsListCubit extends Cubit<MedicationsListState> {
 
   Future getMedicationsList() async {
     emit(MedicationsListLoadingState());
-    if (currentDoctorId.isEmpty) {
-      Doctor? doctor = await apiService.getDoctorProfile();
-      currentDoctorId = doctor!.id!;
+    if (role == 'patient') {
+      medicationsList = (await apiService.getMedicationsList())!;
+      emit(GetMedicationsListState(medicationsList));
     }
-    medicationsList = (await apiService.getMedicationsList(followerId))!;
-    emit(GetMedicationsListState(medicationsList));
+    //if doctor
+    else {
+      if (currentDoctorId.isEmpty) {
+        // just to be used to compare with doctor id for authorization purpose!
+        Doctor? doctor = await apiService.getDoctorProfile();
+        currentDoctorId = doctor!.id!;
+      }
+      medicationsList = (await apiService.getMedicationsList(followerId))!;
+      emit(GetMedicationsListState(medicationsList));
+      //
+    }
   }
 
   Future deleteMedication(String medicationId, int index) async {
