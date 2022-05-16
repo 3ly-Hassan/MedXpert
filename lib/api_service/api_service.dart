@@ -573,9 +573,14 @@ class APIService {
     }
   }
 
-  Future<List?> getMedicationsList(String followerId) async {
+  Future<List?> getMedicationsList([String? followerId]) async {
     //for patient account remove '?id=$followerId' and make followerId optional !
-    String url = "$api/medication/getMedicationsByPatientId?id=$followerId";
+    late String url;
+    if (role == 'patient') {
+      url = "$api/medication/getMedicationsByPatientId";
+    } else {
+      url = "$api/medication/getMedicationsByPatientId?id=$followerId";
+    }
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -604,6 +609,7 @@ class APIService {
         Uri.parse(url),
         headers: _headers,
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         print('delete medication done');
         return true;

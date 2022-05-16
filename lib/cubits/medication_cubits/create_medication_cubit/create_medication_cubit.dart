@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/models/patient.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/medication_drug.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../constants.dart';
 import '../../../models/min_drug_model.dart';
 
 part 'create_medication_state.dart';
@@ -90,6 +94,9 @@ class CreateMedicationCubit extends Cubit<CreateMedicationState> {
     final bool validator2 = formKey2.currentState!.validate();
     if (validator1 && validator2) {
       emitLoadingState();
+      if (role == 'patient') {
+        patientId = MeasurementCubit.get(context).patient.sId;
+      }
       List medicationList = collectMedicationList();
       bool isCreated = await apiService.createMedication(
           patientId, medicationName, medicationList);
