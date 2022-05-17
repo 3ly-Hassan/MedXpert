@@ -526,7 +526,12 @@ class APIService {
 
   Future<bool> createMedication(
       String? patientId, String medicationName, List drugMedicationList) async {
-    String url = "$api/medication/createMedication?id=$patientId";
+    late String url;
+    if (role == 'patient') {
+      url = "$api/medication/createMedication";
+    } else {
+      url = "$api/medication/createMedication?id=$patientId";
+    }
     print(drugMedicationList[0]);
     try {
       final response = await http.post(Uri.parse(url),
@@ -648,12 +653,39 @@ class APIService {
       String medicationId, MedicationDrug drug) async {
     String url = "$api/medication/addMedicationDrug?id=$medicationId";
     try {
-      print(drug.toJson());
       final response = await http.patch(
         Uri.parse(url),
         headers: _headers,
         body: jsonEncode(drug.toJson()),
       );
+      if (response.statusCode == 200) {
+        return Medication.fromJson(jsonDecode(response.body)['data']);
+      } else {
+        print('Problem In adding drug');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In adding drug: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<Medication?> updateCurrentlyTaken(
+      bool value, String medicationId, String drugId) async {
+    String url = "$api/medication/updateMedication?id=$medicationId";
+
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode(
+          {
+            "currentlyTaken": value,
+            "drug_id": drugId,
+          },
+        ),
+      );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         return Medication.fromJson(jsonDecode(response.body)['data']);
       } else {

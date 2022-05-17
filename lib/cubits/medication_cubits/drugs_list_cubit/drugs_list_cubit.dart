@@ -13,7 +13,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
   APIService apiService = APIService();
 
   bool isDeleted = false;
-  late Medication medicationItem;
+  Medication medicationItem = Medication();
   List drugs = [];
 
   getDrugsList(Medication medication) {
@@ -53,6 +53,19 @@ class DrugsListCubit extends Cubit<DrugsListState> {
       BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
     } else {
       emit(AddingDrugFailedState());
+    }
+  }
+
+  Future toggleSwitch(
+      context, bool value, String medicationId, String drugId) async {
+    Medication? medication =
+        await apiService.updateCurrentlyTaken(value, medicationId, drugId);
+    if (medication != null) {
+      getDrugsList(medication);
+      //refresh medications_list_screen
+      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+    } else {
+      emit(UpdateDrugFailedState());
     }
   }
 }

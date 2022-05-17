@@ -1,4 +1,6 @@
+import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/date_helper.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/medication.dart';
@@ -28,9 +30,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isAuthorized =
-        BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
-            BlocProvider.of<MedicationsListCubit>(context).currentDoctorId;
+    bool isAuthorized = checkAuthorizationInDrugsListScreen(context);
     return WillPopScope(
       onWillPop: () async {
         if (BlocProvider.of<DrugsListCubit>(context).isDeleted) {
@@ -56,17 +56,23 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
           listener: (context, state) {
             if (state is DeletionFailedState) {
               showToast(text: 'Deletion failed', state: ToastStates.ERROR);
+            } else if (state is UpdateDrugFailedState) {
+              showToast(text: 'Failed', state: ToastStates.ERROR);
             }
           },
           builder: (context, state) {
             Medication medication =
                 BlocProvider.of<DrugsListCubit>(context).medicationItem;
             List drugsList = BlocProvider.of<DrugsListCubit>(context).drugs;
+
             return drugsList.isEmpty
                 ? NoFollowersWidget(msg: 'No drugs!')
                 : ListView.builder(
                     itemCount: drugsList.length,
                     itemBuilder: (context, index) {
+                      //
+                      bool switchValue = drugsList[index].currentlyTaken;
+                      //
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 8.0),
@@ -74,11 +80,12 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           color: kPrimaryColorLight,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
@@ -95,50 +102,100 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 8.0),
-                                    child: Text(
-                                      'Dose: ${drugsList[index].dose}',
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 8.0),
-                                    child: Text(
-                                      'Start date: ${DateHelper.getFormattedStringFromISO(drugsList[index].startDate, kFormattedString)}',
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 8.0),
-                                    child: Text(
-                                      'End date: ${DateHelper.getFormattedStringFromISO(drugsList[index].endDate, kFormattedString)}',
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 8.0),
-                                    child: Text(
-                                      'Currently taken: ${drugsList[index].currentlyTaken == true ? kYes : kNo}',
-                                    ),
-                                  )
+                                  isAuthorized
+                                      ? IconButton(
+                                          icon: Icon(Icons.delete),
+                                          color: kErrorColor,
+                                          onPressed: () async {
+                                            await DialogHelper.deleteDrugDialog(
+                                              context,
+                                              medication.id!,
+                                              drugsList[index].drugId,
+                                              index,
+                                            );
+                                          },
+                                        )
+                                      : Container(),
                                 ],
                               ),
-                              isAuthorized
-                                  ? IconButton(
-                                      icon: Icon(Icons.delete),
-                                      color: kErrorColor,
-                                      onPressed: () async {
-                                        await DialogHelper.deleteDrugDialog(
-                                          context,
-                                          medication.id!,
-                                          drugsList[index].drugId,
-                                          index,
-                                        );
-                                      },
-                                    )
-                                  : Container(),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 8.0),
+                                child: Text(
+                                  'Dose: ${drugsList[index].dose}',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 8.0),
+                                child: Text(
+                                  'Start date: ${DateHelper.getFormattedStringFromISO(drugsList[index].startDate, kFormattedString)}',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 8.0),
+                                child: Text(
+                                  'End date: ${DateHelper.getFormattedStringFromISO(drugsList[index].endDate, kFormattedString)}',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        text: 'Currently taken: ',
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: drugsList[index]
+                                                        .currentlyTaken ==
+                                                    true
+                                                ? kYes
+                                                : kNo,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    (isAuthorized || role == 'patient')
+                                        ? drugsList[index].isLoading
+                                            ? SizedBox(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                                height: 48,
+                                                width: 48,
+                                              )
+                                            : Switch(
+                                                value: switchValue,
+                                                onChanged: (value) async {
+                                                  setState(() {
+                                                    drugsList[index].isLoading =
+                                                        true;
+                                                  });
+                                                  //
+                                                  await BlocProvider.of<
+                                                      DrugsListCubit>(
+                                                    context,
+                                                  ).toggleSwitch(
+                                                      context,
+                                                      value,
+                                                      medication.id!,
+                                                      drugsList[index].drugId);
+                                                  //
+                                                  drugsList[index].isLoading =
+                                                      false;
+                                                },
+                                              )
+                                        : Container(),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

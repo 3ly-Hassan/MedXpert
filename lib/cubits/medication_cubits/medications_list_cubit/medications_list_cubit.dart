@@ -13,7 +13,6 @@ class MedicationsListCubit extends Cubit<MedicationsListState> {
   MedicationsListCubit() : super(MedicationsListInitial());
   APIService apiService = APIService();
 
-  String currentDoctorId = '';
   late String followerId;
   List medicationsList = [];
 
@@ -25,11 +24,6 @@ class MedicationsListCubit extends Cubit<MedicationsListState> {
     }
     //if doctor
     else {
-      if (currentDoctorId.isEmpty) {
-        // just to be used to compare with doctor id for authorization purpose!
-        Doctor? doctor = await apiService.getDoctorProfile();
-        currentDoctorId = doctor!.id!;
-      }
       medicationsList = (await apiService.getMedicationsList(followerId))!;
       emit(GetMedicationsListState(medicationsList));
       //

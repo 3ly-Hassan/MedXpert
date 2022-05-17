@@ -60,6 +60,7 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
               medicationList = state.medicationsList;
             }
             //
+            print('dsdsds');
             return medicationList.isEmpty
                 ? NoFollowersWidget(msg: 'No medications yet')
                 : ListView.builder(
@@ -83,9 +84,8 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
                               ],
                             ),
                           ),
-                          trailing: medicationList[index].doctorId ==
-                                  BlocProvider.of<MedicationsListCubit>(context)
-                                      .currentDoctorId
+                          trailing: checkAuthorizationInMedicationsListScreen(
+                                  context, medicationList[index])
                               ? IconButton(
                                   icon: Icon(Icons.delete),
                                   color: kErrorColor,

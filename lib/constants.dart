@@ -1,6 +1,11 @@
 import 'package:final_pro/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
+import 'models/medication.dart';
 
 const kPrimaryColor = Color(0xFF10de62);
 const kPrimaryColorLight = Color(4291356361);
@@ -144,4 +149,23 @@ Color chooseToastColor(ToastStates state) {
   }
 
   return color;
+}
+
+bool checkAuthorizationInDrugsListScreen(BuildContext context) {
+  if (role == 'patient') {
+    return BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
+        null;
+  } else {
+    return BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
+        MeasurementCubit.get(context).doctor.id;
+  }
+}
+
+bool checkAuthorizationInMedicationsListScreen(
+    BuildContext context, Medication medication) {
+  if (role == 'patient') {
+    return medication.doctorId == null;
+  } else {
+    return medication.doctorId == MeasurementCubit.get(context).doctor.id;
+  }
 }

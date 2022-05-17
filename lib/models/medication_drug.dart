@@ -5,14 +5,18 @@ class MedicationDrug {
   bool? currentlyTaken;
   String? startDate;
   String? endDate;
+  //used in flutter only!
+  bool? isLoading;
 
-  MedicationDrug(
-      {this.drugId,
-      this.drugName,
-      this.dose,
-      this.startDate,
-      this.endDate,
-      this.currentlyTaken = true});
+  MedicationDrug({
+    this.drugId,
+    this.drugName,
+    this.dose,
+    this.startDate,
+    this.endDate,
+    this.currentlyTaken = true,
+    this.isLoading = false,
+  });
 
   factory MedicationDrug.fromJson(Map<String, dynamic> json) {
     return MedicationDrug(

@@ -20,3 +20,5 @@ class AddingDrugSuccessState extends DrugsListState {
 }
 
 class AddingDrugFailedState extends DrugsListState {}
+
+class UpdateDrugFailedState extends DrugsListState {}
