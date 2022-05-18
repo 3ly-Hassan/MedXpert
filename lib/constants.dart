@@ -156,8 +156,7 @@ bool checkAuthorizationInDrugsListScreen(BuildContext context) {
     return BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
         null;
   } else {
-    return BlocProvider.of<DrugsListCubit>(context).medicationItem.doctorId ==
-        MeasurementCubit.get(context).doctor.id;
+    return false;
   }
 }
 
