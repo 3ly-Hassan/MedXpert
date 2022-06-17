@@ -37,14 +37,15 @@ class APIService {
     try {
       final response =
           await http.post(Uri.parse(url), body: requestModel.toJson());
+      LoginResponseModel responseModel =
+          LoginResponseModel.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
-        LoginResponseModel responseModel =
-            LoginResponseModel.fromJson(json.decode(response.body));
         return responseModel;
       } else {
-        print('a7a');
+        //print('a7a');
+        responseModel.token = 'ERROR';
         print(json.decode(response.body)["msg"]);
-        return null;
+        return responseModel;
       }
     } catch (e) {
       print(e.toString());

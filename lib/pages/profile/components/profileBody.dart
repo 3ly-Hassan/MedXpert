@@ -264,6 +264,7 @@ class ProfileBody extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Expanded(
@@ -287,6 +288,9 @@ class ProfileBody extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
                         child: ListTile(
                           contentPadding: EdgeInsetsDirectional.zero,
@@ -308,6 +312,7 @@ class ProfileBody extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 10),
                   if (cubit.patient.chronics != null ||
                       cubit.doctor.specialization != null)
                     Wrap(

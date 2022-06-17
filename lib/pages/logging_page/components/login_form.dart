@@ -27,7 +27,6 @@ class SignForm extends StatelessWidget {
     return BlocConsumer<MedLoginCubit, MedLoginStates>(
       listener: (context, state) {
         if (state is MedLoginSuccessState) {
-          if (state.loginModel.token != "") {
             print(state.loginModel.msg);
             print(state.loginModel.token);
             CacheHelper.saveData(key: 'role', value: role).then((value) {
@@ -57,17 +56,9 @@ class SignForm extends StatelessWidget {
                 }
               });
             });
-          } else {
-            print(state.loginModel.msg);
-
-            showToast(
-              text: state.loginModel.msg,
-              state: ToastStates.ERROR,
-            );
-          }
         } else if (state is MedLoginErrorState) {
           showToast(
-            text: 'something has been occurred',
+            text: state.error,
             state: ToastStates.ERROR,
           );
           print(state.error);

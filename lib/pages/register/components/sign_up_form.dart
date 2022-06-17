@@ -83,6 +83,9 @@ class SignUpForm extends StatelessWidget {
                   },
                   label: 'Birth Date',
                   prefix: Icons.date_range),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -102,6 +105,9 @@ class SignUpForm extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: ListTile(
                       contentPadding: EdgeInsetsDirectional.zero,
@@ -117,6 +123,9 @@ class SignUpForm extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 5,
               ),
               Divider(
                 height: 5,

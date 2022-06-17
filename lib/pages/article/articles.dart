@@ -114,7 +114,7 @@ class _ArticlesState extends State<Articles> {
     return InkWell(
       onTap: () async {
         if (!await launchUrl(
-          url,
+          Uri.parse(url),
           mode: LaunchMode.inAppWebView,
           webViewConfiguration: const WebViewConfiguration(
               headers: <String, String>{'my_header_key': 'my_header_value'}),

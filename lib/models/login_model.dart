@@ -1,6 +1,6 @@
 class LoginResponseModel {
-  final String? token;
-  final String? msg;
+  String? token;
+  String? msg;
 
   LoginResponseModel({this.token, this.msg});
 

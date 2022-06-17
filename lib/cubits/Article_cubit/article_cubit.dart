@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cubits/Article_cubit/article_states.dart';
 import 'package:final_pro/models/article.dart';
-import 'package:final_pro/pages/article/articles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ArticleCubit extends Cubit<ArticlesStates> {
