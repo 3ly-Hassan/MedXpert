@@ -1,6 +1,4 @@
-import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/constants.dart';
-import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/date_helper.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/medication.dart';
@@ -57,7 +55,16 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
             if (state is DeletionFailedState) {
               showToast(text: 'Deletion failed', state: ToastStates.ERROR);
             } else if (state is UpdateDrugFailedState) {
-              showToast(text: 'Failed', state: ToastStates.ERROR);
+              showToast(text: 'Update failed', state: ToastStates.ERROR);
+            } else if (state is NotificationCreationState) {
+              showToast(
+                  text:
+                      '${state.successNumber} Success, ${state.failNumber} Failed',
+                  state: state.successNumber >= state.failNumber
+                      ? ToastStates.SUCCESS
+                      : ToastStates.ERROR);
+            } else if (state is DateIsPastState) {
+              showToast(text: 'Date is in the past!', state: ToastStates.ERROR);
             }
           },
           builder: (context, state) {
@@ -76,127 +83,150 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 8.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          color: kPrimaryColorLight,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      drugsList[index].drugName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: Theme.of(context)
-                                                .textTheme
-                                                .headline5!
-                                                .fontSize! *
-                                            0.85,
-                                      ),
-                                    ),
-                                  ),
-                                  isAuthorized
-                                      ? IconButton(
-                                          icon: Icon(Icons.delete),
-                                          color: kErrorColor,
-                                          onPressed: () async {
-                                            await DialogHelper.deleteDrugDialog(
-                                              context,
-                                              medication.id!,
-                                              drugsList[index].drugId,
-                                              index,
-                                            );
-                                          },
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8.0),
-                                child: Text(
-                                  'Dose: ${drugsList[index].dose}',
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8.0),
-                                child: Text(
-                                  'Start date: ${DateHelper.getFormattedStringFromISO(drugsList[index].startDate, kFormattedString)}',
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8.0),
-                                child: Text(
-                                  'End date: ${DateHelper.getFormattedStringFromISO(drugsList[index].endDate, kFormattedString)}',
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8.0),
-                                child: Row(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: kPrimaryColorLight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text.rich(
-                                      TextSpan(
-                                        text: 'Currently taken: ',
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: drugsList[index]
-                                                        .currentlyTaken ==
-                                                    true
-                                                ? kYes
-                                                : kNo,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        drugsList[index].drugName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: Theme.of(context)
+                                                  .textTheme
+                                                  .headline5!
+                                                  .fontSize! *
+                                              0.85,
+                                        ),
                                       ),
                                     ),
-                                    (isAuthorized || role == 'patient')
-                                        ? drugsList[index].isLoading
-                                            ? SizedBox(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                                height: 48,
-                                                width: 48,
-                                              )
-                                            : Switch(
-                                                value: switchValue,
-                                                onChanged: (value) async {
-                                                  setState(() {
-                                                    drugsList[index].isLoading =
-                                                        true;
-                                                  });
-                                                  //
+                                    Row(
+                                      children: [
+                                        (role == 'patient')
+                                            ? IconButton(
+                                                icon: Icon(Icons.alarm_add),
+                                                onPressed: () async {
                                                   await BlocProvider.of<
-                                                      DrugsListCubit>(
+                                                              DrugsListCubit>(
+                                                          context)
+                                                      .createNotification(
                                                     context,
-                                                  ).toggleSwitch(
-                                                      context,
-                                                      value,
-                                                      medication.id!,
-                                                      drugsList[index].drugId);
-                                                  //
-                                                  drugsList[index].isLoading =
-                                                      false;
+                                                    drugsList[index],
+                                                  );
                                                 },
                                               )
-                                        : Container(),
+                                            : Container(),
+                                        isAuthorized
+                                            ? IconButton(
+                                                icon: Icon(Icons.delete),
+                                                color: kErrorColor,
+                                                onPressed: () async {
+                                                  await DialogHelper
+                                                      .deleteDrugDialog(
+                                                    context,
+                                                    medication.id!,
+                                                    drugsList[index].drugId,
+                                                    index,
+                                                  );
+                                                },
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 8.0),
+                                  child: Text(
+                                    'Dose: ${drugsList[index].dose}',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 8.0),
+                                  child: Text(
+                                    'Start date: ${DateHelper.getFormattedStringFromISO(drugsList[index].startDate, kFormattedString)}',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 8.0),
+                                  child: Text(
+                                    'End date: ${DateHelper.getFormattedStringFromISO(drugsList[index].endDate, kFormattedString)}',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          text: 'Currently taken: ',
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: drugsList[index]
+                                                          .currentlyTaken ==
+                                                      true
+                                                  ? kYes
+                                                  : kNo,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      (isAuthorized || role == 'patient')
+                                          ? drugsList[index].isLoading
+                                              ? SizedBox(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                  height: 48,
+                                                  width: 48,
+                                                )
+                                              : Switch(
+                                                  value: switchValue,
+                                                  onChanged: (value) async {
+                                                    setState(() {
+                                                      drugsList[index]
+                                                          .isLoading = true;
+                                                    });
+                                                    //
+                                                    await BlocProvider.of<
+                                                        DrugsListCubit>(
+                                                      context,
+                                                    ).toggleSwitch(
+                                                        context,
+                                                        value,
+                                                        medication.id!,
+                                                        drugsList[index]
+                                                            .drugId);
+                                                    //
+                                                    drugsList[index].isLoading =
+                                                        false;
+                                                  },
+                                                )
+                                          : Container(),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
