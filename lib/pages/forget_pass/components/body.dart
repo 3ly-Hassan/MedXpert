@@ -166,7 +166,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10 * 0.1),
+                      SizedBox(height: 10),
                       DefaultButton(
                         text: "Continue",
                         press: () {
