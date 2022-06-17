@@ -134,6 +134,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                               activeColor: Colors.green,
                             ),
                           ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           ListTile(
                             title: Text('Doctor'),
                             contentPadding: EdgeInsetsDirectional.zero,
@@ -145,6 +148,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                                   ForgetCubit.get(context).typeRadioPass(value);
                                   requestModel.role = value.toString();
                                 }),
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           ListTile(
                             contentPadding: EdgeInsetsDirectional.zero,

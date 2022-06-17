@@ -146,6 +146,9 @@ class SignUpForm extends StatelessWidget {
                       activeColor: Colors.green,
                     ),
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ListTile(
                     title: Text('Doctor'),
                     contentPadding: EdgeInsetsDirectional.zero,
@@ -157,6 +160,9 @@ class SignUpForm extends StatelessWidget {
                           signUpRequestModel.role = value.toString();
                           print(signUpRequestModel.gender);
                         }),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   ListTile(
                     contentPadding: EdgeInsetsDirectional.zero,
@@ -171,6 +177,9 @@ class SignUpForm extends StatelessWidget {
                         }),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 5,
               ),
               ConditionalBuilder(
                 condition: state is! MedSignUpLoadingState,
