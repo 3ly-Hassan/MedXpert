@@ -4,6 +4,7 @@ import 'package:final_pro/cubits/Article_cubit/article_cubit.dart';
 import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
+import 'package:final_pro/notification_helper.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
@@ -23,7 +24,7 @@ void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
-
+  await NotificationHelper.initializeNotification();
   bool isDark = CacheHelper.getData(key: 'isDark');
 
   String widget;

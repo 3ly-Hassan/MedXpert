@@ -22,3 +22,11 @@ class AddingDrugSuccessState extends DrugsListState {
 class AddingDrugFailedState extends DrugsListState {}
 
 class UpdateDrugFailedState extends DrugsListState {}
+
+class NotificationCreationState extends DrugsListState {
+  final int successNumber;
+  final int failNumber;
+  NotificationCreationState(this.successNumber, this.failNumber);
+}
+
+class DateIsPastState extends DrugsListState {}

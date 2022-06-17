@@ -26,6 +26,20 @@ class DateHelper {
     return getFormattedString(date: dateTime, formattedString: formattedString);
   }
 
+  static String getFormattedString({
+    required DateTime date,
+    required String formattedString,
+  }) {
+    return DateFormat(formattedString).format(date).toString();
+  }
+
+  static String getFormattedStringForTime({
+    required BuildContext context,
+    required TimeOfDay time,
+  }) {
+    return time.format(context);
+  }
+
   static int getIntUniqueId() {
     return DateTime.now().millisecondsSinceEpoch.remainder(100000);
   }
@@ -48,6 +62,26 @@ class DateHelper {
     }
     TimeOfDay timeOfDay = TimeOfDay.fromDateTime(DateFormat.Hm().parse(time));
     return timeOfDay;
+  }
+
+  static bool isPastDate(DateTime date) {
+    return DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day)
+        .isAfter(date);
+  }
+
+  static bool isPastDateAndTime(DateTime date, TimeOfDay time) {
+    return DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      DateTime.now().hour,
+      DateTime.now().minute,
+    ).isAfter(
+      date.add(
+        Duration(hours: time.hour, minutes: time.minute),
+      ),
+    );
   }
 
 //------------------------------------------------------------------------------
@@ -138,13 +172,6 @@ class DateHelper {
   }
 
 //------------------------------------------------------------------------------
-
-  static String getFormattedString({
-    required DateTime date,
-    required String formattedString,
-  }) {
-    return DateFormat(formattedString).format(date).toString();
-  }
 
   static DateTime combineDateAndTime({
     required String date,

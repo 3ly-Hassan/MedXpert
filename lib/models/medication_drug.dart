@@ -40,3 +40,34 @@ class MedicationDrug {
     };
   }
 }
+
+class DoseNotification {
+  String notificationId;
+  String drugName;
+  String date;
+  String time;
+  DoseNotification({
+    required this.notificationId,
+    required this.drugName,
+    required this.date,
+    required this.time,
+  });
+
+  factory DoseNotification.fromJson(Map<String, dynamic> json) {
+    return DoseNotification(
+      notificationId: json['notificationId'],
+      drugName: json['drugName'],
+      date: json['date'],
+      time: json['time'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'notificationId': notificationId,
+      'drugName': drugName,
+      'date': date,
+      'time': time,
+    };
+  }
+}
