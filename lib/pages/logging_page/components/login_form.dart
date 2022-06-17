@@ -27,6 +27,10 @@ class SignForm extends StatelessWidget {
     return BlocConsumer<MedLoginCubit, MedLoginStates>(
       listener: (context, state) {
         if (state is MedLoginSuccessState) {
+          if (state.loginModel.token == null) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotVerified()));
+          } else {
             print(state.loginModel.msg);
             print(state.loginModel.token);
             CacheHelper.saveData(key: 'role', value: role).then((value) {
@@ -44,18 +48,27 @@ class SignForm extends StatelessWidget {
                 };
                 print(token);
                 if (role == 'patient') {
-
                   MeasurementCubit.get(context).getPatientProfile().then(
-
-                      (value) => MeasurementCubit.get(context).patient.verified!?Navigator.pushReplacementNamed(
-                          context, DashBord.routeName):Navigator.push(context, MaterialPageRoute(builder: (context)=>NotVerified())));
+                      (value) => MeasurementCubit.get(context).patient.verified!
+                          ? Navigator.pushReplacementNamed(
+                              context, DashBord.routeName)
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotVerified())));
                 } else if (role == 'doctor') {
                   MeasurementCubit.get(context).getdoctorProfile().then(
-                      (value) =>  MeasurementCubit.get(context).doctor.verified!?Navigator.pushReplacementNamed(
-                          context, DashBord.routeName):Navigator.push(context, MaterialPageRoute(builder: (context)=>NotVerified())));
+                      (value) => MeasurementCubit.get(context).doctor.verified!
+                          ? Navigator.pushReplacementNamed(
+                              context, DashBord.routeName)
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotVerified())));
                 }
               });
             });
+          }
         } else if (state is MedLoginErrorState) {
           showToast(
             text: state.error,
