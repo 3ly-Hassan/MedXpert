@@ -40,6 +40,7 @@ class APIService {
       LoginResponseModel responseModel =
           LoginResponseModel.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
+        print(responseModel.token);
         return responseModel;
       } else {
         //print('a7a');

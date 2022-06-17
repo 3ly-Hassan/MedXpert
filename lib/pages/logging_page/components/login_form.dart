@@ -28,9 +28,11 @@ class SignForm extends StatelessWidget {
       listener: (context, state) {
         if (state is MedLoginSuccessState) {
           if (state.loginModel.token == null) {
+            print('###### NOT VERIFIED #######');
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => NotVerified()));
           } else {
+            print('######  VERIFIED #######');
             print(state.loginModel.msg);
             print(state.loginModel.token);
             CacheHelper.saveData(key: 'role', value: role).then((value) {
