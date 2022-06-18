@@ -1,7 +1,9 @@
 import 'package:final_pro/constants.dart';
+import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 import 'package:final_pro/date_helper.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/medication.dart';
+import 'package:final_pro/pages/medication/notification_screen/notification_screen.dart';
 import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +86,15 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 8.0),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            Navigator.of(context).pushNamed(
+                              NotificationScreen.routeName,
+                              arguments: drugsList[index].drugName,
+                            );
+                            await BlocProvider.of<NotificationCubit>(context)
+                                .getNotificationList(
+                                    drugsList[index].drugUniqueId);
+                          },
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),

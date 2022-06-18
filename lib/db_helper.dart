@@ -29,7 +29,7 @@ class DBHelper {
   static _crateTables(Database db) {
     // Run the CREATE TABLE statement on the database.
     db.execute(
-      'CREATE TABLE $notificationTableName (notificationId TEXT, drugName TEXT, date TEXT, time TEXT)',
+      'CREATE TABLE $notificationTableName (notificationId TEXT, drugUniqueId TEXT, drugName TEXT, date TEXT, time TEXT)',
     );
     db.execute(
       'CREATE TABLE $sharedPrefsTableName (key TEXT, value TEXT)',
@@ -63,15 +63,19 @@ class DBHelper {
     print('DB Deleting finished successfully');
   }
 
-  static Future<List<DoseNotification>> getAllTasks() async {
+  static Future<List<LocalNotificationModel>> getNotificationsByDrugUniqueId(
+      String drugUniqueId) async {
     final Database db = await DBHelper.createDatabase();
 
-    final List<Map<String, dynamic>> maps =
-        await db.query(notificationTableName);
+    final List<Map<String, dynamic>> maps = await db.query(
+      notificationTableName,
+      where: 'drugUniqueId = ?',
+      whereArgs: ['$drugUniqueId'],
+    );
 
     return List.generate(
       maps.length,
-      (i) => DoseNotification.fromJson(maps[i]),
+      (i) => LocalNotificationModel.fromJson(maps[i]),
     );
   }
 

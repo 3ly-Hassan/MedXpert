@@ -11,6 +11,7 @@ import 'package:final_pro/pages/medication/drugs_list_screen/add_new_drug_screen
 import 'package:final_pro/pages/medication/drugs_list_screen/drugs_list_screen.dart';
 import 'package:final_pro/pages/medication/medication_screen/medication_screen.dart';
 import 'package:final_pro/pages/medication/medications_list_screen/medications_list_screen.dart';
+import 'package:final_pro/pages/medication/notification_screen/notification_screen.dart';
 import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
@@ -38,4 +39,5 @@ final Map<String, WidgetBuilder> routes = {
   MedicationsListScreen.routeName: (context) => MedicationsListScreen(),
   DrugsListScreen.routeName: (context) => DrugsListScreen(),
   AddNewDrugScreen.routeName: (context) => AddNewDrugScreen(),
+  NotificationScreen.routeName: (context) => NotificationScreen(),
 };

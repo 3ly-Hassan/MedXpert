@@ -87,6 +87,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
       }
       //
       //Create notifications and insert in DB
+      //
       for (int i = 0; i < doseTimes.length; i++) {
         final patientId = MeasurementCubit.get(context).patient.sId;
         final int notificationIdFromDB = await DBHelper.getNotificationId();
@@ -105,12 +106,12 @@ class DrugsListCubit extends Cubit<DrugsListState> {
           time: doseTimes[i],
           payLoad: 'payLoad',
         );
-
         //Add notification To the local dateBase
         await DBHelper.insertValue(
           DBHelper.notificationTableName,
-          DoseNotification(
+          LocalNotificationModel(
             notificationId: '$notificationId',
+            drugUniqueId: medicationDrug.drugUniqueId!,
             drugName: medicationDrug.drugName!,
             date: DateHelper.getFormattedString(
                 date: pickedDate, formattedString: kFormattedString),
