@@ -279,6 +279,35 @@ class DialogHelper {
         });
   }
 
+  static Future<bool> deleteNotificationDialog(BuildContext context) async {
+    bool flag = false;
+    await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(kAreYouSure),
+            actions: <Widget>[
+              TextButton(
+                child: Text(kCancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  flag = false;
+                },
+              ),
+              TextButton(
+                child: Text(kYes),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  flag = true;
+                },
+              ),
+            ],
+          );
+        });
+    return flag;
+  }
+
   static Future<void> copyAction(String copiedText) async {
     await Clipboard.setData(ClipboardData(text: copiedText));
     await showCentralToast(text: kCopied, state: ToastStates.SUCCESS);
