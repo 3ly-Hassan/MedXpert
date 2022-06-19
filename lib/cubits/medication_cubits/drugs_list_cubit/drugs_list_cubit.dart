@@ -81,7 +81,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
         );
 
         if (pickedTime != null &&
-            !DateHelper.isPastDateAndTime(pickedDate, pickedTime)) {
+            !DateHelper.isPastDateAndTime1(pickedDate, pickedTime)) {
           doseTimes.add(pickedTime);
         }
       }
@@ -100,7 +100,8 @@ class DrugsListCubit extends Cubit<DrugsListState> {
         //create notification using NotificationHelper
         await NotificationHelper.createNotification(
           notificationId: notificationId,
-          title: medicationDrug.drugName!,
+          title:
+              '${medicationDrug.drugName!}      ${DateHelper.getFormattedStringForTime(context: context, time: doseTimes[i])}',
           body: 'Time to take the dose!',
           date: pickedDate,
           time: doseTimes[i],

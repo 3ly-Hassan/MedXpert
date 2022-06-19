@@ -1,3 +1,4 @@
+import 'package:final_pro/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -70,7 +71,7 @@ class DateHelper {
         .isAfter(date);
   }
 
-  static bool isPastDateAndTime(DateTime date, TimeOfDay time) {
+  static bool isPastDateAndTime1(DateTime date, TimeOfDay time) {
     return DateTime(
       DateTime.now().year,
       DateTime.now().month,
@@ -80,6 +81,23 @@ class DateHelper {
     ).isAfter(
       date.add(
         Duration(hours: time.hour, minutes: time.minute),
+      ),
+    );
+  }
+
+  static bool isPastDateAndTime2(String date, String time) {
+    DateTime dateTime = parseDate(date, kFormattedString);
+    TimeOfDay timeOfDay = parseTime(time);
+    return DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      DateTime.now().hour,
+      DateTime.now().minute,
+      DateTime.now().second,
+    ).isAfter(
+      dateTime.add(
+        Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute),
       ),
     );
   }

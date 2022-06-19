@@ -53,7 +53,8 @@ class DBHelper {
     print('DB insertion finished successfully');
   }
 
-  static Future<void> deleteValueById(table, String notificationId) async {
+  static Future<void> deleteNotificationById(
+      table, String notificationId) async {
     final Database db = await DBHelper.createDatabase();
     await db.delete(
       table,
