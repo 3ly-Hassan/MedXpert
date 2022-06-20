@@ -31,9 +31,10 @@ class MedLoginCubit extends Cubit<MedLoginStates> {
       } else {
         if (value.token == 'ERROR')
           emit(MedLoginErrorState(error: value.msg));
-        else
+        else {
           print(' ############${value.token}##########');
-        emit(MedLoginSuccessState(value));
+          emit(MedLoginSuccessState(value));
+        }
       }
     }).catchError((e) {
       emit(MedLoginErrorState(error: e));

@@ -316,7 +316,8 @@ class ProfileBody extends StatelessWidget {
                   if (cubit.patient.chronics != null ||
                       cubit.doctor.specialization != null)
                     Wrap(
-                        children: cubit.patient.chronics != null
+                        children: cubit.patient.chronics != null &&
+                                role == 'patient'
                             ? cubit.patient.chronics!
                                 .map((e) => Padding(
                                       padding:
@@ -324,27 +325,30 @@ class ProfileBody extends StatelessWidget {
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
+                                        //mainAxisSize: MainAxisSize.min,
                                         children: [
                                           chronicsItem(e, context),
                                         ],
                                       ),
                                     ))
                                 .toList()
-                            : cubit.doctor.specialization!
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          specializationsItem(e, context),
-                                        ],
-                                      ),
-                                    ))
-                                .toList()),
+                            : cubit.doctor.specialization != null &&
+                                    role == 'doctor'
+                                ? cubit.doctor.specialization!
+                                    .map((e) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            //mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              specializationsItem(e, context),
+                                            ],
+                                          ),
+                                        ))
+                                    .toList()
+                                : []),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: !cubit.checkBox
