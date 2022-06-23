@@ -87,13 +87,15 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                             vertical: 8.0, horizontal: 8.0),
                         child: InkWell(
                           onTap: () async {
-                            Navigator.of(context).pushNamed(
-                              NotificationScreen.routeName,
-                              arguments: drugsList[index].drugName,
-                            );
-                            await BlocProvider.of<NotificationCubit>(context)
-                                .getLocalNotificationList(
-                                    drugsList[index].drugUniqueId);
+                            if (role == 'patient') {
+                              Navigator.of(context).pushNamed(
+                                NotificationScreen.routeName,
+                                arguments: drugsList[index].drugName,
+                              );
+                              await BlocProvider.of<NotificationCubit>(context)
+                                  .getLocalNotificationList(
+                                      drugsList[index].drugUniqueId);
+                            }
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(

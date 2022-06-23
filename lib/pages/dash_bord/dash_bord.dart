@@ -31,8 +31,10 @@ class _DashBordState extends State<DashBord> {
     final size = MediaQuery.of(context).size;
     //
     //get and create (remote) followers notifications
-    BlocProvider.of<NotificationCubit>(context)
-        .createReceivedNotifications(context);
+    if (role == 'patient') {
+      BlocProvider.of<NotificationCubit>(context)
+          .createReceivedNotifications(context);
+    }
     //
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
