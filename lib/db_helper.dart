@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:final_pro/models/medication_drug.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';
+
+import 'models/notification_models/local_notofocation_model.dart';
 
 class DBHelper {
   static const String databaseName = 'grad.db';
@@ -29,7 +30,7 @@ class DBHelper {
   static _crateTables(Database db) {
     // Run the CREATE TABLE statement on the database.
     db.execute(
-      'CREATE TABLE $notificationTableName (notificationId TEXT, drugUniqueId TEXT, drugName TEXT, date TEXT, time TEXT)',
+      'CREATE TABLE $notificationTableName (notificationId TEXT, drugUniqueId TEXT, patientName TEXT, drugName TEXT, date TEXT, time TEXT)',
     );
     db.execute(
       'CREATE TABLE $sharedPrefsTableName (key TEXT, value TEXT)',
@@ -53,6 +54,35 @@ class DBHelper {
     print('DB insertion finished successfully');
   }
 
+  static Future<bool> isCreatedPreviously(
+      String drugUniqueId, String date, String time, String drugName) async {
+    final Database db = await DBHelper.createDatabase();
+
+    final List list = await db.query(
+      notificationTableName,
+      where: 'drugUniqueId = ? and date = ? and time = ? and drugName = ?',
+      whereArgs: ['$drugUniqueId', '$date', '$time', '$drugName'],
+    );
+    if (list.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  static Future<List> getAllNotification() async {
+    final Database db = await DBHelper.createDatabase();
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      notificationTableName,
+    );
+
+    return List.generate(
+      maps.length,
+      (i) => LocalNotificationModel.fromJson(maps[i]),
+    );
+  }
+
   static Future<void> deleteNotificationById(
       table, String notificationId) async {
     final Database db = await DBHelper.createDatabase();
@@ -60,6 +90,24 @@ class DBHelper {
       table,
       where: 'notificationId = ?',
       whereArgs: ['$notificationId'],
+    );
+    print('DB Deleting finished successfully');
+  }
+
+  static Future<void> deleteNotification2(
+      LocalNotificationModel localNotificationModel) async {
+    final Database db = await DBHelper.createDatabase();
+    await db.delete(
+      notificationTableName,
+      where:
+          'drugUniqueId = ? and date = ? and time = ? and drugName = ? and patientName = ?',
+      whereArgs: [
+        '${localNotificationModel.drugUniqueId}',
+        '${localNotificationModel.date}',
+        '${localNotificationModel.time}',
+        '${localNotificationModel.drugName}',
+        '${localNotificationModel.username}'
+      ],
     );
     print('DB Deleting finished successfully');
   }

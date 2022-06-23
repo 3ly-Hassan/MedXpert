@@ -1,5 +1,6 @@
 import 'package:final_pro/cache_helper.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
+import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 import 'package:final_pro/pages/article/articles.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
 import 'package:final_pro/pages/measurements/measurements.dart';
@@ -8,6 +9,7 @@ import 'package:final_pro/pages/medication/medications_list_screen/medications_l
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/dashBord_item.dart';
@@ -26,8 +28,12 @@ class _DashBordState extends State<DashBord> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
     final size = MediaQuery.of(context).size;
+    //
+    //get and create (remote) followers notifications
+    BlocProvider.of<NotificationCubit>(context)
+        .createReceivedNotifications(context);
+    //
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(

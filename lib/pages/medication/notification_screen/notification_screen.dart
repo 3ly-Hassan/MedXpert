@@ -101,6 +101,10 @@ class NotificationScreen extends StatelessWidget {
                                           .notificationId,
                                       state
                                           .notificationList[index].drugUniqueId,
+                                      state.notificationList[index].date,
+                                      state.notificationList[index].time,
+                                      state.notificationList[index].username,
+                                      state.notificationList[index].drugName,
                                     );
                                   }
                                 },

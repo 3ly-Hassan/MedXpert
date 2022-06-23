@@ -4,6 +4,8 @@ import 'package:final_pro/models/doctor.dart';
 import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/invitation.dart';
 import 'package:final_pro/models/min_drug_model.dart';
+import 'package:final_pro/models/notification_models/request_notification_model.dart';
+import 'package:final_pro/models/notification_models/response_notification_model.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,6 +13,7 @@ import 'dart:convert';
 import '../models/login_model.dart';
 import '../models/medication.dart';
 import '../models/medication_drug.dart';
+import '../models/notification_models/local_notofocation_model.dart';
 import '../models/patient.dart';
 
 class APIService {
@@ -654,6 +657,9 @@ class APIService {
   Future<Medication?> addDrugToMedication(
       String medicationId, MedicationDrug drug) async {
     String url = "$api/medication/addMedicationDrug?id=$medicationId";
+    print('start :${drug.startDate}');
+    print('end :${drug.endDate}');
+    print('json :${jsonEncode(drug.toJson())}');
     try {
       final response = await http.patch(
         Uri.parse(url),
@@ -696,6 +702,74 @@ class APIService {
       }
     } catch (e) {
       print('Exception In adding drug: ${e.toString()}');
+      return null;
+    }
+  }
+
+  //notification in [medication]
+  //
+  Future<List?> getRecentNotifications() async {
+    String url = "$api/notification/getNotifications";
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        print('Get Recent Notifications done');
+        final List data = json.decode(response.body)['data'];
+        final List notificationsList =
+            data.map((e) => ResponseNotificationModel.fromJson(e)).toList();
+        return notificationsList;
+      } else {
+        print(response.statusCode);
+        print('Problem In Get notifications List');
+        return null;
+      }
+    } catch (e) {
+      print('Exception In Get notifications List: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future sendLocalNotification(
+      RequestNotificationModel requestNotificationModel) async {
+    String url = "$api/notification/createNotification";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode(requestNotificationModel.toJson()),
+      );
+      print('msg: ${json.decode(response.body)['msg']}');
+
+      if (response.statusCode == 201) {
+        print('Send notification done');
+      } else {
+        print('Status Code: ${response.statusCode}');
+        print('Problem In Send notification');
+      }
+    } catch (e) {
+      print('Exception In Send notification: ${e.toString()}');
+    }
+  }
+
+  Future<void> deleteRemoteNotification(
+      ResponseNotificationModel responseNotificationModel) async {
+    String url = "$api/notification/deleteNotification";
+    try {
+      final response = await http.post(Uri.parse(url),
+          headers: _headers,
+          body: jsonEncode(
+            responseNotificationModel.toJson(),
+          ));
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        print('deleting failed !!! : ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
       return null;
     }
   }

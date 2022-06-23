@@ -92,7 +92,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                               arguments: drugsList[index].drugName,
                             );
                             await BlocProvider.of<NotificationCubit>(context)
-                                .getNotificationList(
+                                .getLocalNotificationList(
                                     drugsList[index].drugUniqueId);
                           },
                           child: Card(

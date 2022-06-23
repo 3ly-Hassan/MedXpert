@@ -1,14 +1,17 @@
 import 'package:final_pro/api_service/api_service.dart';
-import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/db_helper.dart';
+import 'package:final_pro/models/notification_models/request_notification_model.dart';
+import 'package:final_pro/models/notification_models/response_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../api_service/api_service.dart';
 import '../../../constants.dart';
 import '../../../date_helper.dart';
 import '../../../models/medication.dart';
 import '../../../models/medication_drug.dart';
+import '../../../models/notification_models/local_notofocation_model.dart';
 import '../../../notification_helper.dart';
 import '../medications_list_cubit/medications_list_cubit.dart';
 
@@ -39,6 +42,39 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     if (!isDeleted) {
       drugs.insert(index, packUp);
       emit(DeletionFailedState());
+    }
+  }
+
+  Future addDrugToMedication(
+      String medicationId, MedicationDrug drug, BuildContext context) async {
+    emit(DrugsListLoadingState());
+    Medication? receivedMedication =
+        await apiService.addDrugToMedication(medicationId, drug);
+
+    if (receivedMedication != null) {
+      medicationItem = receivedMedication;
+      drugs = medicationItem.drugs!;
+
+      //refresh drugs list
+      emit(AddingDrugSuccessState(receivedMedication.drugs!));
+      Navigator.of(context).pop();
+      //refresh medication list with new added drug
+      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+    } else {
+      emit(AddingDrugFailedState());
+    }
+  }
+
+  Future toggleSwitch(
+      context, bool value, String medicationId, String drugId) async {
+    Medication? medication =
+        await apiService.updateCurrentlyTaken(value, medicationId, drugId);
+    if (medication != null) {
+      getDrugsList(medication);
+      //refresh medications_list_screen
+      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+    } else {
+      emit(UpdateDrugFailedState());
     }
   }
 
@@ -89,14 +125,9 @@ class DrugsListCubit extends Cubit<DrugsListState> {
       //Create notifications and insert in DB
       //
       for (int i = 0; i < doseTimes.length; i++) {
-        final patientId = MeasurementCubit.get(context).patient.sId;
-        final int notificationIdFromDB = await DBHelper.getNotificationId();
-        final int notificationId = int.parse(
-            patientId!.substring(0, 5) + '$notificationIdFromDB',
-            radix: 16);
+        final int notificationId =
+            await NotificationHelper.generateNotificationId(context);
         //
-        print(notificationId);
-
         //create notification using NotificationHelper
         await NotificationHelper.createNotification(
           notificationId: notificationId,
@@ -108,57 +139,34 @@ class DrugsListCubit extends Cubit<DrugsListState> {
           payLoad: 'payLoad',
         );
         //Add notification To the local dateBase
+        final LocalNotificationModel notificationModel = LocalNotificationModel(
+          notificationId: '$notificationId',
+          drugUniqueId: medicationDrug.drugUniqueId!,
+          drugName: medicationDrug.drugName!,
+          date: DateHelper.getFormattedString(
+              date: pickedDate, formattedString: kFormattedString),
+          time: DateHelper.getFormattedStringForTime(
+            context: context,
+            time: doseTimes[i],
+          ),
+        );
         await DBHelper.insertValue(
           DBHelper.notificationTableName,
-          LocalNotificationModel(
-            notificationId: '$notificationId',
-            drugUniqueId: medicationDrug.drugUniqueId!,
-            drugName: medicationDrug.drugName!,
-            date: DateHelper.getFormattedString(
-                date: pickedDate, formattedString: kFormattedString),
-            time: DateHelper.getFormattedStringForTime(
-              context: context,
-              time: doseTimes[i],
-            ),
-          ),
+          notificationModel,
+        );
+
+        //let followers know about notification
+        await apiService.sendLocalNotification(
+          RequestNotificationModel(
+              drugUniqueId: notificationModel.drugUniqueId,
+              drugName: notificationModel.drugName,
+              date: notificationModel.date,
+              time: notificationModel.time),
         );
       }
       //emit appropriate states in UI
       emit(NotificationCreationState(
           doseTimes.length, medicationDrug.dose! - doseTimes.length));
-    }
-  }
-
-  Future addDrugToMedication(
-      String medicationId, MedicationDrug drug, BuildContext context) async {
-    emit(DrugsListLoadingState());
-    Medication? receivedMedication =
-        await apiService.addDrugToMedication(medicationId, drug);
-
-    if (receivedMedication != null) {
-      medicationItem = receivedMedication;
-      drugs = medicationItem.drugs!;
-
-      //refresh drugs list
-      emit(AddingDrugSuccessState(receivedMedication.drugs!));
-      Navigator.of(context).pop();
-      //refresh medication list with new added drug
-      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
-    } else {
-      emit(AddingDrugFailedState());
-    }
-  }
-
-  Future toggleSwitch(
-      context, bool value, String medicationId, String drugId) async {
-    Medication? medication =
-        await apiService.updateCurrentlyTaken(value, medicationId, drugId);
-    if (medication != null) {
-      getDrugsList(medication);
-      //refresh medications_list_screen
-      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
-    } else {
-      emit(UpdateDrugFailedState());
     }
   }
 }

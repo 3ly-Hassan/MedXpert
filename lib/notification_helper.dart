@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import 'db_helper.dart';
 
 class NotificationHelper {
   // static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -26,43 +29,17 @@ class NotificationHelper {
     );
   }
 
+  static Future<int> generateNotificationId(BuildContext context) async {
+    final patientId = MeasurementCubit.get(context).patient.sId;
+    final int notificationIdFromDB = await DBHelper.getNotificationId();
+    final int notificationId = int.parse(
+        patientId!.substring(0, 5) + '$notificationIdFromDB',
+        radix: 16);
+    return notificationId;
+  }
+
   static Future selectNotification(String? payload) async {
     print('**************** payload : $payload!!!');
-
-    /* AwesomeNotifications().actionStream.listen(
-      (receivedNotification) {
-        print(receivedNotification);
-        final TaskModel scheduledTask = TaskModel.fromMap(
-          receivedNotification.payload as Map<String, dynamic>,
-        );
-        //notification itself pressed or EDIT button pressed
-        if (receivedNotification.buttonKeyPressed == 'EDIT' ||
-            receivedNotification.buttonKeyPressed.isEmpty) {
-          //
-
-          Navigator.pushNamed(
-            context,
-            EditTaskScreen.routeName,
-            arguments: scheduledTask,
-          );
-          //Mark as finished button pressed
-        } else if (receivedNotification.buttonKeyPressed == 'FINISH') {
-          BlocProvider.of<TaskBloc>(context).add(
-            UpdateTaskEvent(
-              TaskModel(
-                id: scheduledTask.id,
-                title: scheduledTask.title,
-                details: scheduledTask.details,
-                category: scheduledTask.category,
-                date: scheduledTask.date,
-                time: scheduledTask.time,
-                isDone: 'true',
-              ),
-            ),
-          );
-        }
-      },
-    ); */
   }
 
   static Future createNotification({
@@ -145,7 +122,6 @@ class NotificationHelper {
 
   static Future<void> cancelNotification(String notificationId) async {
     // print('notificationId : $notificationId');
-    //
     try {
       await FlutterLocalNotificationsPlugin().cancel(
         int.parse(notificationId),
@@ -155,20 +131,5 @@ class NotificationHelper {
       print('-------------------* Notification not found !! *-------------');
     }
   }
-  //   final List<PendingNotificationRequest> pendingNotificationRequests =
-  //       await FlutterLocalNotificationsPlugin().pendingNotificationRequests();
-  //   List<int> notificationIds = [];
-  //   for (int i = 0; i < pendingNotificationRequests.length; i++) {
-  //     notificationIds.add(pendingNotificationRequests[i].id);
-  //   }
-  //   //
-  //   if (notificationIds.contains(int.parse(notificationId))) {
-  //     await FlutterLocalNotificationsPlugin().cancel(
-  //       int.parse(notificationId),
-  //     );
-  //     print('******** Notification Canceled Successfully');
-  //   } else {
-  //     print('-------------* Notification Id is not found !! *-------------');
-  //   }
-  // }
+  //
 }

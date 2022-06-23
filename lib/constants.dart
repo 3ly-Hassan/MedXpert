@@ -81,7 +81,7 @@ const double kContainerOfTeamsButtonsRatioForPatients = 0.22;
 const double kContainerOfTeamsButtonsRatioForDoctors = 0.135;
 const double kContainerOfMedicationCreationButton = 0.135;
 const double kContainerOfCreateMedicationListRatio = 0.94;
-const String kFormattedString = 'yyyy-M-dd';
+const String kFormattedString = 'yyyy-MM-dd';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:
