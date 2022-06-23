@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
-import '../create_medication_screen/create_medication_screen.dart';
 import '../shared_componenets/create_medication_floating_button.dart';
 
 //TODO: MAY BE WE NEED TO ADD ANIMATION IN VIEWING LIST IN ALL SCREENS LIKE WHAT WAS IN TEAMS
@@ -60,17 +59,20 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
               medicationList = state.medicationsList;
             }
             //
-            print('dsdsds');
             return medicationList.isEmpty
                 ? NoFollowersWidget(msg: 'No medications yet')
                 : ListView.builder(
                     itemCount: medicationList.length,
                     itemBuilder: (context, index) {
+                      print(medicationList[index].doctorId);
                       return Padding(
                         padding:
                             EdgeInsets.fromLTRB(8, index == 0 ? 10 : 0, 8, 10),
                         child: ListTile(
-                          title: Text(medicationList[index].name),
+                          title: medicationList[index].doctorName == null
+                              ? Text(medicationList[index].name)
+                              : Text(
+                                  '${medicationList[index].name} (${medicationList[index].doctorName})'),
                           subtitle: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(

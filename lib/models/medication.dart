@@ -5,6 +5,7 @@ class Medication {
   String? name;
   String? patientId;
   String? doctorId;
+  String? doctorName;
   List<dynamic>? drugs;
   String? createdAt;
   String? updatedAt;
@@ -15,6 +16,7 @@ class Medication {
     this.patientId,
     this.drugs,
     this.doctorId,
+    this.doctorName,
     this.createdAt,
     this.updatedAt,
   });
@@ -26,11 +28,14 @@ class Medication {
         return MedicationDrug.fromJson(element);
       }).toList();
     }
+
     return Medication(
       id: json['_id'],
       name: json['name'],
       patientId: json['patient_id'],
-      doctorId: json['doctor_id'],
+      doctorId: json['doctor_id'] == null ? null : json['doctor_id']['_id'],
+      doctorName:
+          json['doctor_id'] == null ? null : json['doctor_id']['username'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       drugs: drugsList,

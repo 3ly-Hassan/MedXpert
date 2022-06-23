@@ -112,7 +112,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        drugsList[index].drugName,
+                                        '${drugsList[index].drugName}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: Theme.of(context)
