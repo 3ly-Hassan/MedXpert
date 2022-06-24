@@ -92,8 +92,11 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
                                   icon: Icon(Icons.delete),
                                   color: kErrorColor,
                                   onPressed: () async {
-                                    DialogHelper.deleteMedicationDialog(context,
-                                        medicationList[index].id, index);
+                                    DialogHelper.deleteMedicationDialog(
+                                        context,
+                                        medicationList[index].id,
+                                        medicationList[index].drugs,
+                                        index);
                                   },
                                 )
                               : null,

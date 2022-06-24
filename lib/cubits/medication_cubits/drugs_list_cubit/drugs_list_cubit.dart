@@ -32,15 +32,12 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     emit(GetDrugsListState(drugs));
   }
 
-  Future deleteDrug(String medicationId, String drugId, String drugUniqueId,
-      int index, BuildContext context) async {
+  Future deleteDrug(String medicationId, String drugId, int index) async {
     final packUp = drugs[index];
     drugs.removeAt(index);
     emit(GetDrugsListState(drugs));
 
     isDeleted = await apiService.deleteDrug(medicationId, drugId);
-    await BlocProvider.of<NotificationCubit>(context)
-        .deleteNotificationsByDrugUniqueId(drugUniqueId);
 
     if (!isDeleted) {
       drugs.insert(index, packUp);

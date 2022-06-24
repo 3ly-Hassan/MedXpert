@@ -9,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import 'components/loading_row.dart';
 import 'constants.dart';
 import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
+import 'cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 
 class DialogHelper {
   //ToDo : it is your choice => barrierDismissible: false, // user must tap button!
@@ -224,7 +225,8 @@ class DialogHelper {
   }
 
   static deleteMedicationDialog(
-      BuildContext context, String medicationId, int index) {
+      BuildContext context, String medicationId, List drugsList, int index) {
+    final theContext = context;
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -242,8 +244,13 @@ class DialogHelper {
                 child: Text(kYes),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await BlocProvider.of<MedicationsListCubit>(context)
+                  await BlocProvider.of<MedicationsListCubit>(theContext)
                       .deleteMedication(medicationId, index);
+                  drugsList.forEach((element) async {
+                    await BlocProvider.of<NotificationCubit>(theContext)
+                        .deleteNotificationsByDrugUniqueId(
+                            element.drugUniqueId);
+                  });
                 },
               ),
             ],
@@ -253,6 +260,7 @@ class DialogHelper {
 
   static deleteDrugDialog(BuildContext context, String medicationId,
       String drugId, String drugUniqueId, int index) {
+    final theContext = context;
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -270,8 +278,11 @@ class DialogHelper {
                 child: Text(kYes),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await BlocProvider.of<DrugsListCubit>(context).deleteDrug(
-                      medicationId, drugId, drugUniqueId, index, context);
+                  await BlocProvider.of<DrugsListCubit>(theContext)
+                      .deleteDrug(medicationId, drugId, index);
+                  await BlocProvider.of<NotificationCubit>(theContext)
+                      .deleteNotificationsByDrugUniqueId(drugUniqueId);
+                  //
                 },
               ),
             ],

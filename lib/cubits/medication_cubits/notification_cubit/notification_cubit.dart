@@ -146,11 +146,13 @@ class NotificationCubit extends Cubit<NotificationState> {
     final List<LocalNotificationModel> notificationList =
         await DBHelper.getNotificationsByDrugUniqueId(drugUniqueId);
     //
-    notificationList.forEach((element) async {
-      await NotificationHelper.cancelNotification(element.notificationId!);
+    if (notificationList.length != 0) {
+      notificationList.forEach((element) async {
+        await NotificationHelper.cancelNotification(element.notificationId!);
+      });
       await DBHelper.deleteNotificationById(
-          DBHelper.notificationTableName, element.notificationId!);
-    });
+          DBHelper.notificationTableName, notificationList[0].notificationId!);
+    }
     //
     //delete remote notification
     await apiService.deleteRemoteNotificationByDrugUniqueId(drugUniqueId);
