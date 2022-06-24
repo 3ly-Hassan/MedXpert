@@ -783,7 +783,7 @@ class APIService {
       ResponseNotificationModel responseNotificationModel) async {
     String url = "$api/notification/deleteNotification";
     try {
-      final response = await http.post(Uri.parse(url),
+      final response = await http.delete(Uri.parse(url),
           headers: _headers,
           body: jsonEncode(
             responseNotificationModel.toJson(),
