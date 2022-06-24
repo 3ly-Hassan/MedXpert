@@ -293,4 +293,21 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     checkBox.value = !checkBox.value;
     emit(ToggleCBValue());
   }
+
+  ///scan
+  void createScan(String path, name) {
+    try {
+      emit(CreatedLoading());
+      _createScan(path, name);
+    } catch (e) {
+      print('##########');
+      print(e.toString());
+      print('##########');
+    }
+  }
+
+  Future<void> _createScan(String path, name) async {
+    var v = await api.sendImage(path, name);
+    return v;
+  }
 }
