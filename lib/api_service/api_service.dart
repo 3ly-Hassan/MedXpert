@@ -19,11 +19,13 @@ import '../models/patient.dart';
 class APIService {
   String api = "http://10.0.2.2:8000/api";
   static final APIService _instance = APIService._internal();
+
   factory APIService() {
     return _instance;
   }
 
   APIService._internal();
+
   Map<String, String> _headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -33,6 +35,7 @@ class APIService {
   set headers(Map<String, String> value) {
     _headers = value;
   }
+
   //authentication
 
   Future<LoginResponseModel?> userLogin(LoginRequestModel requestModel) async {
@@ -694,6 +697,7 @@ class APIService {
         ),
       );
       print(response.statusCode);
+
       if (response.statusCode == 200) {
         return Medication.fromJson(jsonDecode(response.body)['data']);
       } else {
@@ -732,6 +736,47 @@ class APIService {
     }
   }
 
+  Future<void> deleteRemoteNotification(
+      ResponseNotificationModel responseNotificationModel) async {
+    String url = "$api/notification/deleteNotification";
+    try {
+      final response = await http.post(Uri.parse(url),
+          headers: _headers,
+          body: jsonEncode(
+            responseNotificationModel.toJson(),
+          ));
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        print('deleting failed !!! : ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> sendImage(path) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$api/drug/scan'));
+    request.files.add(await http.MultipartFile.fromPath('image', path));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      print('%#%#%#%#%#%#%#%#%#%');
+      print(response);
+      print('%#%#%#%#%#%#%#%#%#%');
+    } else {
+      print('###########555555');
+      print(response.reasonPhrase);
+      print(response.statusCode);
+      // print(response.);
+      print(response.statusCode);
+      print('###########555555');
+    }
+  }
+
   Future sendLocalNotification(
       RequestNotificationModel requestNotificationModel) async {
     String url = "$api/notification/createNotification";
@@ -751,26 +796,6 @@ class APIService {
       }
     } catch (e) {
       print('Exception In Send notification: ${e.toString()}');
-    }
-  }
-
-  Future<void> deleteRemoteNotification(
-      ResponseNotificationModel responseNotificationModel) async {
-    String url = "$api/notification/deleteNotification";
-    try {
-      final response = await http.post(Uri.parse(url),
-          headers: _headers,
-          body: jsonEncode(
-            responseNotificationModel.toJson(),
-          ));
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        print('deleting failed !!! : ${response.statusCode}');
-      }
-    } catch (e) {
-      print(e.toString());
-      return null;
     }
   }
 }

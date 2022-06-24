@@ -14,6 +14,7 @@ import 'package:final_pro/pages/medication/medications_list_screen/medications_l
 import 'package:final_pro/pages/medication/notification_screen/notification_screen.dart';
 import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
+import 'package:final_pro/pages/scan/scan.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,4 +41,5 @@ final Map<String, WidgetBuilder> routes = {
   DrugsListScreen.routeName: (context) => DrugsListScreen(),
   AddNewDrugScreen.routeName: (context) => AddNewDrugScreen(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
+  Scan.routeName: (context) => Scan(),
 };

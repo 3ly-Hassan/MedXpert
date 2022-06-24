@@ -7,6 +7,7 @@ import 'package:final_pro/pages/measurements/measurements.dart';
 import 'package:final_pro/pages/medication/medication_screen/medication_screen.dart';
 import 'package:final_pro/pages/medication/medications_list_screen/medications_list_screen.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
+import 'package:final_pro/pages/scan/scan.dart';
 import 'package:final_pro/pages/teams/teams.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,7 +156,9 @@ class _DashBordState extends State<DashBord> {
                               image: 'assets/images/graph.png',
                               title: 'Reports of Stats'),
                           DashBordItem(
-                              onPress: () {},
+                              onPress: () {
+                                Navigator.pushNamed(context, Scan.routeName);
+                              },
                               image: 'assets/images/scan.png',
                               title: 'Scan'),
                           DashBordItem(
