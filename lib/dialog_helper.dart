@@ -251,8 +251,8 @@ class DialogHelper {
         });
   }
 
-  static deleteDrugDialog(
-      BuildContext context, String medicationId, String drugId, int index) {
+  static deleteDrugDialog(BuildContext context, String medicationId,
+      String drugId, String drugUniqueId, int index) {
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -270,8 +270,8 @@ class DialogHelper {
                 child: Text(kYes),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await BlocProvider.of<DrugsListCubit>(context)
-                      .deleteDrug(medicationId, drugId, index, context);
+                  await BlocProvider.of<DrugsListCubit>(context).deleteDrug(
+                      medicationId, drugId, drugUniqueId, index, context);
                 },
               ),
             ],

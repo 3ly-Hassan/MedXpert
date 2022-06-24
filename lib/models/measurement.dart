@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Measurement {
   String? id;
   String? patientId;

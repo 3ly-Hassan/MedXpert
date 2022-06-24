@@ -125,6 +125,7 @@ class NotificationCubit extends Cubit<NotificationState> {
         DBHelper.notificationTableName, notificationId);
     final List notificationList =
         await DBHelper.getNotificationsByDrugUniqueId(drugUniqueId);
+    //
     //delete remote notification
     await apiService.deleteRemoteNotification(ResponseNotificationModel(
       time: time,
@@ -135,5 +136,23 @@ class NotificationCubit extends Cubit<NotificationState> {
     ));
     //
     emit(GetNotificationListState(notificationList));
+  }
+
+  //used when deleting the drug it self not its notification
+  Future deleteNotificationsByDrugUniqueId(
+    String drugUniqueId,
+  ) async {
+    //
+    final List<LocalNotificationModel> notificationList =
+        await DBHelper.getNotificationsByDrugUniqueId(drugUniqueId);
+    //
+    notificationList.forEach((element) async {
+      await NotificationHelper.cancelNotification(element.notificationId!);
+      await DBHelper.deleteNotificationById(
+          DBHelper.notificationTableName, element.notificationId!);
+    });
+    //
+    //delete remote notification
+    await apiService.deleteRemoteNotificationByDrugUniqueId(drugUniqueId);
   }
 }

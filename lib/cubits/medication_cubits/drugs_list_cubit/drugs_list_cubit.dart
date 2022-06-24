@@ -1,4 +1,5 @@
 import 'package:final_pro/api_service/api_service.dart';
+import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 import 'package:final_pro/db_helper.dart';
 import 'package:final_pro/models/notification_models/request_notification_model.dart';
 import 'package:final_pro/models/notification_models/response_notification_model.dart';
@@ -31,13 +32,15 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     emit(GetDrugsListState(drugs));
   }
 
-  Future deleteDrug(String medicationId, String drugId, int index,
-      BuildContext context) async {
+  Future deleteDrug(String medicationId, String drugId, String drugUniqueId,
+      int index, BuildContext context) async {
     final packUp = drugs[index];
     drugs.removeAt(index);
     emit(GetDrugsListState(drugs));
 
     isDeleted = await apiService.deleteDrug(medicationId, drugId);
+    await BlocProvider.of<NotificationCubit>(context)
+        .deleteNotificationsByDrugUniqueId(drugUniqueId);
 
     if (!isDeleted) {
       drugs.insert(index, packUp);

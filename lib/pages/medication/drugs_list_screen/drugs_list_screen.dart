@@ -149,6 +149,8 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                                     context,
                                                     medication.id!,
                                                     drugsList[index].drugId,
+                                                    drugsList[index]
+                                                        .drugUniqueId,
                                                     index,
                                                   );
                                                 },

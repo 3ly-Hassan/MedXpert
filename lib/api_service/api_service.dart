@@ -773,4 +773,24 @@ class APIService {
       return null;
     }
   }
+
+  Future<void> deleteRemoteNotificationByDrugUniqueId(
+      String drugUniqueId) async {
+    String url =
+        "$api/notification/deleteNotificationByDrugUniqueId?id=$drugUniqueId";
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        print('deleting by drugUniqueId failed !!! : ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
