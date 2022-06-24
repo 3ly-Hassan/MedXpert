@@ -295,10 +295,10 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   }
 
   ///scan
-  void createScan(String path) {
+  void createScan(String path, name) {
     try {
       emit(CreatedLoading());
-      _createScan(path);
+      _createScan(path, name);
     } catch (e) {
       print('##########');
       print(e.toString());
@@ -306,8 +306,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     }
   }
 
-  Future<void> _createScan(String path) async {
-    var v = await api.sendImage(path);
+  Future<void> _createScan(String path, name) async {
+    var v = await api.sendImage(path, name);
     return v;
   }
 }

@@ -756,12 +756,16 @@ class APIService {
     }
   }
 
-  Future<void> sendImage(path) async {
+  Future<void> sendImage(path, name) async {
     var request = http.MultipartRequest('POST', Uri.parse('$api/drug/scan'));
-    request.files.add(await http.MultipartFile.fromPath('image', path));
+    request.files
+        .add(await http.MultipartFile.fromPath('image', path, filename: name));
+    print('###########555555');
+    print(request);
 
     http.StreamedResponse response = await request.send();
-
+    print('%#%#%#%#%#%#%#%#%#%');
+    print(response.request);
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
       print('%#%#%#%#%#%#%#%#%#%');

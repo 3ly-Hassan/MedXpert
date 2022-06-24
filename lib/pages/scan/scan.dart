@@ -20,7 +20,8 @@ class Scan extends StatelessWidget {
                 print('mmmm');
                 XFile? image =
                     await ImagePicker().pickImage(source: ImageSource.gallery);
-                MeasurementCubit.get(context).createScan(image!.path);
+                MeasurementCubit.get(context)
+                    .createScan(image!.path, image.name);
                 print(image.path);
               },
               child: Container(
@@ -53,7 +54,8 @@ class Scan extends StatelessWidget {
               onTap: () async {
                 XFile? image =
                     await ImagePicker().pickImage(source: ImageSource.camera);
-                MeasurementCubit.get(context).createScan(image!.path);
+                MeasurementCubit.get(context)
+                    .createScan(image!.path, image.name);
                 print(image.path);
               },
               child: Container(
