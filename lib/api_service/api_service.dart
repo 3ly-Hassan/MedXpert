@@ -754,6 +754,31 @@ class APIService {
     }
   }
 
+  Future<void> sendImage(path, name) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$api/drug/scan'));
+    request.files
+        .add(await http.MultipartFile.fromPath('image', path, filename: name));
+    print('###########555555');
+    print(request);
+
+    http.StreamedResponse response = await request.send();
+    print('%#%#%#%#%#%#%#%#%#%');
+    print(response.request);
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      print('%#%#%#%#%#%#%#%#%#%');
+      print(response);
+      print('%#%#%#%#%#%#%#%#%#%');
+    } else {
+      print('###########555555');
+      print(response.reasonPhrase);
+      print(response.statusCode);
+      // print(response.);
+      print(response.statusCode);
+      print('###########555555');
+    }
+  }
+
   Future<void> deleteRemoteNotification(
       ResponseNotificationModel responseNotificationModel) async {
     String url = "$api/notification/deleteNotification";
@@ -767,6 +792,26 @@ class APIService {
         return;
       } else {
         print('deleting failed !!! : ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> deleteRemoteNotificationByDrugUniqueId(
+      String drugUniqueId) async {
+    String url =
+        "$api/notification/deleteNotificationByDrugUniqueId?id=$drugUniqueId";
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        print('deleting by drugUniqueId failed !!! : ${response.statusCode}');
       }
     } catch (e) {
       print(e.toString());
