@@ -78,3 +78,10 @@ class UpdateDrop extends MeasurementState {}
 class ShowCheckBoxes extends MeasurementState {}
 
 class ToggleCBValue extends MeasurementState {}
+
+///scan states
+class ScanLoading extends MeasurementState {}
+
+class ScanError extends MeasurementState {}
+
+class ScanSuccess extends MeasurementState {}

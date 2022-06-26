@@ -754,28 +754,30 @@ class APIService {
     }
   }
 
-  Future<void> sendImage(path, name) async {
+  Future<String?> sendImage(path, name) async {
+    print('1');
     var request = http.MultipartRequest('POST', Uri.parse('$api/drug/scan'));
+    print('2');
     request.files
         .add(await http.MultipartFile.fromPath('image', path, filename: name));
-    print('###########555555');
-    print(request);
+    print('3');
+    http.StreamedResponse response;
+    try {
+      response = await request.send();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
 
-    http.StreamedResponse response = await request.send();
-    print('%#%#%#%#%#%#%#%#%#%');
-    print(response.request);
+    print('4');
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-      print('%#%#%#%#%#%#%#%#%#%');
-      print(response);
-      print('%#%#%#%#%#%#%#%#%#%');
+      print('5');
+      var body = await response.stream.bytesToString();
+      return body;
     } else {
-      print('###########555555');
+      print('6');
       print(response.reasonPhrase);
-      print(response.statusCode);
-      // print(response.);
-      print(response.statusCode);
-      print('###########555555');
+      return null;
     }
   }
 

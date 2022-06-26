@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/models/doctor.dart';
@@ -5,6 +7,7 @@ import 'package:final_pro/models/measurement.dart';
 import 'package:final_pro/models/patient.dart';
 import 'package:final_pro/models/signup_model.dart';
 import 'package:final_pro/models/spec_checkBox.dart';
+import 'package:final_pro/models/words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -294,11 +297,20 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     emit(ToggleCBValue());
   }
 
+  late Words words;
+
   ///scan
   void createScan(String path, name) {
     try {
-      emit(CreatedLoading());
-      _createScan(path, name);
+      emit(ScanLoading());
+      _createScan(path, name).then((value) {
+        if (value == null) {
+          emit(ScanError());
+        } else {
+          words = Words.fromJson(json.decode(value));
+          emit(ScanSuccess());
+        }
+      });
     } catch (e) {
       print('##########');
       print(e.toString());
@@ -306,7 +318,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     }
   }
 
-  Future<void> _createScan(String path, name) async {
+  Future<String?> _createScan(String path, name) async {
     var v = await api.sendImage(path, name);
     return v;
   }
