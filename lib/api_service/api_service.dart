@@ -773,6 +773,7 @@ class APIService {
     if (response.statusCode == 200) {
       print('5');
       var body = await response.stream.bytesToString();
+      print(body);
       return body;
     } else {
       print('6');

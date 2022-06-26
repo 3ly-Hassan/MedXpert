@@ -121,13 +121,16 @@ class _DashBordState extends State<DashBord> {
                             image: 'assets/images/pharmacy.png',
                             title: 'Medication',
                           ),
-                          DashBordItem(
-                            onPress: () {
-                              Navigator.pushNamed(context, Teams.routeName);
-                            },
-                            image: 'assets/images/team.png',
-                            title: 'Teams',
-                          ),
+                          role == 'doctor'
+                              ? SizedBox()
+                              : DashBordItem(
+                                  onPress: () {
+                                    Navigator.pushNamed(
+                                        context, Teams.routeName);
+                                  },
+                                  image: 'assets/images/team.png',
+                                  title: 'Teams',
+                                ),
                           DashBordItem(
                               onPress: () {
                                 Navigator.pushNamed(
