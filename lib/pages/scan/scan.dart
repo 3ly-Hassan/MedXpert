@@ -37,8 +37,8 @@ class Scan extends StatelessWidget {
                 Image.file(File(image!.path)),
                 ...MeasurementCubit.get(context).words.data!.map(
                       (e) => Positioned(
-                        left: e.vertices![0].x as double,
-                        top: e.vertices![0].y as double,
+                        left: double.parse(e.vertices![0].x.toString()),
+                        top: double.parse(e.vertices![0].y.toString()),
                         child: Text(e.names![0]),
                       ),
                     )
