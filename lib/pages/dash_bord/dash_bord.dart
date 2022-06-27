@@ -8,7 +8,7 @@ import 'package:final_pro/pages/medication/medication_screen/medication_screen.d
 import 'package:final_pro/pages/medication/medications_list_screen/medications_list_screen.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/scan/scan.dart';
-import 'package:final_pro/pages/teams/teams.dart';
+import 'package:final_pro/pages/teams/main/teams.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +28,6 @@ class DashBord extends StatefulWidget {
 class _DashBordState extends State<DashBord> {
   @override
   Widget build(BuildContext context) {
-
     SizeConfig().init(context);
     final size = MediaQuery.of(context).size;
     print('############');

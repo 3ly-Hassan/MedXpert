@@ -4,12 +4,12 @@ import 'package:final_pro/date_helper.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/medication.dart';
 import 'package:final_pro/pages/medication/notification_screen/notification_screen.dart';
-import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import '../../../cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
+import '../../teams/main/components/no_followers_widget.dart';
 import 'add_new_drug_screen.dart';
 
 class DrugsListScreen extends StatefulWidget {

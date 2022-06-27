@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../constants.dart';
-import '../../cubits/teams_cubit/teams_cubit.dart';
-import '../../size_config.dart';
-import 'components/body.dart';
-import 'components/buttons_container.dart';
+import '../../../constants.dart';
+import '../../../cubits/teams_cubit/teams_cubit.dart';
+import '../../../size_config.dart';
+import '../main/components/body.dart';
+import '../main/components/buttons_container.dart';
 
 class Teams extends StatefulWidget {
   static String routeName = "/teams";

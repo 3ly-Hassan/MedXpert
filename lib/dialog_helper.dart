@@ -10,6 +10,7 @@ import 'components/loading_row.dart';
 import 'constants.dart';
 import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'cubits/medication_cubits/notification_cubit/notification_cubit.dart';
+import 'cubits/teams_cubit/teams_cubit.dart';
 
 class DialogHelper {
   //ToDo : it is your choice => barrierDismissible: false, // user must tap button!

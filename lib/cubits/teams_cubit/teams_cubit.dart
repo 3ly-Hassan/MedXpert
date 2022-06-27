@@ -102,7 +102,7 @@ class TeamsCubit extends Cubit<TeamsState> {
           await apiService.useInvitationPatient(text);
       if (response.msg == kSuccessMessageFromDataBase) {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
-        //(the follower model itself) to add it
+        //(the teams_doctor_info model itself) to add it
         await updatePatientProfileAndCombinedSortedList();
         emit(GetFollowingStateWithToast(
             patientModel, kDone, ToastStates.SUCCESS,
@@ -120,7 +120,7 @@ class TeamsCubit extends Cubit<TeamsState> {
           await apiService.useInvitationDoctor(text);
       if (response.msg == kSuccessMessageFromDataBase) {
         //TODO: to refresh it locally instead of calling getPatientProfile i need to know the followings info
-        //(the follower model itself) to add it
+        //(the teams_doctor_info model itself) to add it
         doctorModel = await apiService.getDoctorProfile();
         emit(GetFollowingStateWithToast(
             doctorModel, kDone, ToastStates.SUCCESS));

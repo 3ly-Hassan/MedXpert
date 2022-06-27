@@ -72,7 +72,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     if (medication != null) {
       getDrugsList(medication);
       //refresh medications_list_screen
-      BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+      await BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
     } else {
       emit(UpdateDrugFailedState());
     }

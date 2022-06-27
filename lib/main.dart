@@ -5,6 +5,7 @@ import 'package:final_pro/cubits/dialog_cubit/dialog_cubit.dart';
 import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
+import 'package:final_pro/cubits/teams_cubit/teams_doctor_cubit/teams_doctor_cubit.dart';
 import 'package:final_pro/notification_helper.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
@@ -20,6 +21,7 @@ import 'cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'cubits/medication_cubits/create_medication_cubit/create_medication_cubit.dart';
 import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'cubits/medication_cubits/medication_cubit/medication_cubit.dart';
+import 'cubits/teams_cubit/teams_patient_cubit/teams_patient_cubit.dart';
 
 void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
@@ -101,6 +103,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => NotificationCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TeamsDoctorCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TeamsPatientCubit(),
         ),
       ],
       child: MaterialApp(

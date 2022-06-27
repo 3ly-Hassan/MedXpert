@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
-import '../../../models/patient.dart';
+import '../../../../constants.dart';
 import 'list_inside_container.dart';
 
 class GetViewedList extends StatelessWidget {

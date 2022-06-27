@@ -2,8 +2,8 @@ import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:final_pro/pages/medication/shared_componenets/create_medication_floating_button.dart';
-import 'package:final_pro/pages/teams/components/follower_card.dart';
-import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
+import 'package:final_pro/pages/teams/main/components/follower_card.dart';
+import 'package:final_pro/pages/teams/main/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

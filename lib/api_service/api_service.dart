@@ -13,7 +13,6 @@ import 'dart:convert';
 import '../models/login_model.dart';
 import '../models/medication.dart';
 import '../models/medication_drug.dart';
-import '../models/notification_models/local_notofocation_model.dart';
 import '../models/patient.dart';
 
 class APIService {
@@ -693,15 +692,15 @@ class APIService {
           },
         ),
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
+        print(jsonDecode(response.body)['data']);
         return Medication.fromJson(jsonDecode(response.body)['data']);
       } else {
-        print('Problem In adding drug');
+        print('Problem In updating drug');
         return null;
       }
     } catch (e) {
-      print('Exception In adding drug: ${e.toString()}');
+      print('Exception In updating drug: ${e.toString()}');
       return null;
     }
   }
@@ -818,6 +817,49 @@ class APIService {
         return;
       } else {
         print('deleting by drugUniqueId failed !!! : ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<Patient?> getPatientProfileById(String id) async {
+    String url = "$api/patient/getPatient?id=$id";
+    print("getting data");
+    print(_headers['Authorization']);
+    try {
+      final response = await http.get(Uri.parse(url), headers: _headers);
+      if (response.statusCode == 200) {
+        Patient patient = Patient.fromJson(json.decode(response.body)["data"]);
+        print('good');
+        print(patient.email);
+        return patient;
+      } else {
+        print('not good');
+
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<Doctor?> getDoctorProfileById(String id) async {
+    String url = "$api/doctor/getDoctor?id=$id";
+    print("getting data");
+    print(_headers['Authorization']);
+    try {
+      final response = await http.get(Uri.parse(url), headers: _headers);
+      if (response.statusCode == 200) {
+        Doctor doctor = Doctor.fromJson(json.decode(response.body)["data"]);
+        print('good');
+        return doctor;
+      } else {
+        print('not good');
+
+        return null;
       }
     } catch (e) {
       print(e.toString());

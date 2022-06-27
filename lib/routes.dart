@@ -16,7 +16,9 @@ import 'package:final_pro/pages/profile/components/add_chronics.dart';
 import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/scan/scan.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
-import 'package:final_pro/pages/teams/teams.dart';
+import 'package:final_pro/pages/teams/main/teams.dart';
+import 'package:final_pro/pages/teams/teams_doctor_screen/teams_doctor_screen.dart';
+import 'package:final_pro/pages/teams/teams_patient_screen/teams_patient_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'pages/register/sign_up.dart';
@@ -42,4 +44,6 @@ final Map<String, WidgetBuilder> routes = {
   AddNewDrugScreen.routeName: (context) => AddNewDrugScreen(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
   Scan.routeName: (context) => Scan(),
+  TeamsDoctorScreen.routeName: (context) => TeamsDoctorScreen(),
+  TeamsPatientScreen.routeName: (context) => TeamsPatientScreen(),
 };

@@ -4,7 +4,7 @@ import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/pages/medication/drugs_list_screen/drugs_list_screen.dart';
-import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
+import 'package:final_pro/pages/teams/main/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

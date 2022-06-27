@@ -117,7 +117,7 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
                               child: defaultFormField(
                                 controller: medicationName,
                                 readOnly: false,
-                                autoFocus: true,
+                                autoFocus: role == 'patient' ? true : false,
                                 label: 'Medication name',
                                 hintText: 'Enter the medication name',
                                 prefix: null,

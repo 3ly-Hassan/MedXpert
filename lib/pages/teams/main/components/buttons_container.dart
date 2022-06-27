@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../components/default_button.dart';
-import '../../../constants.dart';
-import '../../../cubits/dialog_cubit/dialog_cubit.dart';
-import '../../../dialog_helper.dart';
-import '../../../size_config.dart';
+import '../../../../components/default_button.dart';
+import '../../../../constants.dart';
+import '../../../../cubits/dialog_cubit/dialog_cubit.dart';
+import '../../../../dialog_helper.dart';
+import '../../../../size_config.dart';
 
 class ButtonsContainer extends StatefulWidget {
   final bool isPatient;

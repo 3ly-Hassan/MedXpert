@@ -1,9 +1,8 @@
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/patient.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../../constants.dart';
 
 class FollowerCard extends StatelessWidget {
   final Follower follower;

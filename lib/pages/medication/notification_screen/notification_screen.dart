@@ -2,11 +2,11 @@ import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/dialog_helper.dart';
-import 'package:final_pro/pages/teams/components/no_followers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../cubits/medication_cubits/notification_cubit/notification_cubit.dart';
+import '../../teams/main/components/no_followers_widget.dart';
 
 class NotificationScreen extends StatelessWidget {
   static String routeName = "/notification_screen";
