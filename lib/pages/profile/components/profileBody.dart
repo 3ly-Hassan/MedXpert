@@ -128,28 +128,28 @@ class ProfileBody extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '5',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 26,
-                                        fontFamily: 'Muli',
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Medicines',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: 'Muli',
-                                        fontWeight: FontWeight.w900),
-                                  )
-                                ],
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: Column(
+                            //     children: [
+                            //       Text(
+                            //         '5',
+                            //         style: TextStyle(
+                            //             color: Colors.black,
+                            //             fontSize: 26,
+                            //             fontFamily: 'Muli',
+                            //             fontWeight: FontWeight.w700),
+                            //       ),
+                            //       Text(
+                            //         'Medicines',
+                            //         style: TextStyle(
+                            //             color: Colors.black,
+                            //             fontSize: 16,
+                            //             fontFamily: 'Muli',
+                            //             fontWeight: FontWeight.w900),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                           ]
                         : [],
                   ),
