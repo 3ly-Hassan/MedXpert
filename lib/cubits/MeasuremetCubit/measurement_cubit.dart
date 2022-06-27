@@ -322,4 +322,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     var v = await api.sendImage(path, name);
     return v;
   }
+  void goToInit(){
+    emit(GetDoctorProfileLoaded());
+  }
 }

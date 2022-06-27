@@ -28,8 +28,14 @@ class DashBord extends StatefulWidget {
 class _DashBordState extends State<DashBord> {
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
     final size = MediaQuery.of(context).size;
+    print('############');
+    print(size.height);
+    print(size.width);
+    print('############');
+
     //
     //get and create (remote) followers notifications
     if (role == 'patient') {

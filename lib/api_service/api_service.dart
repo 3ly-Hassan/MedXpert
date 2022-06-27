@@ -765,7 +765,10 @@ class APIService {
     try {
       response = await request.send();
     } catch (e) {
+      print('^^^^^^^^^^^');
       print(e.toString());
+      print('^^^^^^^^^^^');
+
       return null;
     }
 
