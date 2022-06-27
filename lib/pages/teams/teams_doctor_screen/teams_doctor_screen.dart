@@ -100,30 +100,44 @@ class TeamsDoctorScreen extends StatelessWidget {
                                 (i == doctor.specialization!.length - 1)
                                     ? 12
                                     : 0),
-                            child: Container(
-                              width: double.infinity,
-                              child: Text(
-                                '• ${doctor.specialization![i]}.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontFamily: 'Muli',
+                            // child: Container(
+                            //   width: double.infinity,
+                            //   child: Text(
+                            //     '• ${doctor.specialization![i]}.',
+                            //     style: TextStyle(
+                            //       color: Colors.black,
+                            //       fontSize: 18,
+                            //       fontFamily: 'Muli',
+                            //     ),
+                            //     textAlign: TextAlign.start,
+                            //   ),
+                            // ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '• ',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontFamily: 'Muli',
+                                  ),
                                 ),
-                                textAlign: TextAlign.start,
-                              ),
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      '${doctor.specialization![i]}.',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontFamily: 'Muli',
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                      // doctor.specialization.map((element){
-                      //   ;
-                      // })
-
-                      // Text('${doctor.specialization![0]}'),
-                      // Text('Specialization : ',
-                      //     style: TextStyle(
-                      //         color: Colors.black,
-                      //         fontSize: 20,
-                      //         fontFamily: 'Muli',
-                      //         fontWeight: FontWeight.w700)),
+                          ),
                     ],
                   ),
                 ),
