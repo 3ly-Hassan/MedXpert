@@ -121,25 +121,19 @@ class _DashBordState extends State<DashBord> {
                             image: 'assets/images/pharmacy.png',
                             title: 'Medication',
                           ),
-                          role == 'doctor'
-                              ? SizedBox()
-                              : DashBordItem(
-                                  onPress: () {
-                                    Navigator.pushNamed(
-                                        context, Teams.routeName);
-                                  },
-                                  image: 'assets/images/team.png',
-                                  title: 'Teams',
-                                ),
+                          DashBordItem(
+                            onPress: () {
+                              Navigator.pushNamed(context, Teams.routeName);
+                            },
+                            image: 'assets/images/team.png',
+                            title: 'Teams',
+                          ),
                           DashBordItem(
                               onPress: () {
-                                Navigator.pushNamed(
-                                    context, Measurements.routeName);
-                                MeasurementCubit.get(context)
-                                    .get_measurements();
+                                Navigator.pushNamed(context, Scan.routeName);
                               },
-                              image: 'assets/images/pulse.png',
-                              title: 'Measurements'),
+                              image: 'assets/images/scan.png',
+                              title: 'Scan'),
                           DashBordItem(
                               onPress: () {
                                 Navigator.pushNamed(
@@ -158,16 +152,22 @@ class _DashBordState extends State<DashBord> {
                               onPress: () {},
                               image: 'assets/images/graph.png',
                               title: 'Reports of Stats'),
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(context, Scan.routeName);
-                              },
-                              image: 'assets/images/scan.png',
-                              title: 'Scan'),
-                          DashBordItem(
-                              onPress: () {},
-                              image: 'assets/images/gear.png',
-                              title: 'Settings'),
+
+                          // DashBordItem(
+                          //     onPress: () {},
+                          //     image: 'assets/images/gear.png',
+                          //     title: 'Settings'),
+                          role == 'doctor'
+                              ? SizedBox()
+                              : DashBordItem(
+                                  onPress: () {
+                                    Navigator.pushNamed(
+                                        context, Measurements.routeName);
+                                    MeasurementCubit.get(context)
+                                        .get_measurements();
+                                  },
+                                  image: 'assets/images/pulse.png',
+                                  title: 'Measurements'),
                         ],
                       ),
                     ),
