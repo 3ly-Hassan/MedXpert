@@ -1,8 +1,10 @@
 import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
+import 'package:final_pro/pages/teams/teams_patient_screen/teams_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../cubits/teams_cubit/teams_doctor_cubit/teams_doctor_cubit.dart';
+import '../../../../cubits/teams_cubit/teams_patient_cubit/teams_patient_cubit.dart';
 import '../../teams_doctor_screen/teams_doctor_screen.dart';
 import 'follower_card.dart';
 import 'no_followers_widget.dart';
@@ -80,8 +82,14 @@ class _ListInsideContainerState extends State<ListInsideContainer>
                             //
                             await BlocProvider.of<TeamsDoctorCubit>(context)
                                 .getDoctorInfo(widget.viewedList[index].id);
-                          } else if (role != 'patient') {
+                          } else if (role == 'doctor') {
                             //navigate to teams_patient_screen
+                            Navigator.of(context).pushNamed(
+                                TeamsPatientScreen.routeName,
+                                arguments: widget.viewedList[index].username);
+                            //
+                            await BlocProvider.of<TeamsPatientCubit>(context)
+                                .getPatientInfo(widget.viewedList[index].id);
                           }
                         },
                       ),

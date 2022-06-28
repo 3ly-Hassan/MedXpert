@@ -33,8 +33,6 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print('Why get built ???????????????????????');
-    // SizeConfig()..init(context);
     //
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +47,6 @@ class _TeamsState extends State<Teams> with TickerProviderStateMixin {
                   } else {
                     BlocProvider.of<TeamsCubit>(context).isFollowersTab = false;
                   }
-                  print(BlocProvider.of<TeamsCubit>(context).isFollowersTab);
                 },
                 controller: _tabController,
                 tabs: <Widget>[

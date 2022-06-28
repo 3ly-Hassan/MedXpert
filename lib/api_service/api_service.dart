@@ -866,4 +866,29 @@ class APIService {
       return null;
     }
   }
+
+  Future<List<Measurement>?> getPatientMeasurementsById(
+      String patientId) async {
+    String url = "$api/vitalSign/getVitalSignDoctor?id=$patientId";
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        List<Measurement> measurementList = [];
+        final List listOfMaps = json.decode(response.body)["data"];
+        listOfMaps.forEach((element) {
+          measurementList.add(Measurement.fromJson(element));
+        });
+        return measurementList;
+      } else {
+        print('not good');
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
