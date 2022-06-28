@@ -43,11 +43,7 @@ class _TeamsPatientScreenState extends State<TeamsPatientScreen>
         bottom: TabBar(
           onTap: (index) {
             if (index == 0) {
-              //followers Tap
-              // BlocProvider.of<TeamsCubit>(context).isFollowersTab = true;
-            } else {
-              // BlocProvider.of<TeamsCubit>(context).isFollowersTab = false;
-            }
+            } else {}
           },
           controller: _tabController,
           tabs: <Widget>[
@@ -73,7 +69,9 @@ class _TeamsPatientScreenState extends State<TeamsPatientScreen>
               children: <Widget>[
                 state.measurements.isEmpty
                     ? NoFollowersWidget(msg: 'No measurements yet')
-                    : Text('${state.measurements[0].createdAt}'),
+                    //TODO: You can start from here !
+                    : Text('${state.measurements[0].condition}'),
+                //till here.
                 state.chronics.isEmpty
                     ? NoFollowersWidget(msg: 'No chronics yet')
                     : ListView.builder(
