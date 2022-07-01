@@ -378,25 +378,28 @@ class ProfileBody extends StatelessWidget {
                       ? Column(
                           children: [
                             ...checkBoxList.map(
-                              (item) => ListTile(
-                                enabled: !cubit.doctor.specialization!
-                                    .contains(item.title),
-                                onTap: () => onItemClicked(item, context),
-                                title: Text(
-                                  item.title,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
-                                ),
-                                leading: Checkbox(
-                                  onChanged: cubit.doctor.specialization!
-                                          .contains(item.title)
-                                      ? (null)
-                                      : (bool? value) =>
-                                          onItemClicked(item, context),
-                                  value: cubit.doctor.specialization!
-                                          .contains(item.title)
-                                      ? true
-                                      : item.value,
+                              (item) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  enabled: !cubit.doctor.specialization!
+                                      .contains(item.title),
+                                  onTap: () => onItemClicked(item, context),
+                                  title: Text(
+                                    item.title,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20),
+                                  ),
+                                  leading: Checkbox(
+                                    onChanged: cubit.doctor.specialization!
+                                            .contains(item.title)
+                                        ? (null)
+                                        : (bool? value) =>
+                                            onItemClicked(item, context),
+                                    value: cubit.doctor.specialization!
+                                            .contains(item.title)
+                                        ? true
+                                        : item.value,
+                                  ),
                                 ),
                               ),
                             ),
