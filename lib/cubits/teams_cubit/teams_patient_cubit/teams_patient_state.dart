@@ -9,6 +9,8 @@ class TeamsPatientLoadingState extends TeamsPatientState {}
 
 class TeamsPatientErrorState extends TeamsPatientState {}
 
+class Expanded extends TeamsPatientState {}
+
 class GetPatientInfoState extends TeamsPatientState {
   final List<Measurement> measurements;
   final List<Chronics> chronics;

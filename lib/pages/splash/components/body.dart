@@ -15,17 +15,16 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to , Let’s shop!",
-      "image": "assets/images/medical-care.png"
+      "text": "Let's take care of our health!",
+      "image": "assets/images/logo.jpg"
     },
     {
-      "text":
-          "We help people connect with store \naround United State of America",
-      "image": "assets/images/splash_2.png"
+      "text": "We help patients or doctors read \nTheir prescriptions easily ",
+      "image": "assets/images/fet_1.jpg"
     },
     {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
-      "image": "assets/images/splash_3.png"
+      "text": "Put your medication times and \nwe will think about them",
+      "image": "assets/images/timer.jpg"
     },
   ];
   @override

@@ -28,6 +28,9 @@ class APIService {
     'Accept': 'application/json',
     'Authorization': 'Bearer $token',
   };
+  Map<String, String> _scanHeaders = {
+    'Authorization': 'Bearer $token',
+  };
 
   set headers(Map<String, String> value) {
     _headers = value;
@@ -761,6 +764,7 @@ class APIService {
         .add(await http.MultipartFile.fromPath('image', path, filename: name));
     print('3');
     http.StreamedResponse response;
+    request.headers.addAll(_scanHeaders);
     try {
       response = await request.send();
     } catch (e) {
@@ -888,6 +892,40 @@ class APIService {
       }
     } catch (e) {
       print(e.toString());
+      return null;
+    }
+  }
+
+  Future<String?> sendRightWord(imgName, vertices, rightWord) async {
+    // var headers = {
+    //   'Content-Type': 'application/json'
+    // };
+    var request = http.Request('POST', Uri.parse('$api/drug/saveToDataset'));
+    request.body = json.encode({
+      "imgName": imgName,
+      "vertices": vertices,
+      "label": rightWord,
+    });
+    request.headers.addAll(_headers);
+    http.StreamedResponse response;
+
+    try {
+      response = await request.send();
+    } catch (e) {
+      print('^^^^^^^^^^^');
+      print(e.toString());
+      print('^^^^^^^^^^^');
+
+      return null;
+    }
+    if (response.statusCode == 200) {
+      print('5');
+      var body = await response.stream.bytesToString();
+      print(body);
+      return body;
+    } else {
+      print('6');
+      print(response.reasonPhrase);
       return null;
     }
   }

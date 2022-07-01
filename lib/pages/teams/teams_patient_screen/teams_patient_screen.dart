@@ -6,6 +6,8 @@ import 'package:final_pro/pages/teams/teams_patient_screen/chronic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'item.dart';
+
 class TeamsPatientScreen extends StatefulWidget {
   const TeamsPatientScreen({Key? key}) : super(key: key);
   static String routeName = '/teams_patient_screen';
@@ -63,25 +65,41 @@ class _TeamsPatientScreenState extends State<TeamsPatientScreen>
                 style: TextStyle(fontSize: 20),
               ),
             );
-          } else if (state is GetPatientInfoState) {
+          } else {
             return TabBarView(
               controller: _tabController,
               children: <Widget>[
-                state.measurements.isEmpty
+                BlocProvider.of<TeamsPatientCubit>(context)
+                        .measurements!
+                        .isEmpty
                     ? NoFollowersWidget(msg: 'No measurements yet')
                     //TODO: You can start from here !
-                    : Text('${state.measurements[0].condition}'),
+                    : ListView.builder(
+                        itemBuilder: (context, index) {
+                          return Item(
+                              BlocProvider.of<TeamsPatientCubit>(context)
+                                  .measurements![index],
+                              index);
+                        },
+                        itemCount: BlocProvider.of<TeamsPatientCubit>(context)
+                            .measurements!
+                            .length,
+                      ),
                 //till here.
-                state.chronics.isEmpty
+                BlocProvider.of<TeamsPatientCubit>(context).chronics!.isEmpty
                     ? NoFollowersWidget(msg: 'No chronics yet')
                     : ListView.builder(
-                        itemCount: state.chronics.length,
+                        itemCount: BlocProvider.of<TeamsPatientCubit>(context)
+                            .chronics!
+                            .length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.fromLTRB(
                                 8, index == 0 ? 10 : 0, 8, 10),
                             child: ChronicCard(
-                              chronic: state.chronics[index],
+                              chronic:
+                                  BlocProvider.of<TeamsPatientCubit>(context)
+                                      .chronics![index],
                             ),
                           );
                         },
@@ -90,7 +108,7 @@ class _TeamsPatientScreenState extends State<TeamsPatientScreen>
             );
           }
 
-          return ErrorBloc();
+          //return ErrorBloc();
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:final_pro/constants.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +9,18 @@ import 'package:image_picker/image_picker.dart';
 import '../../cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
-
-
 class Scan extends StatelessWidget {
   Scan({Key? key}) : super(key: key);
   static String routeName = "/scan";
   XFile? image;
-   File? resizedImage;
-   bool height = false;
-   bool width = false;
-   bool height_Width = false;
+  File? resizedImage;
+  bool height = false;
+  bool width = false;
+  bool height_Width = false;
+  late int h;
+  late int w;
 
+  // Color white = Colors.white.opacity(.5);
 
   @override
   Widget build(BuildContext context) {
@@ -30,114 +32,243 @@ class Scan extends StatelessWidget {
           MeasurementCubit.get(context).words.data!.isEmpty) {
         showToast(
             text: 'No drugs have been identified', state: ToastStates.WARNING);
+      } else if (state is SendWordError) {
+        showToast(
+            text: 'Error occurred when send the word',
+            state: ToastStates.ERROR);
+      } else if (state is SendWordSuccess) {
+        showToast(text: 'word send Successfully', state: ToastStates.SUCCESS);
       }
     }, builder: (context, state) {
       if (state is ScanLoading) {
         return WillPopScope(
-             onWillPop: () {
-              height=false;
-              width=false;
-              height_Width=false;
-        MeasurementCubit.get(context).goToInit();
-        Navigator.pop(context, false);
-        //we need to return a future
-        return Future.value(false);
-             },child:Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ));
+            onWillPop: () {
+              height = false;
+              width = false;
+              height_Width = false;
+              MeasurementCubit.get(context).goToInit();
+              Navigator.pop(context, false);
+              //we need to return a future
+              return Future.value(false);
+            },
+            child: Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ));
       } else if (state is ScanSuccess &&
           MeasurementCubit.get(context).words.data!.isNotEmpty) {
         return SafeArea(
           child: WillPopScope(
-             onWillPop: () {
-               height=false;
-              width=false;
-              height_Width=false;
-        MeasurementCubit.get(context).goToInit();
-        Navigator.pop(context, false);
-        //we need to return a future
-        return Future.value(false);
-             },
+            onWillPop: () {
+              height = false;
+              width = false;
+              height_Width = false;
+              MeasurementCubit.get(context).goToInit();
+              Navigator.pop(context, false);
+              //we need to return a future
+              return Future.value(false);
+            },
             child: Scaffold(
-              body:resizedImage==null?Stack(
-                children: [
-                  Image.file(File(image!.path,)),
-                  ...MeasurementCubit.get(context).words.data!.map(
-                        (e) => Positioned(
-                          left: double.parse(e.vertices![0].x.toString()),
-                          top: double.parse(e.vertices![0].y.toString()),
-                          child: Container(
-                            constraints: BoxConstraints(minHeight: 60,minWidth: 80).normalize(),
-                            color: Colors.white,
-                            child:FittedBox(child: Text(e.names![0])),
-                            width: (double.parse(e.vertices![1].x.toString())-double.parse(e.vertices![0].x.toString())),
-                            height: (double.parse(e.vertices![3].y.toString())-double.parse(e.vertices![0].y.toString())),
-                        ),)
-                      )
-                ],
-              ):height?Stack(
-                children: [
-                  Image.file(File(resizedImage!.path,),height: MediaQuery.of(context).size.height),
-                  ...MeasurementCubit.get(context).words.data!.map(
-                        (e) => Positioned(
-                          left: double.parse(e.vertices![0].x.toString()),
-                          top: double.parse(e.vertices![0].y.toString()),
-                          child: Container(
-                            constraints: BoxConstraints(minHeight: 60,minWidth: 80).normalize(),
-                            color: Colors.white,
-                            child:FittedBox(child: Text(e.names![0])),
-                            width: (double.parse(e.vertices![1].x.toString())-double.parse(e.vertices![0].x.toString())),
-                            height: (double.parse(e.vertices![3].y.toString())-double.parse(e.vertices![0].y.toString())),
-                        ),)
-                      )
-                ],
-              ):width?Stack(
-                children: [
-                  Image.file(File(resizedImage!.path,),width:MediaQuery.of(context).size.width),
-                  ...MeasurementCubit.get(context).words.data!.map(
-                        (e) => Positioned(
-                          left: double.parse(e.vertices![0].x.toString()),
-                          top: double.parse(e.vertices![0].y.toString()),
-                          child: Container(
-                            constraints: BoxConstraints(minHeight: 60,minWidth: 80).normalize(),
-                            color: Colors.white,
-                            child:FittedBox(child: Text(e.names![0])),
-                            width: (double.parse(e.vertices![1].x.toString())-double.parse(e.vertices![0].x.toString())),
-                            height: (double.parse(e.vertices![3].y.toString())-double.parse(e.vertices![0].y.toString())),
-                        ),)
-                      )
-                ],
-              ):Stack(
-                children: [
-                  Image.file(File(resizedImage!.path,),height: MediaQuery.of(context).size.height,width:MediaQuery.of(context).size.width,fit: BoxFit.cover,),
-                  ...MeasurementCubit.get(context).words.data!.map(
-                        (e) => Positioned(
-                          left: double.parse(e.vertices![0].x.toString()),
-                          top: double.parse(e.vertices![0].y.toString()),
-                          child: Container(
-                            constraints: BoxConstraints(minHeight: 60,minWidth: 80).normalize(),
-                            color: Colors.white,
-                            child:FittedBox(child: Text(e.names![0])),
-                            width: (double.parse(e.vertices![1].x.toString())-double.parse(e.vertices![0].x.toString())),
-                            height: (double.parse(e.vertices![3].y.toString())-double.parse(e.vertices![0].y.toString())),
-                        ),)
-                      )
-                ],
-              ),
+              body: resizedImage == null
+                  ? Stack(
+                      children: [
+                        Image.file(File(
+                          image!.path,
+                        )),
+                        ...MeasurementCubit.get(context).words.data!.map((e) =>
+                            Positioned(
+                              left: double.parse(e.vertices![0].x.toString()),
+                              top: double.parse(e.vertices![0].y.toString()),
+                              child: Container(
+                                constraints:
+                                    BoxConstraints(minHeight: 60, minWidth: 80)
+                                        .normalize(),
+                                color: Colors.white,
+                                child: FittedBox(child: Text(e.names![0])),
+                                width: (double.parse(
+                                        e.vertices![1].x.toString()) -
+                                    double.parse(e.vertices![0].x.toString())),
+                                height: (double.parse(
+                                        e.vertices![3].y.toString()) -
+                                    double.parse(e.vertices![0].y.toString())),
+                              ),
+                            ))
+                      ],
+                    )
+                  : height
+                      ? Stack(
+                          children: [
+                            Image.file(
+                              File(
+                                resizedImage!.path,
+                              ),
+                              height: MediaQuery.of(context).size.height,
+                              width: w.toDouble(),
+                            ),
+                            ...MeasurementCubit.get(context)
+                                .words
+                                .data!
+                                .map((e) => Positioned(
+                                      left: double.parse(
+                                          e.vertices![0].x.toString()),
+                                      top: double.parse(
+                                          e.vertices![0].y.toString()),
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                                minHeight: 60, minWidth: 80)
+                                            .normalize(),
+                                        color: Colors.white,
+                                        child:
+                                            FittedBox(child: Text(e.names![0])),
+                                        width: (double.parse(
+                                                e.vertices![1].x.toString()) -
+                                            double.parse(
+                                                e.vertices![0].x.toString())),
+                                        height: (double.parse(
+                                                e.vertices![3].y.toString()) -
+                                            double.parse(
+                                                e.vertices![0].y.toString())),
+                                      ),
+                                    ))
+                          ],
+                        )
+                      : width
+                          ? Stack(
+                              children: [
+                                Image.file(
+                                  File(
+                                    resizedImage!.path,
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: h.toDouble(),
+                                ),
+                                ...MeasurementCubit.get(context)
+                                    .words
+                                    .data!
+                                    .map((e) => Positioned(
+                                          left: double.parse(
+                                              e.vertices![0].x.toString()),
+                                          top: double.parse(
+                                              e.vertices![0].y.toString()),
+                                          child: e.names!.isNotEmpty
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            actions: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: Text(
+                                                                      'cancel'))
+                                                            ],
+                                                            content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: e
+                                                                    .names!
+                                                                    .map((z) =>
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                              MeasurementCubit.get(context).sendWord(MeasurementCubit.get(context).words.imgName, e.vertices, z);
+                                                                            },
+                                                                            child:
+                                                                                Text(z)))
+                                                                    .toList()),
+                                                            title: Text(
+                                                                'Help us to improve it'),
+                                                          );
+                                                        });
+                                                  },
+                                                  child: Container(
+                                                    constraints: BoxConstraints(
+                                                            minHeight: 30,
+                                                            minWidth: 20)
+                                                        .normalize(),
+                                                    color: Colors.white,
+                                                    child: FittedBox(
+                                                        child:
+                                                            Text(e.names![0])),
+                                                    width: (double.parse(e
+                                                                .vertices![1].x
+                                                                .toString()) -
+                                                            double.parse(e
+                                                                .vertices![0].x
+                                                                .toString())) -
+                                                        5,
+                                                    height: (double.parse(e
+                                                                .vertices![3].y
+                                                                .toString()) -
+                                                            double.parse(e
+                                                                .vertices![0].y
+                                                                .toString())) -
+                                                        15,
+                                                  ),
+                                                )
+                                              : SizedBox(),
+                                        ))
+                              ],
+                            )
+                          : Stack(
+                              children: [
+                                Image.file(
+                                  File(
+                                    resizedImage!.path,
+                                  ),
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover,
+                                ),
+                                ...MeasurementCubit.get(context)
+                                    .words
+                                    .data!
+                                    .map((e) => Positioned(
+                                          left: double.parse(
+                                              e.vertices![0].x.toString()),
+                                          top: double.parse(
+                                              e.vertices![0].y.toString()),
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                                    minHeight: 60, minWidth: 80)
+                                                .normalize(),
+                                            color: Colors.white,
+                                            child: FittedBox(
+                                                child: Text(e.names![0])),
+                                            width: (double.parse(e
+                                                    .vertices![1].x
+                                                    .toString()) -
+                                                double.parse(e.vertices![0].x
+                                                    .toString())),
+                                            height: (double.parse(e
+                                                    .vertices![3].y
+                                                    .toString()) -
+                                                double.parse(e.vertices![0].y
+                                                    .toString())),
+                                          ),
+                                        ))
+                              ],
+                            ),
             ),
           ),
         );
       }
       return WillPopScope(
         onWillPop: () {
-           height=false;
-              width=false;
-              height_Width=false;
-        MeasurementCubit.get(context).goToInit();
-        Navigator.pop(context, false);
-        //we need to return a future
-        return Future.value(false);
-      },
+          height = false;
+          width = false;
+          height_Width = false;
+          MeasurementCubit.get(context).goToInit();
+          Navigator.pop(context, false);
+          //we need to return a future
+          return Future.value(false);
+        },
         child: Scaffold(
           body: Column(
             children: [
@@ -146,47 +277,63 @@ class Scan extends StatelessWidget {
                   onTap: () async {
                     image = await ImagePicker()
                         .pickImage(source: ImageSource.gallery);
-                       ImageProperties prop = await FlutterNativeImage.getImageProperties(image!.path);
-                       if(prop.height!>MediaQuery.of(context).size.height)
-                       {
-                        height = true;
-                        print('height');
-                        print(prop.height);
-                          print(prop.width);
-                        resizedImage = await FlutterNativeImage.compressImage(image!.path,quality: 100,targetHeight: MediaQuery.of(context).size.height.toInt());
-                        MeasurementCubit.get(context)
-                        .createScan(resizedImage!.path,image!.name);
-                       }
-                       else if(prop.width!>MediaQuery.of(context).size.width)
-                       {
-                        width = true;
-                        print('width');
+                    ImageProperties prop =
+                        await FlutterNativeImage.getImageProperties(
+                            image!.path);
+                    if (prop.height! > MediaQuery.of(context).size.height &&
+                        prop.width! <= MediaQuery.of(context).size.width) {
+                      height = true;
+                      w = prop.width!;
+                      print('height');
+                      print(prop.height);
+                      print(prop.width);
+                      resizedImage = await FlutterNativeImage.compressImage(
+                          image!.path,
+                          quality: 100,
+                          targetHeight:
+                              MediaQuery.of(context).size.height.toInt(),
+                          targetWidth: prop.width!);
+                      MeasurementCubit.get(context)
+                          .createScan(resizedImage!.path, image!.name);
+                    } else if (prop.width! >
+                            MediaQuery.of(context).size.width &&
+                        prop.height! <= MediaQuery.of(context).size.height) {
+                      width = true;
+                      h = prop.height!;
+                      print('width');
+                      print(prop.height);
+                      print(prop.width);
+                      resizedImage = await FlutterNativeImage.compressImage(
+                          image!.path,
+                          quality: 100,
+                          targetWidth:
+                              MediaQuery.of(context).size.width.toInt(),
+                          targetHeight: prop.height!);
+                      MeasurementCubit.get(context)
+                          .createScan(resizedImage!.path, image!.name);
+                    } else if (prop.width! >
+                            MediaQuery.of(context).size.width &&
+                        prop.height! > MediaQuery.of(context).size.height) {
+                      print('height_width');
 
-                        resizedImage = await FlutterNativeImage.compressImage(image!.path,quality: 100,targetWidth:MediaQuery.of(context).size.width.toInt() );
-                        MeasurementCubit.get(context)
-                        .createScan(resizedImage!.path,image!.name);
+                      height_Width = true;
+                      resizedImage = await FlutterNativeImage.compressImage(
+                          image!.path,
+                          quality: 100,
+                          targetHeight:
+                              MediaQuery.of(context).size.height.toInt(),
+                          targetWidth:
+                              MediaQuery.of(context).size.width.toInt());
+                      MeasurementCubit.get(context)
+                          .createScan(resizedImage!.path, image!.name);
+                    } else {
+                      print('nothing');
+                      print(prop.height);
+                      print(prop.width);
 
-                       }
-                       else if(prop.width!>MediaQuery.of(context).size.width&&prop.height!>MediaQuery.of(context).size.height)
-                       {
-                        print('height_width');
-
-                        height_Width = true;
-                        resizedImage = await FlutterNativeImage.compressImage(image!.path,quality: 100,targetHeight: MediaQuery.of(context).size.height.toInt(),targetWidth:MediaQuery.of(context).size.width.toInt() );
-                        MeasurementCubit.get(context)
-                        .createScan(resizedImage!.path,image!.name);
-                       }
-                       else
-                       {
-                        print('nothing');
-                          print(prop.height);
-                          print(prop.width);
-
- MeasurementCubit.get(context)
-                        .createScan(image!.path,image!.name);
-                       }
-                        
-                    
+                      MeasurementCubit.get(context)
+                          .createScan(image!.path, image!.name);
+                    }
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -216,8 +363,8 @@ class Scan extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () async {
-                    image =
-                        await ImagePicker().pickImage(source: ImageSource.camera);
+                    image = await ImagePicker()
+                        .pickImage(source: ImageSource.camera);
                     MeasurementCubit.get(context)
                         .createScan(image!.path, image!.name);
                   },
@@ -251,5 +398,24 @@ class Scan extends StatelessWidget {
         ),
       );
     });
+  }
+
+  void paint(Canvas canvas, Size size) {
+    var center = size / 2;
+    var style = TextStyle();
+
+    final ui.ParagraphBuilder paragraphBuilder =
+        ui.ParagraphBuilder(ui.ParagraphStyle(
+      fontSize: style.fontSize,
+      fontFamily: style.fontFamily,
+      fontStyle: style.fontStyle,
+      fontWeight: style.fontWeight,
+      textAlign: TextAlign.justify,
+    ))
+          ..pushStyle(style.getTextStyle())
+          ..addText('Demo Text');
+    final ui.Paragraph paragraph = paragraphBuilder.build()
+      ..layout(ui.ParagraphConstraints(width: size.width));
+    canvas.drawParagraph(paragraph, Offset(center.width, center.height));
   }
 }

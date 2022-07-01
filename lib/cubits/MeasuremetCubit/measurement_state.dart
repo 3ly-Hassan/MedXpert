@@ -85,3 +85,8 @@ class ScanLoading extends MeasurementState {}
 class ScanError extends MeasurementState {}
 
 class ScanSuccess extends MeasurementState {}
+
+///sendNewWord
+class SendWordError extends MeasurementState {}
+
+class SendWordSuccess extends MeasurementState {}

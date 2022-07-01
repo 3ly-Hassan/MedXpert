@@ -10,20 +10,26 @@ part 'teams_patient_state.dart';
 class TeamsPatientCubit extends Cubit<TeamsPatientState> {
   TeamsPatientCubit() : super(TeamsPatientInitial());
   APIService apiService = APIService();
-
+  List<Measurement>? measurements;
+  List<Chronics>? chronics;
   Future getPatientInfo(String id) async {
     emit(TeamsPatientLoadingState());
     //
     Patient? patient = await apiService.getPatientProfileById(id);
-    List<Measurement>? measurements =
-        await apiService.getPatientMeasurementsById(id);
+    measurements = await apiService.getPatientMeasurementsById(id);
     if (patient != null && measurements != null) {
+      chronics = patient.chronics;
       emit(
-        GetPatientInfoState(
-            measurements: measurements, chronics: patient.chronics!),
+        GetPatientInfoState(measurements: measurements!, chronics: chronics!),
       );
     } else {
       emit(TeamsPatientErrorState());
     }
+  }
+
+  List<int> expanded = [];
+  invertExpand(i) {
+    expanded.contains(i) ? expanded.remove(i) : expanded.add(i);
+    emit(Expanded());
   }
 }

@@ -322,7 +322,33 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     var v = await api.sendImage(path, name);
     return v;
   }
-  void goToInit(){
+
+  String? sendWordMsg;
+  void sendWord(imgName, vertices, newWord) {
+    try {
+      emit(ScanLoading());
+      _sendRightWord(imgName, vertices, newWord).then((value) {
+        if (value == null) {
+          emit(SendWordError());
+        } else {
+          //sendWordMsg = (json.decode(value))['msg'];
+          print((json.decode(value))['msg']);
+          emit(SendWordSuccess());
+        }
+      });
+    } catch (e) {
+      print('##########');
+      print(e.toString());
+      print('##########');
+    }
+  }
+
+  Future<String?> _sendRightWord(imgName, vertices, newWord) async {
+    var v = await api.sendRightWord(imgName, vertices, newWord);
+    return v;
+  }
+
+  void goToInit() {
     emit(GetDoctorProfileLoaded());
   }
 }
