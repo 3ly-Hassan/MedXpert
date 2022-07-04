@@ -14,7 +14,6 @@ import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'cache_helper.dart';
 import 'constants.dart';
 import 'cubits/MeasuremetCubit/measurement_cubit.dart';
@@ -24,7 +23,7 @@ import 'cubits/medication_cubits/medication_cubit/medication_cubit.dart';
 import 'cubits/teams_cubit/teams_patient_cubit/teams_patient_cubit.dart';
 
 void main() async {
-  // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
+  //
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await NotificationHelper.initializeNotification();

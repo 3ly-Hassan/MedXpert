@@ -16,6 +16,7 @@ import '../models/medication_drug.dart';
 import '../models/patient.dart';
 
 class APIService {
+  //192.168.1.14
   String api = "http://10.0.2.2:8000/api";
   static final APIService _instance = APIService._internal();
   factory APIService() {
@@ -659,9 +660,7 @@ class APIService {
   Future<Medication?> addDrugToMedication(
       String medicationId, MedicationDrug drug) async {
     String url = "$api/medication/addMedicationDrug?id=$medicationId";
-    print('start :${drug.startDate}');
-    print('end :${drug.endDate}');
-    print('json :${jsonEncode(drug.toJson())}');
+
     try {
       final response = await http.patch(
         Uri.parse(url),

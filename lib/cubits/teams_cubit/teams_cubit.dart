@@ -23,8 +23,6 @@ class TeamsCubit extends Cubit<TeamsState> {
   Patient? patientModel;
   Doctor? doctorModel;
 
-  bool isFollowersSelected = true;
-
   Future getFollowingInfo() async {
     emit(TeamsLoadingState());
     if (role == "patient") {

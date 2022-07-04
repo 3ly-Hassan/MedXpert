@@ -58,7 +58,7 @@ class _ListInsideContainerState extends State<ListInsideContainer>
               ? NoFollowersWidget(
                   msg: role == 'doctor'
                       ? kNoFollowingsYet
-                      : BlocProvider.of<TeamsCubit>(context).isFollowersSelected
+                      : BlocProvider.of<TeamsCubit>(context).isFollowersTab
                           ? kNoFollowersYet
                           : kNoFollowingsYet,
                 )
@@ -82,7 +82,7 @@ class _ListInsideContainerState extends State<ListInsideContainer>
                             //
                             await BlocProvider.of<TeamsDoctorCubit>(context)
                                 .getDoctorInfo(widget.viewedList[index].id);
-                          } else if (role == 'doctor') {
+                          } else if (role != 'patient') {
                             //navigate to teams_patient_screen
                             Navigator.of(context).pushNamed(
                                 TeamsPatientScreen.routeName,

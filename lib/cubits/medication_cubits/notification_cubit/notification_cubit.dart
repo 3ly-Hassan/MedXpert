@@ -47,7 +47,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       //TODO:PROBLEM BIG O OF n^2
       allRows.forEach(
         (element) async {
-          if (element.drugName.isNotEmpty) {
+          if (element.username.isNotEmpty) {
             bool isMatch = false;
             for (int i = 0; i < responseList.length; i++) {
               if (element.drugUniqueId == responseList[i].drugUniqueId &&

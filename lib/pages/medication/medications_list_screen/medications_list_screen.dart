@@ -72,7 +72,7 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
                           title: medicationList[index].doctorName == null
                               ? Text(medicationList[index].name)
                               : Text(
-                                  '${medicationList[index].name} (made by ${medicationList[index].doctorName})'),
+                                  '${medicationList[index].name} (Made by ${medicationList[index].doctorName})'),
                           subtitle: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
