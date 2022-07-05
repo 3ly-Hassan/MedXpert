@@ -30,7 +30,10 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isAuthorized = checkAuthorizationInDrugsListScreen(context);
+    final Medication medication =
+        ModalRoute.of(context)!.settings.arguments as Medication;
+    bool isAuthorized =
+        checkAuthorizationInMedicationsListScreen(context, medication);
     return WillPopScope(
       onWillPop: () async {
         if (BlocProvider.of<DrugsListCubit>(context).isDeleted) {
@@ -205,7 +208,9 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                           ],
                                         ),
                                       ),
-                                      (isAuthorized || role == 'patient')
+                                      (checkAuthorizationInDrugsListScreen(
+                                                  context) ||
+                                              role == 'patient')
                                           ? drugsList[index].isLoading
                                               ? SizedBox(
                                                   child:

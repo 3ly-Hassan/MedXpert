@@ -245,12 +245,12 @@ class DialogHelper {
                 child: Text(kYes),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await BlocProvider.of<MedicationsListCubit>(theContext)
-                      .deleteMedication(medicationId, index);
                   drugsList.forEach((element) async {
                     await BlocProvider.of<NotificationCubit>(theContext)
                         .deleteNotificationsByDrugUniqueId(
                             element.drugUniqueId);
+                    await BlocProvider.of<MedicationsListCubit>(theContext)
+                        .deleteMedication(medicationId, index);
                   });
                 },
               ),

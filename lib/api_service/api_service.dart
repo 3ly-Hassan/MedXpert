@@ -670,6 +670,7 @@ class APIService {
       if (response.statusCode == 200) {
         return Medication.fromJson(jsonDecode(response.body)['data']);
       } else {
+        print(response.statusCode);
         print('Problem In adding drug');
         return null;
       }

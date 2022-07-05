@@ -103,6 +103,7 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
                           onTap: () {
                             Navigator.of(context).pushNamed(
                               DrugsListScreen.routeName,
+                              arguments: medicationList[index],
                             );
                             BlocProvider.of<DrugsListCubit>(context)
                                 .getDrugsList(medicationList[index]);
