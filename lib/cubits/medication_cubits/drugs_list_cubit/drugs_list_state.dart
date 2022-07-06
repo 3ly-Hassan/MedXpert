@@ -9,6 +9,8 @@ class DrugsListLoadingState extends DrugsListState {}
 
 class DeletionFailedState extends DrugsListState {}
 
+class DrugsListThanksState extends DrugsListState {}
+
 class GetDrugsListState extends DrugsListState {
   final List drugs;
   GetDrugsListState(this.drugs);

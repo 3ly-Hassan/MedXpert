@@ -9,6 +9,7 @@ import 'db_helper.dart';
 class NotificationHelper {
   // static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
+  static late BuildContext theContext;
   static Future<void> initializeNotification() async {
     //Initialise the time zone database
     tz.initializeTimeZones();
@@ -39,6 +40,10 @@ class NotificationHelper {
   }
 
   static Future selectNotification(String? payload) async {
+    print('hi azab 1');
+    await Future.delayed(Duration(seconds: 3));
+    print('hi azab 2');
+
     print('**************** payload : $payload!!!');
   }
 

@@ -27,6 +27,11 @@ class DateHelper {
     return getFormattedString(date: dateTime, formattedString: formattedString);
   }
 
+  static DateTime getDateTimeFromISO(String isoDate) {
+    final DateTime dateTime = DateTime.parse(isoDate);
+    return dateTime;
+  }
+
   static String getFormattedString({
     required DateTime date,
     required String formattedString,

@@ -32,12 +32,12 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     emit(GetDrugsListState(drugs));
   }
 
-  Future deleteDrug(String medicationId, String drugId, int index) async {
+  Future deleteDrug(String medicationId, String drugUniqueId, int index) async {
     final packUp = drugs[index];
     drugs.removeAt(index);
     emit(GetDrugsListState(drugs));
 
-    isDeleted = await apiService.deleteDrug(medicationId, drugId);
+    isDeleted = await apiService.deleteDrug(medicationId, drugUniqueId);
 
     if (!isDeleted) {
       drugs.insert(index, packUp);
@@ -65,18 +65,47 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     }
   }
 
-  Future toggleSwitch(
-      context, bool value, String medicationId, String drugId) async {
+  Future isHelpfulDrug(context, int index, bool yesOrNo, String medicationId,
+      String drugUniqueId) async {
     Medication? medication =
-        await apiService.updateCurrentlyTaken(value, medicationId, drugId);
+        await apiService.updateDrug(yesOrNo, medicationId, drugUniqueId);
     if (medication != null) {
       getDrugsList(medication);
+      emit(DrugsListThanksState());
       //refresh medications_list_screen
       await BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
     } else {
       emit(UpdateDrugFailedState());
     }
+
+    // getDrugsList(Medication medication) {
+    //
+    // }
+
+    // final packUp = drugs[index];
+    // drugs.removeAt(index);
+    // emit(GetDrugsListState(drugs));
+    //
+    // isDeleted = await apiService.deleteDrug(medicationId, drugId);
+    //
+    // if (!isDeleted) {
+    //   drugs.insert(index, packUp);
+    //   emit(DeletionFailedState());
+    // }
   }
+
+  // Future toggleSwitch(
+  //     context, bool value, String medicationId, String drugId) async {
+  //   Medication? medication =
+  //       await apiService.updateCurrentlyTaken(value, medicationId, drugId);
+  //   if (medication != null) {
+  //     getDrugsList(medication);
+  //     //refresh medications_list_screen
+  //     await BlocProvider.of<MedicationsListCubit>(context).getMedicationsList();
+  //   } else {
+  //     emit(UpdateDrugFailedState());
+  //   }
+  // }
 
   Future createNotification(
     BuildContext context,

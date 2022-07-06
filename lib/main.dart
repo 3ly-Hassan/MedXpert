@@ -23,7 +23,6 @@ import 'cubits/medication_cubits/medication_cubit/medication_cubit.dart';
 import 'cubits/teams_cubit/teams_patient_cubit/teams_patient_cubit.dart';
 
 void main() async {
-  //
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await NotificationHelper.initializeNotification();

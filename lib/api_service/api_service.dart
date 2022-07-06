@@ -636,13 +636,13 @@ class APIService {
     }
   }
 
-  Future<bool> deleteDrug(String medicationId, String drugId) async {
+  Future<bool> deleteDrug(String medicationId, String drugUniqueId) async {
     String url = "$api/medication/deleteMedicationDrug?id=$medicationId";
     try {
       final response = await http.patch(
         Uri.parse(url),
         headers: _headers,
-        body: jsonEncode({'drug_id': drugId}),
+        body: jsonEncode({'_id': drugUniqueId}),
       );
       if (response.statusCode == 200) {
         print('delete drug done');
@@ -680,8 +680,8 @@ class APIService {
     }
   }
 
-  Future<Medication?> updateCurrentlyTaken(
-      bool value, String medicationId, String drugId) async {
+  Future<Medication?> updateDrug(
+      bool yesOrNo, String medicationId, String drugUniqueId) async {
     String url = "$api/medication/updateMedication?id=$medicationId";
 
     try {
@@ -690,13 +690,14 @@ class APIService {
         headers: _headers,
         body: jsonEncode(
           {
-            "currentlyTaken": value,
-            "drug_id": drugId,
+            'isHelpful': yesOrNo,
+            "currentlyTaken": false,
+            "_id": drugUniqueId,
           },
         ),
       );
+      print("***************  ${response.body}");
       if (response.statusCode == 200) {
-        print(jsonDecode(response.body)['data']);
         return Medication.fromJson(jsonDecode(response.body)['data']);
       } else {
         print('Problem In updating drug');

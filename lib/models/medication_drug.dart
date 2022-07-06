@@ -6,6 +6,7 @@ class MedicationDrug {
   String? drugName;
   int? dose;
   bool? currentlyTaken;
+  bool? isHelpful;
   String? startDate;
   String? endDate;
   //used locally in flutter only!
@@ -19,6 +20,7 @@ class MedicationDrug {
     this.startDate,
     this.endDate,
     this.currentlyTaken = true,
+    this.isHelpful,
     this.isLoading = false,
   });
 
@@ -30,6 +32,7 @@ class MedicationDrug {
       dose: json['dose'],
       startDate: json['start_date'],
       endDate: json['end_date'],
+      isHelpful: json['isHelpful'],
       currentlyTaken: json['currentlyTaken'],
     );
   }
@@ -40,6 +43,7 @@ class MedicationDrug {
       'drug_id': drugId,
       'drug_name': drugName,
       'dose': dose,
+      'isHelpful': isHelpful,
       'currentlyTaken': currentlyTaken,
       'start_date': startDate,
       'end_date': endDate,

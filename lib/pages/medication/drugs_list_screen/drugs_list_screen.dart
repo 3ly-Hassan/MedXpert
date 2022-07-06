@@ -3,6 +3,7 @@ import 'package:final_pro/cubits/medication_cubits/notification_cubit/notificati
 import 'package:final_pro/date_helper.dart';
 import 'package:final_pro/dialog_helper.dart';
 import 'package:final_pro/models/medication.dart';
+import 'package:final_pro/pages/medication/drugs_list_screen/yes_or_no_text_button.dart';
 import 'package:final_pro/pages/medication/notification_screen/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,16 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
   void initState() {
     BlocProvider.of<DrugsListCubit>(context).isDeleted = false;
     super.initState();
+  }
+
+  //
+  bool showHelpfulText(String isoDate) {
+    if (role == 'patient') {
+      if (DateHelper.getDateTimeFromISO(isoDate).isBefore(DateTime.now())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -70,6 +81,9 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                       : ToastStates.ERROR);
             } else if (state is DateIsPastState) {
               showToast(text: 'Date is in the past!', state: ToastStates.ERROR);
+            } else if (state is DrugsListThanksState) {
+              showToast(
+                  text: 'Thanks for feedback!', state: ToastStates.SUCCESS);
             }
           },
           builder: (context, state) {
@@ -83,7 +97,10 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                     itemCount: drugsList.length,
                     itemBuilder: (context, index) {
                       //
-                      bool switchValue = drugsList[index].currentlyTaken;
+                      final bool showIsHelpful =
+                          showHelpfulText(drugsList[index].endDate);
+                      //
+                      // bool switchValue = drugsList[index].currentlyTaken;
                       //
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -126,50 +143,56 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                         ),
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        (role == 'patient')
-                                            ? IconButton(
-                                                icon: Icon(Icons.alarm_add),
-                                                onPressed: () async {
-                                                  await BlocProvider.of<
-                                                              DrugsListCubit>(
-                                                          context)
-                                                      .createNotification(
-                                                    context,
-                                                    drugsList[index],
-                                                  );
-                                                },
-                                              )
-                                            : Container(),
-                                        isAuthorized
-                                            ? IconButton(
-                                                icon: Icon(Icons.delete),
-                                                color: kErrorColor,
-                                                onPressed: () async {
-                                                  await DialogHelper
-                                                      .deleteDrugDialog(
-                                                    context,
-                                                    medication.id!,
-                                                    drugsList[index].drugId,
-                                                    drugsList[index]
-                                                        .drugUniqueId,
-                                                    index,
-                                                  );
-                                                },
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
+                                    !showIsHelpful
+                                        ? Row(
+                                            children: [
+                                              (role == 'patient')
+                                                  ? IconButton(
+                                                      icon:
+                                                          Icon(Icons.alarm_add),
+                                                      onPressed: () async {
+                                                        await BlocProvider.of<
+                                                                    DrugsListCubit>(
+                                                                context)
+                                                            .createNotification(
+                                                          context,
+                                                          drugsList[index],
+                                                        );
+                                                      },
+                                                    )
+                                                  : Container(),
+                                              isAuthorized
+                                                  ? IconButton(
+                                                      icon: Icon(Icons.delete),
+                                                      color: kErrorColor,
+                                                      onPressed: () async {
+                                                        await DialogHelper
+                                                            .deleteDrugDialog(
+                                                          context,
+                                                          medication.id!,
+                                                          drugsList[index]
+                                                              .drugId,
+                                                          drugsList[index]
+                                                              .drugUniqueId,
+                                                          index,
+                                                        );
+                                                      },
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          )
+                                        : Container(),
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 8.0),
-                                  child: Text(
-                                    'Dose: ${drugsList[index].dose}',
-                                  ),
-                                ),
+                                !showIsHelpful
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 8.0),
+                                        child: Text(
+                                          'Dose: ${drugsList[index].dose}',
+                                        ),
+                                      )
+                                    : Container(),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 8.0),
@@ -184,31 +207,33 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                     'End date: ${DateHelper.getFormattedStringFromISO(drugsList[index].endDate, kFormattedString)}',
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          text: 'Currently taken: ',
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: drugsList[index]
-                                                          .currentlyTaken ==
-                                                      true
-                                                  ? kYes
-                                                  : kNo,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
+                                !showIsHelpful
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text.rich(
+                                              TextSpan(
+                                                text: 'Currently taken: ',
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: drugsList[index]
+                                                                .currentlyTaken ==
+                                                            true
+                                                        ? kYes
+                                                        : kNo,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      (checkAuthorizationInDrugsListScreen(
+                                            ),
+                                            /*(checkAuthorizationInDrugsListScreen(
                                                   context) ||
                                               role == 'patient')
                                           ? drugsList[index].isLoading
@@ -220,6 +245,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                                 )
                                               : Switch(
                                                   value: switchValue,
+                                                  // onChanged: null,
                                                   onChanged: (value) async {
                                                     setState(() {
                                                       drugsList[index]
@@ -240,10 +266,48 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                                         false;
                                                   },
                                                 )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
+                                          : Container(),*/
+                                          ],
+                                        ),
+                                      )
+                                    : Container(),
+                                showIsHelpful
+                                    ? Column(
+                                        children: [
+                                          Text(
+                                            'was this drug helpful?',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5!
+                                                      .fontSize! *
+                                                  0.85,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              YesOrNoTextButton(
+                                                isYesButton: true,
+                                                index: index,
+                                                medicationId: medication.id!,
+                                                drugUniqueId: drugsList[index]
+                                                    .drugUniqueId,
+                                              ),
+                                              YesOrNoTextButton(
+                                                isYesButton: false,
+                                                index: index,
+                                                medicationId: medication.id!,
+                                                drugUniqueId: drugsList[index]
+                                                    .drugUniqueId,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    : Container(),
                               ],
                             ),
                           ),

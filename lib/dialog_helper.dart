@@ -279,10 +279,10 @@ class DialogHelper {
                 child: Text(kYes),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await BlocProvider.of<DrugsListCubit>(theContext)
-                      .deleteDrug(medicationId, drugId, index);
                   await BlocProvider.of<NotificationCubit>(theContext)
                       .deleteNotificationsByDrugUniqueId(drugUniqueId);
+                  await BlocProvider.of<DrugsListCubit>(theContext)
+                      .deleteDrug(medicationId, drugUniqueId, index);
                   //
                 },
               ),
