@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bloc/bloc.dart';
 import 'package:final_pro/bloc_observer.dart';
 import 'package:final_pro/cubits/Article_cubit/article_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:final_pro/cubits/teams_cubit/teams_doctor_cubit/teams_doctor_cub
 import 'package:final_pro/notification_helper.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
+import 'package:final_pro/pages/profile/profileScreen.dart';
 import 'package:final_pro/pages/splash/splash_screen.dart';
 import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';
@@ -64,9 +66,22 @@ class MyApp extends StatelessWidget {
     this.isDark,
     this.startWidget,
   });
+  listenToNotificationActions(BuildContext context) {
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      if (receivedNotification.buttonKeyPressed == 'Confirm') {
+        print('confirm pressed');
+      } else if (receivedNotification.buttonKeyPressed == 'Reject') {
+        print('reject pressed');
+      }
+    });
+  }
+
   // This widget is the root of your application updated.
   @override
   Widget build(BuildContext context) {
+    //
+    listenToNotificationActions(context);
+    //
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) {

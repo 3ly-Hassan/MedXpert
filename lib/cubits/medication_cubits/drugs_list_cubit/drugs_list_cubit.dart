@@ -161,11 +161,12 @@ class DrugsListCubit extends Cubit<DrugsListState> {
         await NotificationHelper.createNotification(
           notificationId: notificationId,
           title:
-              '${medicationDrug.drugName!}      ${DateHelper.getFormattedStringForTime(context: context, time: doseTimes[i])}',
+              '${medicationDrug.drugName!}\t\t\t${DateHelper.getFormattedStringForTime(context: context, time: doseTimes[i])}',
           body: 'Time to take the dose!',
           date: pickedDate,
           time: doseTimes[i],
           payLoad: 'payLoad',
+          isForMe: true,
         );
         //Add notification To the local dateBase
         final LocalNotificationModel notificationModel = LocalNotificationModel(
@@ -187,10 +188,11 @@ class DrugsListCubit extends Cubit<DrugsListState> {
         //let followers know about notification
         await apiService.sendLocalNotification(
           RequestNotificationModel(
-              drugUniqueId: notificationModel.drugUniqueId,
-              drugName: notificationModel.drugName,
-              date: notificationModel.date,
-              time: notificationModel.time),
+            drugUniqueId: notificationModel.drugUniqueId,
+            drugName: notificationModel.drugName,
+            date: notificationModel.date,
+            time: notificationModel.time,
+          ),
         );
       }
       //emit appropriate states in UI

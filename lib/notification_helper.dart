@@ -1,7 +1,7 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'db_helper.dart';
@@ -9,25 +9,37 @@ import 'db_helper.dart';
 class NotificationHelper {
   // static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
-  static late BuildContext theContext;
   static Future<void> initializeNotification() async {
-    //Initialise the time zone database
-    tz.initializeTimeZones();
-    // initialize the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('notification_icon');
-
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: null,
-      macOS: null,
+    await AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      'resource://drawable/notification_icon',
+      [
+        NotificationChannel(
+          channelGroupKey: 'basic_channel_group',
+          channelKey: 'basic_channel',
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: Colors.green,
+          ledColor: Colors.white,
+          channelShowBadge: true,
+          importance: NotificationImportance.Max,
+        )
+      ],
+      // Channel groups are only visual and are not required
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupkey: 'basic_channel_group',
+            channelGroupName: 'Basic group')
+      ],
     );
-    //
-    await FlutterLocalNotificationsPlugin().initialize(
-      initializationSettings,
-      onSelectNotification: selectNotification,
-    );
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        // This is just a basic example. For real apps, you must show some
+        // friendly dialog box before call the request method.
+        // This is very important to not harm the user experience
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
   }
 
   static Future<int> generateNotificationId(BuildContext context) async {
@@ -39,14 +51,6 @@ class NotificationHelper {
     return notificationId;
   }
 
-  static Future selectNotification(String? payload) async {
-    print('hi azab 1');
-    await Future.delayed(Duration(seconds: 3));
-    print('hi azab 2');
-
-    print('**************** payload : $payload!!!');
-  }
-
   static Future createNotification({
     required int notificationId,
     required String title,
@@ -54,83 +58,42 @@ class NotificationHelper {
     required DateTime date,
     required TimeOfDay time,
     required String? payLoad,
+    bool isForMe = false,
   }) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'channel id',
-      'Basic Notifications',
-      'Notification channel',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: false,
-    );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
-    // print('**********************${tz.local}');
-    await FlutterLocalNotificationsPlugin().zonedSchedule(
-      notificationId,
-      title,
-      body,
-      tz.TZDateTime.from(
-          date.add(Duration(hours: time.hour, minutes: time.minute)), tz.local),
-      platformChannelSpecifics,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
-      payload: payLoad,
-    );
+    //
 
-    print('******** Notification Created Successfully');
-    /*await FlutterLocalNotificationsPlugin().show(
-      notificationId,
-      title,
-      time,
-      platformChannelSpecifics,
-      payload: payLoad,
-    );*/
-    /*
-    AwesomeNotifications().createNotification(
+    await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: notificationId,
         channelKey: 'basic_channel',
         title: title,
-        body: time,
-        icon: 'resource://drawable/foo',
-        payload: payLoad,
+        body: body,
       ),
       schedule: NotificationCalendar.fromDate(
-        date: DateHelper.combineDateAndTime(
-          date: date,
-          time: time,
-          dateParseFormat: k_dateFormat,
-          is24HourFormat: false,
-          defaultHour: 10,
-          defaultMinute: 30,
-        ),
-      ),
-      actionButtons: [
-        NotificationActionButton(
-          enabled: true,
-          key: 'EDIT',
-          label: 'EDIT',
-        ),
-        NotificationActionButton(
-          enabled: true,
-          key: 'FINISH',
-          label: 'Mark as finished',
-          buttonType: ActionButtonType.KeepOnTop,
-        ),
-      ],
-    );*/
+          date: date.add(Duration(hours: time.hour, minutes: time.minute))),
+      actionButtons: isForMe
+          ? <NotificationActionButton>[
+              NotificationActionButton(
+                label: 'Confirm',
+                key: 'Confirm',
+              ),
+              NotificationActionButton(
+                label: 'Reject',
+                key: 'Reject',
+              ),
+            ]
+          : [],
+    );
+    //
+    print('******** Notification Created Successfully');
   }
 
   static Future<void> cancelNotification(String notificationId) async {
     // print('notificationId : $notificationId');
     try {
-      await FlutterLocalNotificationsPlugin().cancel(
-        int.parse(notificationId),
-      );
+      //
+      await AwesomeNotifications().cancel(int.parse(notificationId));
+      //
       print('******** Notification Canceled Successfully');
     } catch (error) {
       print('-------------------* Notification not found !! *-------------');
