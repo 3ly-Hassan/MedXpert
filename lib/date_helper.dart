@@ -83,6 +83,7 @@ class DateHelper {
       DateTime.now().day,
       DateTime.now().hour,
       DateTime.now().minute,
+      DateTime.now().second,
     ).isAfter(
       date.add(
         Duration(hours: time.hour, minutes: time.minute),

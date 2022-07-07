@@ -7,6 +7,7 @@ import 'models/notification_models/local_notofocation_model.dart';
 class DBHelper {
   static const String databaseName = 'grad.db';
   static const String notificationTableName = 'notifications';
+  static const String notificationActionsTable = 'notificationsActions';
   static const String sharedPrefsTableName = 'sharedpref';
 
   static Future createDatabase() async {
@@ -33,6 +34,9 @@ class DBHelper {
       'CREATE TABLE $notificationTableName (notificationId TEXT, drugUniqueId TEXT, patientName TEXT, drugName TEXT, date TEXT, time TEXT)',
     );
     db.execute(
+      'CREATE TABLE $notificationActionsTable (notificationId INTEGER, medicationId TEXT, drugUniqueId TEXT, value INTEGER, dateTime TEXT)',
+    );
+    db.execute(
       'CREATE TABLE $sharedPrefsTableName (key TEXT, value TEXT)',
     );
   }
@@ -52,6 +56,45 @@ class DBHelper {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     print('DB insertion finished successfully');
+  }
+
+  static Future<void> saveNotificationActionInDB(
+    String medicationId,
+    String drugUniqueId,
+    int value,
+    String dateTime,
+    int notificationId,
+  ) async {
+    final Database db = await DBHelper.createDatabase();
+    await db.insert(
+      notificationActionsTable,
+      {
+        'notificationId': notificationId,
+        'medicationId': medicationId,
+        'drugUniqueId': drugUniqueId,
+        'value': value,
+        'dateTime': dateTime,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print('Save Notification Action In DB finished successfully');
+  }
+
+  static Future<List<Map>> getNotificationActions() async {
+    final Database db = await DBHelper.createDatabase();
+    List<Map> listOfMaps = await db.query(notificationActionsTable);
+    print('Get Notification Actions successfully');
+    return listOfMaps;
+  }
+
+  static Future<void> deleteNotificationActionById(int notificationId) async {
+    final Database db = await DBHelper.createDatabase();
+    await db.delete(
+      notificationActionsTable,
+      where: 'notificationId = ?',
+      whereArgs: [notificationId],
+    );
+    print('Delete Notification Action ById finished successfully');
   }
 
   static Future<bool> isCreatedPreviously(

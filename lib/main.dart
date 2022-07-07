@@ -18,6 +18,8 @@ import 'package:final_pro/routes.dart';
 import 'package:final_pro/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'api_service/api_service.dart';
 import 'cache_helper.dart';
 import 'constants.dart';
 import 'cubits/MeasuremetCubit/measurement_cubit.dart';
@@ -73,6 +75,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
+    listenToNotificationActions(context);
+    //
+
     //
     return MultiBlocProvider(
       providers: [
@@ -128,5 +133,88 @@ class MyApp extends StatelessWidget {
         routes: routes,
       ),
     );
+  }
+
+  listenToNotificationActions(BuildContext context) {
+    //
+    AwesomeNotifications().actionStream.listen((receivedNotification) async {
+      //
+      if (receivedNotification.buttonKeyPressed == kYes) {
+        await takeNotificationAction(receivedNotification, value: 1);
+
+        print('Yes pressed');
+      } else if (receivedNotification.buttonKeyPressed == kNo) {
+        await takeNotificationAction(receivedNotification, value: 0);
+
+        print('No pressed');
+      } else if (receivedNotification.buttonKeyPressed == kSnooze) {
+        print('Snooze pressed');
+        await snoozeFunction(receivedNotification, context);
+      }
+    });
+  }
+
+  snoozeFunction(receivedNotification, context) async {
+    final String originalDate = receivedNotification.payload!['date']!;
+    final String originalTime = receivedNotification.payload!['time']!;
+    final addFiveMinutesFromNow = DateTime.now().add(Duration(minutes: 5));
+    //
+    final int notificationId =
+        await NotificationHelper.generateLocalNotificationId();
+    //
+    await NotificationHelper.createNotification(
+      notificationId: notificationId,
+      title: receivedNotification.title!,
+      body: receivedNotification.body!,
+      isForMe: true,
+      date: DateTime(
+        addFiveMinutesFromNow.year,
+        addFiveMinutesFromNow.month,
+        addFiveMinutesFromNow.day,
+      ),
+      time: TimeOfDay(
+          hour: addFiveMinutesFromNow.hour,
+          minute: addFiveMinutesFromNow.minute),
+      context: context,
+      originalDate: originalDate,
+      originalTime: originalTime,
+      medicationId: receivedNotification.payload!['medicationId'],
+      drugUniqueId: receivedNotification.payload!['drugUniqueId'],
+    );
+  }
+
+  takeNotificationAction(receivedNotification, {required int value}) async {
+    //
+    final bool hasConnection = await InternetConnectionChecker().hasConnection;
+    final String medicationId = receivedNotification.payload!['medicationId'];
+    final String drugUniqueId = receivedNotification.payload!['drugUniqueId'];
+    final String dateTime = receivedNotification.payload!['dateTime'];
+    final int notificationId = receivedNotification.id;
+    //
+    if (hasConnection) {
+      final bool isSent = await APIService().takeNotificationAction(
+        medicationId,
+        drugUniqueId,
+        value,
+        dateTime,
+      );
+      if (!isSent) {
+        await DBHelper.saveNotificationActionInDB(
+          medicationId,
+          drugUniqueId,
+          value,
+          dateTime,
+          notificationId,
+        );
+      }
+    } else {
+      await DBHelper.saveNotificationActionInDB(
+        medicationId,
+        drugUniqueId,
+        value,
+        dateTime,
+        notificationId,
+      );
+    }
   }
 }

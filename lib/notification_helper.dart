@@ -45,13 +45,18 @@ class NotificationHelper {
     });
   }
 
-  static Future<int> generateNotificationId(BuildContext context) async {
+  static Future<int> generateGlobalNotificationId(BuildContext context) async {
     final patientId = MeasurementCubit.get(context).patient.sId;
     final int notificationIdFromDB = await DBHelper.getNotificationId();
     final int notificationId = int.parse(
         patientId!.substring(0, 5) + '$notificationIdFromDB',
         radix: 16);
     return notificationId;
+  }
+
+  static Future<int> generateLocalNotificationId() async {
+    final int notificationIdFromDB = await DBHelper.getNotificationId();
+    return notificationIdFromDB;
   }
 
   // int value, String dateTime

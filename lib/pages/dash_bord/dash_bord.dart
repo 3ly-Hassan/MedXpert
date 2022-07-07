@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cache_helper.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/dashBord_item.dart';
 import '../../constants.dart';
+import '../../db_helper.dart';
 import '../../notification_helper.dart';
 import '../../size_config.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -38,13 +41,12 @@ class _DashBordState extends State<DashBord> {
     print(size.width);
     print('############');
 
+
     //
-    //get and create (remote) followers notifications
     if (role == 'patient') {
-      //
-      listenToNotificationActions(context);
-      //
-      //remove decided notification from local date base
+      //send notification actions to the server & delete them from local date base!
+      sendActionsToTheServer();
+      //get and create (remote) followers notifications
       BlocProvider.of<NotificationCubit>(context)
           .createReceivedNotifications(context);
     }
@@ -237,68 +239,22 @@ class _DashBordState extends State<DashBord> {
     }
   }
 
-  listenToNotificationActions(BuildContext context) {
-    AwesomeNotifications().actionStream.listen((receivedNotification) async {
+  sendActionsToTheServer() async {
+    List<Map> listOfMaps = await DBHelper.getNotificationActions();
+    //
+    for (int i = 0; i < listOfMaps.length; i++) {
       //
-      if (receivedNotification.buttonKeyPressed == kYes) {
-        await takeNotificationAction(receivedNotification, value: 1);
-
-        print('Yes pressed');
-      } else if (receivedNotification.buttonKeyPressed == kNo) {
-        await takeNotificationAction(receivedNotification, value: 0);
-
-        print('No pressed');
-      } else if (receivedNotification.buttonKeyPressed == kSnooze) {
-        print('Snooze pressed');
-        await snoozeFunction(receivedNotification);
-      }
-    });
-  }
-
-  snoozeFunction(receivedNotification) async {
-    final String originalDate = receivedNotification.payload!['date']!;
-    final String originalTime = receivedNotification.payload!['time']!;
-    final addFiveMinutesFromNow = DateTime.now().add(Duration(minutes: 1));
-    //
-    final int notificationId =
-        await NotificationHelper.generateNotificationId(context);
-    //
-    await NotificationHelper.createNotification(
-      notificationId: notificationId,
-      title: receivedNotification.title!,
-      body: receivedNotification.body!,
-      isForMe: true,
-      date: DateTime(
-        addFiveMinutesFromNow.year,
-        addFiveMinutesFromNow.month,
-        addFiveMinutesFromNow.day,
-      ),
-      time: TimeOfDay(
-          hour: addFiveMinutesFromNow.hour,
-          minute: addFiveMinutesFromNow.minute),
-      context: context,
-      originalDate: originalDate,
-      originalTime: originalTime,
-      medicationId: receivedNotification.payload!['medicationId'],
-      drugUniqueId: receivedNotification.payload!['drugUniqueId'],
-    );
-  }
-
-  takeNotificationAction(receivedNotification, {required int value}) async {
-    //check network connection then send to database or the server
-    final bool hasConnection = await InternetConnectionChecker().hasConnection;
-    if (hasConnection) {
-      final bool isSent = await APIService().takeNotificationAction(
-        receivedNotification.payload!['medicationId'],
-        receivedNotification.payload!['drugUniqueId'],
-        value,
-        receivedNotification.payload!['dateTime'],
+      bool isSent = await APIService().takeNotificationAction(
+        listOfMaps[i]['medicationId'],
+        listOfMaps[i]['drugUniqueId'],
+        listOfMaps[i]['value'],
+        listOfMaps[i]['dateTime'],
       );
-      if (!isSent) {
-        // Save to Db to send later
+      //
+      if (isSent) {
+        await DBHelper.deleteNotificationActionById(
+            listOfMaps[i]['notificationId']);
       }
-    } else {
-      // Save to Db to send later
     }
   }
 }

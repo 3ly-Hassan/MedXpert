@@ -122,6 +122,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
     //
     final bool isPastDate = DateHelper.isPastDate(drugEndDate);
     //
+
     if (isPastDate == true) {
       emit(DateIsPastState());
       return;
@@ -156,7 +157,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
       //
       for (int i = 0; i < doseTimes.length; i++) {
         final int notificationId =
-            await NotificationHelper.generateNotificationId(context);
+            await NotificationHelper.generateGlobalNotificationId(context);
         //
         //create notification using NotificationHelper
         await NotificationHelper.createNotification(

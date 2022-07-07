@@ -84,7 +84,8 @@ class NotificationCubit extends Cubit<NotificationState> {
               //
               if (isFound == false) {
                 final int notificationId =
-                    await NotificationHelper.generateNotificationId(context);
+                    await NotificationHelper.generateGlobalNotificationId(
+                        context);
 
                 await NotificationHelper.createNotification(
                   notificationId: notificationId,
