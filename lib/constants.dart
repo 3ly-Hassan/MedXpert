@@ -70,6 +70,7 @@ const String kNoFollowingsYet = 'No followings yet';
 const String kAreYouSure = 'Are you sure?';
 const String kYes = 'yes';
 const String kNo = 'No';
+const String kSnooze = 'Snooze (5 min)';
 const String kUnFollow = 'Un-follow';
 const String kDone = 'Done!';
 const String KDeletedDone = 'Deleted done!';

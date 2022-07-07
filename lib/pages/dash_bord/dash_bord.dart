@@ -1,3 +1,5 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:final_pro/api_service/api_service.dart';
 import 'package:final_pro/cache_helper.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
@@ -14,7 +16,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/dashBord_item.dart';
 import '../../constants.dart';
+import '../../notification_helper.dart';
 import '../../size_config.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class DashBord extends StatefulWidget {
   static String routeName = "/dash";
@@ -37,6 +41,10 @@ class _DashBordState extends State<DashBord> {
     //
     //get and create (remote) followers notifications
     if (role == 'patient') {
+      //
+      listenToNotificationActions(context);
+      //
+      //remove decided notification from local date base
       BlocProvider.of<NotificationCubit>(context)
           .createReceivedNotifications(context);
     }
@@ -226,6 +234,71 @@ class _DashBordState extends State<DashBord> {
       return MeasurementCubit.get(context).patient.email!;
     } else {
       return MeasurementCubit.get(context).doctor.email!;
+    }
+  }
+
+  listenToNotificationActions(BuildContext context) {
+    AwesomeNotifications().actionStream.listen((receivedNotification) async {
+      //
+      if (receivedNotification.buttonKeyPressed == kYes) {
+        await takeNotificationAction(receivedNotification, value: 1);
+
+        print('Yes pressed');
+      } else if (receivedNotification.buttonKeyPressed == kNo) {
+        await takeNotificationAction(receivedNotification, value: 0);
+
+        print('No pressed');
+      } else if (receivedNotification.buttonKeyPressed == kSnooze) {
+        print('Snooze pressed');
+        await snoozeFunction(receivedNotification);
+      }
+    });
+  }
+
+  snoozeFunction(receivedNotification) async {
+    final String originalDate = receivedNotification.payload!['date']!;
+    final String originalTime = receivedNotification.payload!['time']!;
+    final addFiveMinutesFromNow = DateTime.now().add(Duration(minutes: 1));
+    //
+    final int notificationId =
+        await NotificationHelper.generateNotificationId(context);
+    //
+    await NotificationHelper.createNotification(
+      notificationId: notificationId,
+      title: receivedNotification.title!,
+      body: receivedNotification.body!,
+      isForMe: true,
+      date: DateTime(
+        addFiveMinutesFromNow.year,
+        addFiveMinutesFromNow.month,
+        addFiveMinutesFromNow.day,
+      ),
+      time: TimeOfDay(
+          hour: addFiveMinutesFromNow.hour,
+          minute: addFiveMinutesFromNow.minute),
+      context: context,
+      originalDate: originalDate,
+      originalTime: originalTime,
+      medicationId: receivedNotification.payload!['medicationId'],
+      drugUniqueId: receivedNotification.payload!['drugUniqueId'],
+    );
+  }
+
+  takeNotificationAction(receivedNotification, {required int value}) async {
+    //check network connection then send to database or the server
+    final bool hasConnection = await InternetConnectionChecker().hasConnection;
+    if (hasConnection) {
+      final bool isSent = await APIService().takeNotificationAction(
+        receivedNotification.payload!['medicationId'],
+        receivedNotification.payload!['drugUniqueId'],
+        value,
+        receivedNotification.payload!['dateTime'],
+      );
+      if (!isSent) {
+        // Save to Db to send later
+      }
+    } else {
+      // Save to Db to send later
     }
   }
 }

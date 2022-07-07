@@ -110,6 +110,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
   Future createNotification(
     BuildContext context,
     MedicationDrug medicationDrug,
+    String medicationId,
   ) async {
     //
     List doseTimes = [];
@@ -165,8 +166,10 @@ class DrugsListCubit extends Cubit<DrugsListState> {
           body: 'Time to take the dose!',
           date: pickedDate,
           time: doseTimes[i],
-          payLoad: 'payLoad',
           isForMe: true,
+          context: context,
+          medicationId: medicationId,
+          drugUniqueId: medicationDrug.drugUniqueId,
         );
         //Add notification To the local dateBase
         final LocalNotificationModel notificationModel = LocalNotificationModel(
@@ -186,12 +189,19 @@ class DrugsListCubit extends Cubit<DrugsListState> {
         );
 
         //let followers know about notification
+        final String dateTimeISO = pickedDate
+            .add(Duration(
+                hours: doseTimes[i].hour, minutes: doseTimes[i].minute))
+            .toIso8601String();
         await apiService.sendLocalNotification(
           RequestNotificationModel(
+            medicationId: medicationItem.id,
             drugUniqueId: notificationModel.drugUniqueId,
             drugName: notificationModel.drugName,
             date: notificationModel.date,
             time: notificationModel.time,
+            dateTime: dateTimeISO,
+            expireAt: dateTimeISO,
           ),
         );
       }

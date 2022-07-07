@@ -7,6 +7,8 @@ import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medica
 import 'package:final_pro/cubits/medication_cubits/notification_cubit/notification_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_cubit.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_doctor_cubit/teams_doctor_cubit.dart';
+import 'package:final_pro/date_helper.dart';
+import 'package:final_pro/db_helper.dart';
 import 'package:final_pro/notification_helper.dart';
 import 'package:final_pro/pages/dash_bord/dash_bord.dart';
 import 'package:final_pro/pages/logging_page/loging.dart';
@@ -66,21 +68,11 @@ class MyApp extends StatelessWidget {
     this.isDark,
     this.startWidget,
   });
-  listenToNotificationActions(BuildContext context) {
-    AwesomeNotifications().actionStream.listen((receivedNotification) {
-      if (receivedNotification.buttonKeyPressed == 'Confirm') {
-        print('confirm pressed');
-      } else if (receivedNotification.buttonKeyPressed == 'Reject') {
-        print('reject pressed');
-      }
-    });
-  }
 
   // This widget is the root of your application updated.
   @override
   Widget build(BuildContext context) {
     //
-    listenToNotificationActions(context);
     //
     return MultiBlocProvider(
       providers: [

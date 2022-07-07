@@ -218,6 +218,15 @@ class DateHelper {
     );
   }
 
+  static DateTime combineDateAndTime2({
+    required DateTime date,
+    required TimeOfDay time,
+  }) {
+    return date.add(
+      Duration(hours: time.hour, minutes: time.minute),
+    );
+  }
+
   static Duration getDifference({
     required String date,
     required String time,

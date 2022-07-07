@@ -157,6 +157,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                                                             .createNotification(
                                                           context,
                                                           drugsList[index],
+                                                          medication.id!,
                                                         );
                                                       },
                                                     )

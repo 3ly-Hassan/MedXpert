@@ -44,15 +44,11 @@ class NotificationCubit extends Cubit<NotificationState> {
       //
       // delete local notifications of followers that no longer exist in the server (which means that it was deleted)
       final allRows = await DBHelper.getAllNotification();
-      print('#####################  1');
-      // print('#####################  ${allRows.isEmpty}');
 
       //TODO:PROBLEM BIG O OF n^2
       allRows.forEach(
         (element) async {
-          print('#####################  ${element.username.isEmpty}');
           if (element.username.isNotEmpty) {
-            print('#####################  2');
             bool isMatch = false;
             for (int i = 0; i < responseList.length; i++) {
               if (element.drugUniqueId == responseList[i].drugUniqueId &&
@@ -60,13 +56,10 @@ class NotificationCubit extends Cubit<NotificationState> {
                   element.date == responseList[i].date &&
                   element.time == responseList[i].time) {
                 isMatch = true;
-                print('#####################  3');
                 break;
               }
             }
             if (!isMatch) {
-              print('#####################  4');
-
               await NotificationHelper.cancelNotification(
                   element.notificationId);
               await DBHelper.deleteNotification2(element);
@@ -101,8 +94,8 @@ class NotificationCubit extends Cubit<NotificationState> {
                   date: DateHelper.parseDate(
                       responseList[i].date!, kFormattedString),
                   time: DateHelper.parseTime(responseList[i].time!),
-                  payLoad: 'payLoad',
                   isForMe: false,
+                  context: context,
                 );
 
                 //Add notification To the local dateBase

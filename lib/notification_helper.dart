@@ -1,4 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:final_pro/constants.dart';
+import 'package:final_pro/date_helper.dart';
+import 'package:final_pro/models/notification_models/local_notofocation_model.dart';
 import 'package:flutter/material.dart';
 import 'package:final_pro/cubits/MeasuremetCubit/measurement_cubit.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -51,16 +54,39 @@ class NotificationHelper {
     return notificationId;
   }
 
+  // int value, String dateTime
   static Future createNotification({
     required int notificationId,
     required String title,
     required String body,
     required DateTime date,
     required TimeOfDay time,
-    required String? payLoad,
+    required BuildContext context,
     bool isForMe = false,
+    String? originalDate,
+    String? originalTime,
+    //
+    String? medicationId,
+    String? drugUniqueId,
+    //
   }) async {
     //
+    final String stringDate = DateHelper.getFormattedString(
+        date: date, formattedString: kFormattedString);
+
+    final String stringTime =
+        DateHelper.getFormattedStringForTime(context: context, time: time);
+
+    if (originalTime == null && originalDate == null) {
+      originalDate = stringDate;
+      originalTime = stringTime;
+    }
+
+    final dateTime = DateHelper.combineDateAndTime(
+      date: '$originalDate',
+      time: '$originalTime',
+      dateParseFormat: kFormattedString,
+    ).toIso8601String();
 
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -68,18 +94,31 @@ class NotificationHelper {
         channelKey: 'basic_channel',
         title: title,
         body: body,
+        payload: {
+          'date': originalDate!,
+          'time': originalTime!,
+          'dateTime': dateTime,
+          'medicationId':
+              medicationId == null ? 'null medicationId' : medicationId,
+          'drugUniqueId':
+              drugUniqueId == null ? 'null drugUniqueId' : drugUniqueId,
+        },
       ),
       schedule: NotificationCalendar.fromDate(
           date: date.add(Duration(hours: time.hour, minutes: time.minute))),
       actionButtons: isForMe
           ? <NotificationActionButton>[
               NotificationActionButton(
-                label: 'Confirm',
-                key: 'Confirm',
+                label: kYes,
+                key: kYes,
               ),
               NotificationActionButton(
-                label: 'Reject',
-                key: 'Reject',
+                label: kNo,
+                key: kNo,
+              ),
+              NotificationActionButton(
+                label: kSnooze,
+                key: kSnooze,
               ),
             ]
           : [],

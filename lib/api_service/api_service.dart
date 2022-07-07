@@ -829,6 +829,36 @@ class APIService {
     }
   }
 
+  Future<bool> takeNotificationAction(String medicationId, String drugUniqueId,
+      int value, String dateTime) async {
+    String url = "$api/medication/isDoseTaken?id=$medicationId";
+    try {
+      final response = await http.patch(Uri.parse(url),
+          headers: _headers,
+          body: jsonEncode(
+            {
+              "_id": drugUniqueId,
+              "taken": value,
+              "date": dateTime,
+            },
+          ));
+      if (response.statusCode == 200) {
+        print('Notification action sent to the server');
+        return true;
+      } else {
+        print('Notification action sent failed !!! : ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Notification action ${e.toString()}');
+      return false;
+    }
+  }
+
+  // request.body = json.encode({
+  //
+  // });
+
   Future<Patient?> getPatientProfileById(String id) async {
     String url = "$api/patient/getPatient?id=$id";
     print("getting data");
