@@ -41,7 +41,6 @@ class _DashBordState extends State<DashBord> {
     print(size.width);
     print('############');
 
-
     //
     if (role == 'patient') {
       //send notification actions to the server & delete them from local date base!

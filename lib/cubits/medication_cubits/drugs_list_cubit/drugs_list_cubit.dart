@@ -168,7 +168,6 @@ class DrugsListCubit extends Cubit<DrugsListState> {
           date: pickedDate,
           time: doseTimes[i],
           isForMe: true,
-          context: context,
           medicationId: medicationId,
           drugUniqueId: medicationDrug.drugUniqueId,
         );

@@ -175,7 +175,6 @@ class MyApp extends StatelessWidget {
       time: TimeOfDay(
           hour: addFiveMinutesFromNow.hour,
           minute: addFiveMinutesFromNow.minute),
-      context: context,
       originalDate: originalDate,
       originalTime: originalTime,
       medicationId: receivedNotification.payload!['medicationId'],

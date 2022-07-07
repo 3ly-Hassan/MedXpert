@@ -66,7 +66,6 @@ class NotificationHelper {
     required String body,
     required DateTime date,
     required TimeOfDay time,
-    required BuildContext context,
     bool isForMe = false,
     String? originalDate,
     String? originalTime,
@@ -79,8 +78,7 @@ class NotificationHelper {
     final String stringDate = DateHelper.getFormattedString(
         date: date, formattedString: kFormattedString);
 
-    final String stringTime =
-        DateHelper.getFormattedStringForTime(context: context, time: time);
+    final String stringTime = time.toString().substring(10, 15);
 
     if (originalTime == null && originalDate == null) {
       originalDate = stringDate;

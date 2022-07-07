@@ -96,7 +96,6 @@ class NotificationCubit extends Cubit<NotificationState> {
                       responseList[i].date!, kFormattedString),
                   time: DateHelper.parseTime(responseList[i].time!),
                   isForMe: false,
-                  context: context,
                 );
 
                 //Add notification To the local dateBase
