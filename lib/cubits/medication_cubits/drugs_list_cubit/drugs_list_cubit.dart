@@ -164,7 +164,7 @@ class DrugsListCubit extends Cubit<DrugsListState> {
           notificationId: notificationId,
           title:
               '${medicationDrug.drugName!}\t\t\t${DateHelper.getFormattedStringForTime(context: context, time: doseTimes[i])}',
-          body: 'Time to take the dose!',
+          body: 'Did you take the dose?',
           date: pickedDate,
           time: doseTimes[i],
           isForMe: true,

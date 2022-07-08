@@ -32,7 +32,8 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
   //
   bool showHelpfulText(String isoDate) {
     if (role == 'patient') {
-      if (DateHelper.getDateTimeFromISO(isoDate).isBefore(DateTime.now())) {
+      if (DateHelper.getDateTimeFromISO(isoDate).isBefore(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
         return true;
       }
     }
@@ -107,7 +108,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
                             vertical: 8.0, horizontal: 8.0),
                         child: InkWell(
                           onTap: () async {
-                            if (role == 'patient') {
+                            if (role == 'patient' && !showIsHelpful) {
                               Navigator.of(context).pushNamed(
                                 NotificationScreen.routeName,
                                 arguments: drugsList[index].drugName,
