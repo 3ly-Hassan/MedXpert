@@ -78,19 +78,66 @@ class Scan extends StatelessWidget {
                             Positioned(
                               left: double.parse(e.vertices![0].x.toString()),
                               top: double.parse(e.vertices![0].y.toString()),
-                              child: Container(
-                                constraints:
-                                    BoxConstraints(minHeight: 60, minWidth: 80)
-                                        .normalize(),
-                                color: Colors.white,
-                                child: FittedBox(child: Text(e.names![0])),
-                                width: (double.parse(
-                                        e.vertices![1].x.toString()) -
-                                    double.parse(e.vertices![0].x.toString())),
-                                height: (double.parse(
-                                        e.vertices![3].y.toString()) -
-                                    double.parse(e.vertices![0].y.toString())),
-                              ),
+                              child: e.names!.isNotEmpty
+                                  ? InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('cancel'))
+                                                ],
+                                                content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: e.names!
+                                                        .map((z) => TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              MeasurementCubit
+                                                                      .get(
+                                                                          context)
+                                                                  .sendWord(
+                                                                      MeasurementCubit.get(
+                                                                              context)
+                                                                          .words
+                                                                          .imgName,
+                                                                      e.vertices,
+                                                                      z);
+                                                            },
+                                                            child: Text(z)))
+                                                        .toList()),
+                                                title: Text(
+                                                    'Help us to improve it'),
+                                              );
+                                            });
+                                      },
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                                minHeight: 30, minWidth: 20)
+                                            .normalize(),
+                                        color: Colors.white,
+                                        child:
+                                            FittedBox(child: Text(e.names![0])),
+                                        width: (double.parse(e.vertices![1].x
+                                                    .toString()) -
+                                                double.parse(e.vertices![0].x
+                                                    .toString())) -
+                                            5,
+                                        height: (double.parse(e.vertices![3].y
+                                                    .toString()) -
+                                                double.parse(e.vertices![0].y
+                                                    .toString())) -
+                                            15,
+                                      ),
+                                    )
+                                  : SizedBox(),
                             ))
                       ],
                     )
@@ -112,22 +159,71 @@ class Scan extends StatelessWidget {
                                           e.vertices![0].x.toString()),
                                       top: double.parse(
                                           e.vertices![0].y.toString()),
-                                      child: Container(
-                                        constraints: BoxConstraints(
-                                                minHeight: 60, minWidth: 80)
-                                            .normalize(),
-                                        color: Colors.white,
-                                        child:
-                                            FittedBox(child: Text(e.names![0])),
-                                        width: (double.parse(
-                                                e.vertices![1].x.toString()) -
-                                            double.parse(
-                                                e.vertices![0].x.toString())),
-                                        height: (double.parse(
-                                                e.vertices![3].y.toString()) -
-                                            double.parse(
-                                                e.vertices![0].y.toString())),
-                                      ),
+                                      child: e.names!.isNotEmpty
+                                          ? InkWell(
+                                              onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        actions: [
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                  'cancel'))
+                                                        ],
+                                                        content: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: e.names!
+                                                                .map((z) =>
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          MeasurementCubit.get(context).sendWord(
+                                                                              MeasurementCubit.get(context).words.imgName,
+                                                                              e.vertices,
+                                                                              z);
+                                                                        },
+                                                                        child: Text(
+                                                                            z)))
+                                                                .toList()),
+                                                        title: Text(
+                                                            'Help us to improve it'),
+                                                      );
+                                                    });
+                                              },
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                        minHeight: 30,
+                                                        minWidth: 20)
+                                                    .normalize(),
+                                                color: Colors.white,
+                                                child: FittedBox(
+                                                    child: Text(e.names![0])),
+                                                width: (double.parse(e
+                                                            .vertices![1].x
+                                                            .toString()) -
+                                                        double.parse(e
+                                                            .vertices![0].x
+                                                            .toString())) -
+                                                    5,
+                                                height: (double.parse(e
+                                                            .vertices![3].y
+                                                            .toString()) -
+                                                        double.parse(e
+                                                            .vertices![0].y
+                                                            .toString())) -
+                                                    15,
+                                              ),
+                                            )
+                                          : SizedBox(),
                                     ))
                           ],
                         )
@@ -234,24 +330,70 @@ class Scan extends StatelessWidget {
                                               e.vertices![0].x.toString()),
                                           top: double.parse(
                                               e.vertices![0].y.toString()),
-                                          child: Container(
-                                            constraints: BoxConstraints(
-                                                    minHeight: 60, minWidth: 80)
-                                                .normalize(),
-                                            color: Colors.white,
-                                            child: FittedBox(
-                                                child: Text(e.names![0])),
-                                            width: (double.parse(e
-                                                    .vertices![1].x
-                                                    .toString()) -
-                                                double.parse(e.vertices![0].x
-                                                    .toString())),
-                                            height: (double.parse(e
-                                                    .vertices![3].y
-                                                    .toString()) -
-                                                double.parse(e.vertices![0].y
-                                                    .toString())),
-                                          ),
+                                          child: e.names!.isNotEmpty
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            actions: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: Text(
+                                                                      'cancel'))
+                                                            ],
+                                                            content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: e
+                                                                    .names!
+                                                                    .map((z) =>
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                              MeasurementCubit.get(context).sendWord(MeasurementCubit.get(context).words.imgName, e.vertices, z);
+                                                                            },
+                                                                            child:
+                                                                                Text(z)))
+                                                                    .toList()),
+                                                            title: Text(
+                                                                'Help us to improve it'),
+                                                          );
+                                                        });
+                                                  },
+                                                  child: Container(
+                                                    constraints: BoxConstraints(
+                                                            minHeight: 30,
+                                                            minWidth: 20)
+                                                        .normalize(),
+                                                    color: Colors.white,
+                                                    child: FittedBox(
+                                                        child:
+                                                            Text(e.names![0])),
+                                                    width: (double.parse(e
+                                                                .vertices![1].x
+                                                                .toString()) -
+                                                            double.parse(e
+                                                                .vertices![0].x
+                                                                .toString())) -
+                                                        5,
+                                                    height: (double.parse(e
+                                                                .vertices![3].y
+                                                                .toString()) -
+                                                            double.parse(e
+                                                                .vertices![0].y
+                                                                .toString())) -
+                                                        15,
+                                                  ),
+                                                )
+                                              : SizedBox(),
                                         ))
                               ],
                             ),

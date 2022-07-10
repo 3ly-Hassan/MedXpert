@@ -326,14 +326,14 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   String? sendWordMsg;
   void sendWord(imgName, vertices, newWord) {
     try {
-      emit(ScanLoading());
+      //emit(ScanLoading());
       _sendRightWord(imgName, vertices, newWord).then((value) {
         if (value == null) {
-          emit(SendWordError());
+          //emit(SendWordError());
         } else {
           //sendWordMsg = (json.decode(value))['msg'];
           print((json.decode(value))['msg']);
-          emit(SendWordSuccess());
+          //emit(SendWordSuccess());
         }
       });
     } catch (e) {
