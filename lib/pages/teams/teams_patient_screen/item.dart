@@ -10,7 +10,6 @@ class Item extends StatelessWidget {
   final int i;
 
   const Item(this.measurement, this.i, {Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,13 +26,13 @@ class Item extends StatelessWidget {
               measurement.createdAt == null
                   ? measurement.fakeDate!
                   : measurement.createdAt!.substring(0, 10),
-              style: TextStyle(color: Colors.amber),
+              style: TextStyle(color: Colors.black),
             ),
-            tileColor: Colors.green,
+            tileColor: Colors.green.shade100,
             trailing: IconButton(
               icon: Icon(
                 Icons.expand_more,
-                color: Colors.amber,
+                color: Colors.green,
                 size: 35,
               ),
               onPressed: () {
@@ -75,13 +74,13 @@ class Item extends StatelessWidget {
     var text;
     switch (i) {
       case 0:
-        text = 'The Newest One';
+        text = 'The newest one';
         break;
       case 1:
       case 2:
       case 3:
       case 4:
-        text = 'recently measured ';
+        text = 'Recently measured ';
         break;
     }
     return text;

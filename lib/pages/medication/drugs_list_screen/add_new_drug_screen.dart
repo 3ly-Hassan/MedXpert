@@ -45,7 +45,7 @@ class _AddNewDrugScreenState extends State<AddNewDrugScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new drug'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: kAppBarColor,
       ),
       body: BlocConsumer<DrugsListCubit, DrugsListState>(
         listener: (context, state) {

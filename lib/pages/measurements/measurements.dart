@@ -23,7 +23,7 @@ class _MeasurementsState extends State<Measurements> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Measurements"),
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kAppBarColor,
       ),
       body: BlocConsumer<MeasurementCubit, MeasurementState>(
         listener: (context, state) {},
@@ -46,7 +46,7 @@ class _MeasurementsState extends State<Measurements> {
         onPressed: () {
           Navigator.pushNamed(context, AddMeasurements.routeName);
         },
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kAppBarColor,
         child: Icon(LineAwesomeIcons.plus),
       ),
     );

@@ -102,15 +102,15 @@ class _DashBordState extends State<DashBord> {
                             ],
                           ),
                           Spacer(),
-                          Center(
-                              child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          )),
+                          // Center(
+                          //     child: IconButton(
+                          //   onPressed: () {},
+                          //   icon: Icon(
+                          //     Icons.search,
+                          //     color: Colors.white,
+                          //     size: 30,
+                          //   ),
+                          // )),
                         ],
                       ),
                     ),

@@ -248,7 +248,7 @@ class Body extends StatelessWidget {
                         'Add',
                         style: TextStyle(
                             fontSize: 28,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700),
                       ),
                     ),

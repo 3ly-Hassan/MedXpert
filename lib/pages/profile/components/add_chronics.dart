@@ -20,7 +20,7 @@ class AddChronics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kAppBarColor,
         title: Text('Add to your Chronics'),
         actions: [
           IconButton(
@@ -35,7 +35,7 @@ class AddChronics extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              icon: Icon(Icons.save))
+              icon: Icon(Icons.save, color: Colors.white))
         ],
       ),
       body: Padding(

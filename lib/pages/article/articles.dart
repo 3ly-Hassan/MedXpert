@@ -36,7 +36,7 @@ class _ArticlesState extends State<Articles> {
             'Articles',
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: kPrimaryColor,
+          backgroundColor: kAppBarColor,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +63,10 @@ class _ArticlesState extends State<Articles> {
                         )),
                     hintText: 'Search for articles',
                     enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(color: Colors.grey, width: 2)),
                     focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide:
                             BorderSide(color: kPrimaryColor, width: 2))),
               ),
@@ -74,7 +76,11 @@ class _ArticlesState extends State<Articles> {
               var article = ArticleCubit.get(context).articles.data;
               if (article == null && state is InitState) {
                 return Expanded(
-                    child: Center(child: Text('search for articles')));
+                    child: Center(
+                        child: Text(
+                  'Search for articles',
+                  style: TextStyle(fontSize: 24),
+                )));
               } else if (state is Loading) {
                 return Expanded(
                     child: Center(child: CircularProgressIndicator()));
@@ -123,8 +129,9 @@ class _ArticlesState extends State<Articles> {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: EdgeInsets.all(5),
-        decoration:
-            BoxDecoration(border: Border.all(color: kPrimaryColor, width: 2)),
+        decoration: BoxDecoration(
+            border: Border.all(color: kPrimaryColor, width: 2),
+            borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
             Row(
