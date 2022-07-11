@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    // listenToNotificationActions(context);
+    listenToNotificationActions(context);
     //
 
     //
