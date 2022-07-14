@@ -181,31 +181,39 @@ class _DashBordState extends State<DashBord> {
                                   },
                                   image: 'assets/images/pulse.png',
                                   title: 'Measurements'),
+                          DashBordItem(
+                              onPress: () {
+                                CacheHelper.removeData(key: 'token').then(
+                                    (value) => Navigator.pushReplacementNamed(
+                                        context, LoggingPage.routeName));
+                              },
+                              image: 'assets/images/logout.png',
+                              title: 'Log Out')
                         ],
                       ),
                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10)),
-                        width: double.infinity,
-                        child: TextButton.icon(
-                          onPressed: () {
-                            CacheHelper.removeData(key: 'token').then((value) =>
-                                Navigator.pushReplacementNamed(
-                                    context, LoggingPage.routeName));
-                          },
-                          icon: Icon(
-                            Icons.logout,
-                            color: Colors.white,
-                          ),
-                          label: Text('Log Out',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              )),
-                        ))
+                    // Container(
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.red,
+                    //         borderRadius: BorderRadius.circular(10)),
+                    //     width: double.infinity,
+                    //     child: TextButton.icon(
+                    //       onPressed: () {
+                    //         CacheHelper.removeData(key: 'token').then((value) =>
+                    //             Navigator.pushReplacementNamed(
+                    //                 context, LoggingPage.routeName));
+                    //       },
+                    //       icon: Icon(
+                    //         Icons.logout,
+                    //         color: Colors.white,
+                    //       ),
+                    //       label: Text('Log Out',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 16,
+                    //             fontWeight: FontWeight.w700,
+                    //           )),
+                    //     ))
                   ],
                 ),
               ),
