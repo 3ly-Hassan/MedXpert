@@ -8,6 +8,7 @@ import 'cubits/medication_cubits/drugs_list_cubit/drugs_list_cubit.dart';
 import 'models/medication.dart';
 
 const kPrimaryColor = Color(0xFF10de62);
+const kAppBarColor = Colors.green;
 const kPrimaryColorLight = Color(4291356361);
 const kPrimaryLightColor = Color(0xFFFFECDF);
 const kPrimaryGradientColor = LinearGradient(

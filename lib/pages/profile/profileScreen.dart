@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
           appBar: AppBar(
-            backgroundColor: kPrimaryColor,
+            backgroundColor: kAppBarColor,
             title: cubit.readOnly ? Text('Profile') : Text('Edit Profile'),
             actions: [
               IconButton(
@@ -67,7 +67,12 @@ class ProfileScreen extends StatelessWidget {
                               cubit.updateDoctorProfile(doctor);
                               cubit.toggleReadOnly();
                             },
-                  icon: cubit.readOnly ? Icon(Icons.edit) : Icon(Icons.save)),
+                  icon: cubit.readOnly
+                      ? Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        )
+                      : Icon(Icons.save, color: Colors.white)),
               !cubit.readOnly
                   ? TextButton(
                       onPressed: () {
@@ -84,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                       child: Text(
                         'cancel',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
                       ))

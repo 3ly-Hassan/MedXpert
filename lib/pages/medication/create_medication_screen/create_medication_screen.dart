@@ -51,7 +51,7 @@ class _CreateMedicationScreenState extends State<CreateMedicationScreen> {
         title: Text(
           'Create medication',
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: kAppBarColor,
       ),
       body: GestureDetector(
         onTap: () {

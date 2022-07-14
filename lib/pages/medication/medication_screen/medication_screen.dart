@@ -1,5 +1,6 @@
 import 'package:final_pro/components/center_progress_indicator.dart';
 import 'package:final_pro/components/error_bloc.dart';
+import 'package:final_pro/constants.dart';
 import 'package:final_pro/cubits/medication_cubits/medications_list_cubit/medications_list_cubit.dart';
 import 'package:final_pro/pages/medication/shared_componenets/create_medication_floating_button.dart';
 import 'package:final_pro/pages/teams/main/components/follower_card.dart';
@@ -34,7 +35,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
         title: Text(
           'Medication',
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: kAppBarColor,
       ),
       floatingActionButton: createMedicationFloatingButton(context),
       body: BlocBuilder<MedicationCubit, MedicationState>(

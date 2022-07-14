@@ -34,7 +34,7 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medications list'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: kAppBarColor,
       ),
       floatingActionButton:
           role == 'patient' ? createMedicationFloatingButton(context) : null,

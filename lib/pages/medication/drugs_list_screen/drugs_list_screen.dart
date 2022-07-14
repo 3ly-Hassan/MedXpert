@@ -57,7 +57,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Drugs list'),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: kAppBarColor,
         ),
         floatingActionButton: isAuthorized
             ? FloatingActionButton(

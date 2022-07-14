@@ -5,6 +5,7 @@ import 'package:final_pro/pages/teams/teams_doctor_screen/reusableRow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../constants.dart';
 import '../../../models/doctor.dart';
 
 class TeamsDoctorScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class TeamsDoctorScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
-          backgroundColor: Colors.green,
+          backgroundColor: kAppBarColor,
         ),
         body: BlocBuilder<TeamsDoctorCubit, TeamsDoctorState>(
           builder: (context, state) {

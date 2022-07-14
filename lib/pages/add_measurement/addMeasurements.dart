@@ -1,3 +1,4 @@
+import 'package:final_pro/constants.dart';
 import 'package:flutter/material.dart';
 import 'components/body.dart';
 
@@ -9,7 +10,8 @@ class AddMeasurements extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Let\'s Add Yours Measurements'),
+        title: Text('Add Yours Measurements'),
+        backgroundColor: kAppBarColor,
       ),
       body: Body(),
     );

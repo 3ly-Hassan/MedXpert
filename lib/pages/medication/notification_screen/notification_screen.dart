@@ -17,7 +17,7 @@ class NotificationScreen extends StatelessWidget {
     final drugName = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor:kAppBarColor,
         title: Text(drugName),
       ),
       body: BlocBuilder<NotificationCubit, NotificationState>(

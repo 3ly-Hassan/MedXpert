@@ -1,11 +1,11 @@
 import 'package:final_pro/components/center_progress_indicator.dart';
-import 'package:final_pro/components/error_bloc.dart';
 import 'package:final_pro/cubits/teams_cubit/teams_patient_cubit/teams_patient_cubit.dart';
 import 'package:final_pro/pages/teams/main/components/no_followers_widget.dart';
 import 'package:final_pro/pages/teams/teams_patient_screen/chronic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../constants.dart';
 import 'item.dart';
 
 class TeamsPatientScreen extends StatefulWidget {
@@ -41,7 +41,7 @@ class _TeamsPatientScreenState extends State<TeamsPatientScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.green,
+        backgroundColor: kAppBarColor,
         bottom: TabBar(
           onTap: (index) {
             if (index == 0) {
