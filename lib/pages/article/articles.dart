@@ -101,7 +101,10 @@ class _ArticlesState extends State<Articles> {
                 else
                   return Expanded(
                       child: Center(
-                    child: Text('no data found'),
+                    child: Text(
+                      'No data found',
+                      style: TextStyle(fontSize: 24),
+                    ),
                   ));
               } else
                 return Expanded(
