@@ -120,6 +120,7 @@ class NotificationCubit extends Cubit<NotificationState> {
     }
   }
 
+  //used when deleting one notification from a drug.
   Future deleteNotification(String notificationId, String drugUniqueId,
       String date, String time, String username, String drugName) async {
     emit(NotificationLoadingState());

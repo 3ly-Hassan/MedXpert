@@ -122,6 +122,43 @@ class _DashBordState extends State<DashBord> {
                         primary: false,
                         children: [
                           DashBordItem(
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, ProfileScreen.routeName);
+                              },
+                              image: 'assets/images/profile.png',
+                              title: 'Profile'),
+                          DashBordItem(
+                              onPress: () {
+                                Navigator.pushNamed(context, Scan.routeName);
+                              },
+                              image: 'assets/images/scan.png',
+                              title: 'Scan'),
+                          if (role == 'patient')
+                            DashBordItem(
+                                onPress: () {
+                                  Navigator.pushNamed(
+                                      context, Measurements.routeName);
+                                  MeasurementCubit.get(context)
+                                      .get_measurements();
+                                },
+                                image: 'assets/images/pulse.png',
+                                title: 'Measurements'),
+                          DashBordItem(
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, Articles.routeName);
+                              },
+                              image: 'assets/images/copywriting.png',
+                              title: 'Articles'),
+                          DashBordItem(
+                            onPress: () {
+                              Navigator.pushNamed(context, Teams.routeName);
+                            },
+                            image: 'assets/images/team.png',
+                            title: 'Teams',
+                          ),
+                          DashBordItem(
                             onPress: () {
                               if (role == 'doctor') {
                                 Navigator.pushNamed(
@@ -134,33 +171,7 @@ class _DashBordState extends State<DashBord> {
                             image: 'assets/images/pharmacy.png',
                             title: 'Medication',
                           ),
-                          DashBordItem(
-                            onPress: () {
-                              Navigator.pushNamed(context, Teams.routeName);
-                            },
-                            image: 'assets/images/team.png',
-                            title: 'Teams',
-                          ),
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(context, Scan.routeName);
-                              },
-                              image: 'assets/images/scan.png',
-                              title: 'Scan'),
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(
-                                    context, ProfileScreen.routeName);
-                              },
-                              image: 'assets/images/profile.png',
-                              title: 'Profile'),
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(
-                                    context, Articles.routeName);
-                              },
-                              image: 'assets/images/copywriting.png',
-                              title: 'Articles'),
+
                           DashBordItem(
                               onPress: () {},
                               image: 'assets/images/graph.png',
@@ -170,17 +181,7 @@ class _DashBordState extends State<DashBord> {
                           //     onPress: () {},
                           //     image: 'assets/images/gear.png',
                           //     title: 'Settings'),
-                          role == 'doctor'
-                              ? SizedBox()
-                              : DashBordItem(
-                                  onPress: () {
-                                    Navigator.pushNamed(
-                                        context, Measurements.routeName);
-                                    MeasurementCubit.get(context)
-                                        .get_measurements();
-                                  },
-                                  image: 'assets/images/pulse.png',
-                                  title: 'Measurements'),
+
                           DashBordItem(
                               onPress: () {
                                 CacheHelper.removeData(key: 'token').then(
