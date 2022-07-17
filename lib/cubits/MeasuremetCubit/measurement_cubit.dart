@@ -140,7 +140,8 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       if (value == null) {
         return null;
       }
-      this.patient = value;
+      patient = value;
+      print(patient.username);
       print(this.patient.residency);
       print(this.patient.residency.runtimeType);
       emit(updatePatientProfileLoaded());
