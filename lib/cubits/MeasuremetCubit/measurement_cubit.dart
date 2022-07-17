@@ -185,7 +185,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
   }
 
   Future<void> _deleteFromList(Chronics chronics) async {
-    await api.addToList(chronics);
+    await api.deleteFromList(chronics);
   }
 
   //doctor profile
