@@ -176,7 +176,9 @@ class APIService {
         print(patient.email);
         return patient;
       } else {
+        print('%%%%%%%%');
         print('not good');
+        print('%%%%%%%%');
 
         return null;
       }

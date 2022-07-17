@@ -101,6 +101,9 @@ class MeasurementCubit extends Cubit<MeasurementState> {
     emit(DeletedLoading());
     _deleteMeasurement(id).then((_) {
       measurements.removeWhere((obj) => obj.id == id);
+      if (measurements.isEmpty) {
+        empty = true;
+      }
       emit(DeletedLoaded());
     }).catchError((e) {
       print(e.toString());
@@ -140,8 +143,10 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       if (value == null) {
         return null;
       }
-      patient = value;
+      this.patient = value;
+      print("@@@@@@@@@@");
       print(patient.username);
+      print("@@@@@@@@@@");
       print(this.patient.residency);
       print(this.patient.residency.runtimeType);
       emit(updatePatientProfileLoaded());
