@@ -32,8 +32,21 @@ class DashBord extends StatefulWidget {
 }
 
 class _DashBordState extends State<DashBord> {
+  //
   @override
   Widget build(BuildContext context) {
+    //
+    Future<void> notificationManager() async {
+      if (role == 'patient') {
+        //send notification actions to the server & delete them from local date base!
+        sendActionsToTheServer();
+        //get and create (remote) followers notifications
+        BlocProvider.of<NotificationCubit>(context)
+            .createReceivedNotifications(context);
+      }
+    }
+
+    //
     SizeConfig().init(context);
     final size = MediaQuery.of(context).size;
     print('############');
@@ -42,184 +55,185 @@ class _DashBordState extends State<DashBord> {
     print('############');
 
     //
-    if (role == 'patient') {
-      //send notification actions to the server & delete them from local date base!
-      sendActionsToTheServer();
-      //get and create (remote) followers notifications
-      BlocProvider.of<NotificationCubit>(context)
-          .createReceivedNotifications(context);
-    }
+
+    notificationManager();
+
     //
     return BlocConsumer<MeasurementCubit, MeasurementState>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              height: size.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      alignment: Alignment.topCenter,
-                      image: AssetImage('assets/images/dash.png'))),
-            ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16, top: 16, bottom: 6),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 64,
-                      margin: EdgeInsets.only(bottom: 30),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 32,
-                            backgroundImage: role == 'patient'
-                                ? AssetImage('assets/images/patient.jpg')
-                                : AssetImage('assets/images/doctor.jpg'),
-                          ),
-                          SizedBox(width: 16),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                buildTheNameText(context),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 20),
-                              ),
-                              Text(
-                                buildTheEmailText(context),
-                                style: TextStyle(
-                                    fontFamily: 'Muli',
-                                    color: Colors.white,
-                                    fontSize: 14),
-                              )
-                            ],
-                          ),
-                          Spacer(),
-                          // Center(
-                          //     child: IconButton(
-                          //   onPressed: () {},
-                          //   icon: Icon(
-                          //     Icons.search,
-                          //     color: Colors.white,
-                          //     size: 30,
-                          //   ),
-                          // )),
-                        ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await notificationManager();
+          },
+          child: Stack(
+            children: [
+              Container(
+                height: size.height,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        alignment: Alignment.topCenter,
+                        image: AssetImage('assets/images/dash.png'))),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16, top: 16, bottom: 6),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 64,
+                        margin: EdgeInsets.only(bottom: 30),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 32,
+                              backgroundImage: role == 'patient'
+                                  ? AssetImage('assets/images/patient.jpg')
+                                  : AssetImage('assets/images/doctor.jpg'),
+                            ),
+                            SizedBox(width: 16),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  buildTheNameText(context),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 20),
+                                ),
+                                Text(
+                                  buildTheEmailText(context),
+                                  style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      color: Colors.white,
+                                      fontSize: 14),
+                                )
+                              ],
+                            ),
+                            Spacer(),
+                            // Center(
+                            //     child: IconButton(
+                            //   onPressed: () {},
+                            //   icon: Icon(
+                            //     Icons.search,
+                            //     color: Colors.white,
+                            //     size: 30,
+                            //   ),
+                            // )),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                        primary: false,
-                        children: [
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(
-                                    context, ProfileScreen.routeName);
-                              },
-                              image: 'assets/images/profile.png',
-                              title: 'Profile'),
-                          DashBordItem(
-                              onPress: () {
-                                Navigator.pushNamed(context, Scan.routeName);
-                              },
-                              image: 'assets/images/scan.png',
-                              title: 'Scan'),
-                          if (role == 'patient')
+                      Expanded(
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                          primary: false,
+                          children: [
                             DashBordItem(
                                 onPress: () {
                                   Navigator.pushNamed(
-                                      context, Measurements.routeName);
-                                  MeasurementCubit.get(context)
-                                      .get_measurements();
+                                      context, ProfileScreen.routeName);
                                 },
-                                image: 'assets/images/pulse.png',
-                                title: 'Measurements'),
-                          DashBordItem(
+                                image: 'assets/images/profile.png',
+                                title: 'Profile'),
+                            DashBordItem(
+                                onPress: () {
+                                  Navigator.pushNamed(context, Scan.routeName);
+                                },
+                                image: 'assets/images/scan.png',
+                                title: 'Scan'),
+                            if (role == 'patient')
+                              DashBordItem(
+                                  onPress: () {
+                                    Navigator.pushNamed(
+                                        context, Measurements.routeName);
+                                    MeasurementCubit.get(context)
+                                        .get_measurements();
+                                  },
+                                  image: 'assets/images/pulse.png',
+                                  title: 'Measurements'),
+                            DashBordItem(
+                                onPress: () {
+                                  Navigator.pushNamed(
+                                      context, Articles.routeName);
+                                },
+                                image: 'assets/images/copywriting.png',
+                                title: 'Articles'),
+                            DashBordItem(
                               onPress: () {
-                                Navigator.pushNamed(
-                                    context, Articles.routeName);
+                                Navigator.pushNamed(context, Teams.routeName);
                               },
-                              image: 'assets/images/copywriting.png',
-                              title: 'Articles'),
-                          DashBordItem(
-                            onPress: () {
-                              Navigator.pushNamed(context, Teams.routeName);
-                            },
-                            image: 'assets/images/team.png',
-                            title: 'Teams',
-                          ),
-                          DashBordItem(
-                            onPress: () {
-                              if (role == 'doctor') {
-                                Navigator.pushNamed(
-                                    context, MedicationScreen.routeName);
-                              } else {
-                                Navigator.pushNamed(
-                                    context, MedicationsListScreen.routeName);
-                              }
-                            },
-                            image: 'assets/images/pharmacy.png',
-                            title: 'Medication',
-                          ),
-
-                          DashBordItem(
-                              onPress: () {},
-                              image: 'assets/images/graph.png',
-                              title: 'Reports of Stats'),
-
-                          // DashBordItem(
-                          //     onPress: () {},
-                          //     image: 'assets/images/gear.png',
-                          //     title: 'Settings'),
-
-                          DashBordItem(
+                              image: 'assets/images/team.png',
+                              title: 'Teams',
+                            ),
+                            DashBordItem(
                               onPress: () {
-                                CacheHelper.removeData(key: 'token').then(
-                                    (value) => Navigator.pushReplacementNamed(
-                                        context, LoggingPage.routeName));
+                                if (role == 'doctor') {
+                                  Navigator.pushNamed(
+                                      context, MedicationScreen.routeName);
+                                } else {
+                                  Navigator.pushNamed(
+                                      context, MedicationsListScreen.routeName);
+                                }
                               },
-                              image: 'assets/images/logout.png',
-                              title: 'Log Out')
-                        ],
+                              image: 'assets/images/pharmacy.png',
+                              title: 'Medication',
+                            ),
+
+                            DashBordItem(
+                                onPress: () {},
+                                image: 'assets/images/graph.png',
+                                title: 'Reports of Stats'),
+
+                            // DashBordItem(
+                            //     onPress: () {},
+                            //     image: 'assets/images/gear.png',
+                            //     title: 'Settings'),
+
+                            DashBordItem(
+                                onPress: () {
+                                  CacheHelper.removeData(key: 'token').then(
+                                      (value) => Navigator.pushReplacementNamed(
+                                          context, LoggingPage.routeName));
+                                },
+                                image: 'assets/images/logout.png',
+                                title: 'Log Out')
+                          ],
+                        ),
                       ),
-                    ),
-                    // Container(
-                    //     decoration: BoxDecoration(
-                    //         color: Colors.red,
-                    //         borderRadius: BorderRadius.circular(10)),
-                    //     width: double.infinity,
-                    //     child: TextButton.icon(
-                    //       onPressed: () {
-                    //         CacheHelper.removeData(key: 'token').then((value) =>
-                    //             Navigator.pushReplacementNamed(
-                    //                 context, LoggingPage.routeName));
-                    //       },
-                    //       icon: Icon(
-                    //         Icons.logout,
-                    //         color: Colors.white,
-                    //       ),
-                    //       label: Text('Log Out',
-                    //           style: TextStyle(
-                    //             color: Colors.white,
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.w700,
-                    //           )),
-                    //     ))
-                  ],
+                      // Container(
+                      //     decoration: BoxDecoration(
+                      //         color: Colors.red,
+                      //         borderRadius: BorderRadius.circular(10)),
+                      //     width: double.infinity,
+                      //     child: TextButton.icon(
+                      //       onPressed: () {
+                      //         CacheHelper.removeData(key: 'token').then((value) =>
+                      //             Navigator.pushReplacementNamed(
+                      //                 context, LoggingPage.routeName));
+                      //       },
+                      //       icon: Icon(
+                      //         Icons.logout,
+                      //         color: Colors.white,
+                      //       ),
+                      //       label: Text('Log Out',
+                      //           style: TextStyle(
+                      //             color: Colors.white,
+                      //             fontSize: 16,
+                      //             fontWeight: FontWeight.w700,
+                      //           )),
+                      //     ))
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

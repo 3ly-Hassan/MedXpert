@@ -10,7 +10,7 @@ class AddMeasurements extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Yours Measurements'),
+        title: Text('Add Your Measurements'),
         backgroundColor: kAppBarColor,
       ),
       body: Body(),
