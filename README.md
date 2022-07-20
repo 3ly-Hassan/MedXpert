@@ -1,12 +1,11 @@
 <!-- vertical space &nbsp; -->
 
-# <img src="https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/splash.png?token=GHSAT0AAAAAABVH56MJTNTQ6E33FTAHQCD6YWYRZGA" alt="Icon" width="23"/> MedXpert - MEDICAL MOBILE APPLICATION
+# <img src="https://drive.google.com/uc?export=view&id=15SifBodLEf83FcUZJxzjlMVjmE3CN0Z4" alt="Icon" width="23"/> MedXpert - MEDICAL MOBILE APPLICATION
 
 
 
 ## MedXpert is a multi-functional medical mobile application that takes the advantages of AI and Data analysis.
 
----
 
 ## ⚡&ensp;Key features
 
@@ -30,17 +29,18 @@ their vital signs.
 
 &ensp;
 
-![image1](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide1.PNG?token=GHSAT0AAAAAABVH56MITCDH7OHJV44JY3OMYWYROPA)
 
-![image2](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide2.PNG?token=GHSAT0AAAAAABVH56MITQJXXUR67ZANKZBGYWYRKNQ)
+![image1](https://drive.google.com/uc?export=view&id=1J7u_epkhfkDmb5Bhm3dhkXcqAAataLvN)
 
-![image3](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide3.PNG?token=GHSAT0AAAAAABVH56MIBWSHD5GNKMPLVQNEYWYRLHQ)
+![image2](https://drive.google.com/uc?export=view&id=1wvW_Nl9E7Baqdn7EOiYupynPp7n-LsRW)
 
-![image4](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide4.PNG?token=GHSAT0AAAAAABVH56MI3XMN2ZZZOKSNLFXIYWYRLJQ)
+![image3](https://drive.google.com/uc?export=view&id=1AuYOkFpBoA-Qc0s0bUR_AtFIu4lx7FI2)
 
-![image5](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide5.PNG?token=GHSAT0AAAAAABVH56MILGYIAWYTYWLLGJ5YYWYRLJQ)
+![image4](https://drive.google.com/uc?export=view&id=1mf28tTF0SiH6WYkHQcuwNYO3MHsqjF_9)
 
-![image6](https://raw.githubusercontent.com/Abdo-Nabil/Screenshot-Repo/master/Slide6.PNG?token=GHSAT0AAAAAABVH56MJ7WBXMQYBZB4XPYRUYWYRLKA)
+![image5](https://drive.google.com/uc?export=view&id=1I4T9RaDY9ZIkMnZqLJ-HY8S_UzpK_zsV)
+
+![image6](https://drive.google.com/uc?export=view&id=1WL3Z7DiHedQU6mD06BkL9cmgOLl60Jhh)
 
 
 
